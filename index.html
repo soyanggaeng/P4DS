@@ -9,18 +9,17 @@
         <div class="header-overlay"></div>
         <div class="header-content">
             <div class="logo-container">
-                <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
+                <a href="index.html">
+                    <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
+                </a>
             </div>
             <div class="header-text">
                 <h1>Welcome to YAMP!</h1>
                 <h3>The Ultimate Youtube Ad Matching Platform</h3>
             </div>
-            <div class="login-button-container">
-                <a href="#" id="login-button">Log In</a>
-            </div>
         </div>
     </header>
-    
+
     <nav>
         <ul>
             <li><a href="#">Channel Analysis</a>
@@ -55,6 +54,9 @@
                 </ul>
             </li>
         </ul>
+        <div class="login-button-container">
+            <a href="#" id="login-button">Log In</a>
+        </div>
     </nav>
     
     <section id="keyword-visualization">
@@ -86,19 +88,74 @@
             <p>&copy; 2023 YAMP. All rights reserved.</p>
         </div>
     </footer>
-    
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <!-- YouTube Login -->
+            <div id="youtubeAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Youtuber</h3>
+                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
+            </div>
+
+            <!-- Advertiser Login -->
+            <div id="advertiserAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Advertiser</h3>
+                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
+                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
+                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Mock user type. In a real-world scenario, this would likely come from a server-side language
-        // and be based on the authenticated user's permissions.
-        var userType = "advertiser"; // change this to "youtuber" as needed
-    
         window.onload = function () {
-            var userTypeClass = userType + "-only";
-            var userTypeElements = document.getElementsByClassName(userTypeClass);
-            for (var i = 0; i < userTypeElements.length; i++) {
-                userTypeElements[i].style.display = "block";
+            var btn = document.getElementById('login-button');
+            var modal = document.getElementById('loginModal');
+
+            // When the user clicks on the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = 'block';
             }
-        };
+
+            // Close modal when 'x' is clicked
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+            modal.style.display = "none";
+            }
+
+            // Close modal when clicked outside
+            window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            }
+        }
+
+        function nextStep(id) {
+            switch(id) {
+                case 'continueYoutube':
+                    // Continue with Youtube account
+                    // Add your Youtube authentication process here
+                    break;
+                case 'continueGoogle':
+                    // Continue with Google account
+                    // Add your Google authentication process here
+                    break;
+                case 'emailLogin':
+                    // Login with email
+                    // Redirect to email-password login page here
+                    break;
+                case 'emailRegistration':
+                    // Register now
+                    // Redirect to register page here
+                    break;
+            }
+        }
     </script>
 </body>
 </html>

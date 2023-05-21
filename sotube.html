@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>About SoTube Team</title>
-    <link rel="stylesheet" type="text/css" href="sotube.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <header>
@@ -12,9 +12,6 @@
                 <a href="index.html">
                     <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
                 </a>
-            </div>
-            <div class="login-button-container">
-                <button id="login-button">Log In</button>
             </div>
             <div class="header-text">
                 <h1>Welcome to YAMP!</h1>
@@ -56,43 +53,53 @@
                 </ul>
             </li>
         </ul>
+        <div class="login-button-container">
+            <a href="#" id="login-button">Log In</a>
+        </div>
     </nav>
     
     <main>
         <section id="team-members">
             <h2>Meet Our Team</h2>
+            <div class="team_logo">
+                <img src="Sotube_logo.png" alt="Sotube Logo">
+                <h3>About SoTube Team</h3>
+                <p>The SoTube team is composed of six ambitious individuals who are dedicated to revolutionizing the world of online video advertising.<br>The name "SoTube" is derived from the combination of "So," which represents the last name of our Product Owner (PO),<br>and "Youtube," as the project was inspired by the vast potential of the popular video-sharing platform.<br>Our team consists of talented professionals from various disciplines, each playing a vital role in the success of SoTube.<br>Let's introduce the key members:<br><br></p>
+            </div>
             <div class="member">
                 <img src="path_to_so_yeon_kyoung_photo.png" alt="So Yeon-kyoung">
-                <h3>Product Owner</h3>
-                <p>So Yeon-kyoung</p>
+                <h3><strong>Product Owner</strong></h3>
+                <p><strong>So Yeon-kyoung</strong><br>So Yeon-kyoung is the driving force behind SoTube.<br>With a deep understanding of the advertising landscape and a passion for innovation,<br>So Yeon-kyoung conceived the idea and provided the vision that shaped the platform.</p>
             </div>
             <div class="member">
                 <img src="path_to_lee_chanhee_photo.png" alt="Lee Chanhee">
-                <h3>Architect</h3>
-                <p>Lee Chanhee</p>
+                <h3><strong>Architect</strong></h3>
+                <p><strong>Lee Chanhee</strong><br>Lee Chanhee is our skilled architect responsible for designing the robust and scalable infrastructure that powers SoTube.<br>With expertise in building complex systems,<br>Lee Chanhee ensures that our platform can handle the demands of a rapidly evolving industry.</p>
             </div>
             <div class="member">
                 <img src="path_to_kang_min_jeong_photo.png" alt="Kang Min-jeong">
-                <h3>Development Manager</h3>
-                <p>Kang Min-jeong</p>
+                <h3><strong>Development Manager</strong></h3>
+                <p><strong>Kang Min-jeong</strong><br>Kang Min-jeong leads our development team, overseeing the successful execution of projects and ensuring timely delivery.<br>With strong project management skills and a focus on efficiency,<br>Kang Min-jeong keeps the development process on track.</p>
             </div>
             <div class="member">
                 <img src="path_to_lee_chang_wook_photo.png" alt="Lee Chang-wook">
-                <h3>ML/AI Engineer</h3>
-                <p>Lee Chang-wook</p>
+                <h3><strong>ML/AI Engineer</strong></h3>
+                <p><strong>Lee Chang-wook</strong><br>Lee Chang-wook brings expertise in machine learning and artificial intelligence to the team.<br>With a deep understanding of data analysis and algorithms,<br>Lee Chang-wook develops cutting-edge solutions that power the intelligent features of SoTube.</p>
             </div>
             <div class="member">
                 <img src="path_to_kim_sejin_photo.png" alt="Kim Sejin">
-                <h3>Dev Op Engineer</h3>
-                <p>Kim Sejin</p>
+                <h3><strong>Dev Op Engineer</strong></h3>
+                <p><strong>Kim Sejin</strong><br>Kim Sejin is our skilled DevOps engineer responsible for maintaining a reliable and efficient infrastructure.<br>With a focus on automation and continuous improvement,<br>Kim Sejin ensures the smooth operation of SoTube's backend systems.</p>
             </div>
             <div class="member">
                 <img src="path_to_choi_jin_woo_photo.png" alt="Choi Jin-woo">
-                <h3>UX/UI</h3>
-                <p>Choi Jin-woo</p>
+                <h3><strong>UX/UI Designer</strong></h3>
+                <p><strong>Choi Jin-woo</strong><br>Choi Jin-woo is our talented UX/UI designer, crafting intuitive and visually appealing user interfaces.<br>By understanding user needs and incorporating design principles,<br>Choi Jin-woo creates an engaging and seamless user experience on the SoTube platform.</p>
+            </div>
+            <div class="member">
+                <p><br><br>Together, the SoTube team is committed to providing advertisers and YouTubers with a comprehensive and data-driven advertising platform.<br>Our shared ambition drives us to continuously innovate and deliver exceptional solutions<br>that empower our users in making informed decisions in the dynamic world of online video advertising.</p>
             </div>
         </section>
-        
         <section id="goals">
             <h2>Our Goals</h2>
             <ul>
@@ -124,5 +131,74 @@
             <p>&copy; 2023 YAMP. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <!-- YouTube Login -->
+            <div id="youtubeAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Youtuber</h3>
+                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
+            </div>
+
+            <!-- Advertiser Login -->
+            <div id="advertiserAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Advertiser</h3>
+                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
+                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
+                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            var btn = document.getElementById('login-button');
+            var modal = document.getElementById('loginModal');
+
+            // When the user clicks on the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+
+            // Close modal when 'x' is clicked
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+            modal.style.display = "none";
+            }
+
+            // Close modal when clicked outside
+            window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            }
+        }
+
+        function nextStep(id) {
+            switch(id) {
+                case 'continueYoutube':
+                    // Continue with Youtube account
+                    // Add your Youtube authentication process here
+                    break;
+                case 'continueGoogle':
+                    // Continue with Google account
+                    // Add your Google authentication process here
+                    break;
+                case 'emailLogin':
+                    // Login with email
+                    // Redirect to email-password login page here
+                    break;
+                case 'emailRegistration':
+                    // Register now
+                    // Redirect to register page here
+                    break;
+            }
+        }
+    </script>
 </body>
 </html>
