@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YAMP: Youtube Ad Matching Platform</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
+            </div>
+            <div class="header-text">
+                <h1>Welcome to YAMP!</h1>
+                <h3>The Ultimate Youtube Ad Matching Platform</h3>
+            </div>
+            <div class="login-button-container">
+                <a href="#" id="login-button">Log In</a>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#">Channel Analysis</a>
+                <ul>
+                    <li><a href="#">Channel Overview</a></li>
+                    <li><a href="#">Video & Comment Analysis</a></li>
+                    <li><a href="#">Keyword Analysis</a></li>
+                    <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Analysis</a>
+                <ul>
+                    <li><a href="#">Ad View Estimation</a></li>
+                    <li><a href="#">Channel's Existing Ad Analysis</a></li>
+                    <li><a href="#">Advertiser's Ad Request Status</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Overview</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Proposal</a>
+                <ul>
+                    <li><a href="#">To YouTuber</a></li>
+                    <li><a href="#">To Advertiser</a></li>
+                </ul>
+            </li>
+            <li><a href="#">My Page</a>
+                <ul>
+                    <li><a href="#">Member Information</a></li>
+                    <li><a href="#">Recent Analysis History</a></li>
+                    <li><a href="#">My Purchased Service</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    
+    <section id="keyword-visualization">
+        <h2>Total Keyword Visualization</h2>
+        <p>Explore the current Youtube trends based on video comments' keyword analysis.</p>
+        <!-- Include your visualization tool here -->
+    </section>
+    
+    <section id="introduction">
+        <h2>About YAMP</h2>
+        <p>At YAMP, we are dedicated to aiding our customers - Advertisers and YouTubers - in the decision-making process by providing a platform that visualizes and analyzes reactions to an ads video on a specific YouTube channel and the keywords related to that channel. Whether you are an advertiser looking to advertise products on YouTube channels, or a YouTuber looking to promote your channel to advertisers, YAMP is your go-to platform. We stand out from our competitors by offering unique features such as:</p>
+        <ul>
+            <li>Identifying the types of products that are suitable for ads on channels.</li>
+            <li>Analyzing overall keywords that appear when searching for a YouTube channel.</li>
+            <li>Visualizing and analyzing reactions and evaluations of existing advertising videos on a specific YouTube channel.</li>
+        </ul>
+    </section>
+    
+    <section id="pricing">
+        <h2>Our Pricing</h2>
+        <p>Find a plan that's right for you. Check out our competitive pricing options:</p>
+        <img class="pricing-image" src="./P4DS IA_userflow_pricing.png" alt="Pricing Details" />
+        <!-- Replace "path_to_your_jpg_file.jpg" with the actual path of your pricing jpg file -->
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <a href="path_to_your_about_page.html">About SoTube</a>
+            <p>&copy; 2023 YAMP. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Mock user type. In a real-world scenario, this would likely come from a server-side language
+        // and be based on the authenticated user's permissions.
+        var userType = "advertiser"; // change this to "youtuber" as needed
+    
+        window.onload = function () {
+            var userTypeClass = userType + "-only";
+            var userTypeElements = document.getElementsByClassName(userTypeClass);
+            for (var i = 0; i < userTypeElements.length; i++) {
+                userTypeElements[i].style.display = "block";
+            }
+        };
+    </script>
+</body>
+</html>
