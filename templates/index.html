@@ -3,13 +3,14 @@
 <head>
     <title>YAMP: Youtube Ad Matching Platform</title>
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    <script type="text/javascript" src="static/js/login.js"></script>
 </head>
 <body>
     <header>
         <div class="header-overlay"></div>
         <div class="header-content">
             <div class="logo-container">
-                <a href="index.html">
+                <a href="/">
                     <img src="static/img/YAMP_logo.png" alt="YAMP Logo" id="logo" />
                 </a>
             </div>
@@ -58,35 +59,36 @@
             <a href="#" id="login-button">Log In</a>
         </div>
     </nav>
-    
-    <section id="keyword-visualization">
-        <h2>Total Keyword Visualization</h2>
-        <p>Explore the current Youtube trends based on video comments' keyword analysis.</p>
-        <!-- Include your visualization tool here -->
-    </section>
-    
-    <section id="introduction">
-        <h2>About YAMP</h2>
-        <p>At YAMP, we are dedicated to aiding our customers - Advertisers and YouTubers - in the decision-making process by providing a platform that visualizes and analyzes reactions to an ads video on a specific YouTube channel and the keywords related to that channel. Whether you are an advertiser looking to advertise products on YouTube channels, or a YouTuber looking to promote your channel to advertisers, YAMP is your go-to platform. We stand out from our competitors by offering unique features such as:</p>
-        <ul>
-            <li>Identifying the types of products that are suitable for ads on channels.</li>
-            <li>Analyzing overall keywords that appear when searching for a YouTube channel.</li>
-            <li>Visualizing and analyzing reactions and evaluations of existing advertising videos on a specific YouTube channel.</li>
-        </ul>
-    </section>
-    
-    <section id="pricing">
-        <h2>Our Pricing</h2>
-        <p>Find a plan that's right for you. Check out our competitive pricing options:</p>
-        <div class="pricing-image-container">
-            <img src="static/img/P4DS IA_userflow_pricing.png" alt="Pricing Details" />
-        </div>
-        <!-- Replace "path_to_your_jpg_file.jpg" with the actual path of your pricing jpg file -->
-    </section>
+    <div class="container">
+        <section id="keyword-visualization">
+            <h2>Total Keyword Visualization</h2>
+            <p>Explore the current Youtube trends based on video comments' keyword analysis.</p>
+            <!-- Include your visualization tool here -->
+        </section>
+        
+        <section id="introduction">
+            <h2>About YAMP</h2>
+            <p>At YAMP, we are dedicated to aiding our customers - Advertisers and YouTubers - in the decision-making process by providing a platform that visualizes and analyzes reactions to an ads video on a specific YouTube channel and the keywords related to that channel. Whether you are an advertiser looking to advertise products on YouTube channels, or a YouTuber looking to promote your channel to advertisers, YAMP is your go-to platform. We stand out from our competitors by offering unique features such as:</p>
+            <ul>
+                <li>Identifying the types of products that are suitable for ads on channels.</li>
+                <li>Analyzing overall keywords that appear when searching for a YouTube channel.</li>
+                <li>Visualizing and analyzing reactions and evaluations of existing advertising videos on a specific YouTube channel.</li>
+            </ul>
+        </section>
+        
+        <section id="pricing">
+            <h2>Our Pricing</h2>
+            <p>Find a plan that's right for you. Check out our competitive pricing options:</p>
+            <div class="pricing-image-container">
+                <img src="static/img/P4DS IA_userflow_pricing.png" alt="Pricing Details" />
+            </div>
+            <!-- Replace "path_to_your_jpg_file.jpg" with the actual path of your pricing jpg file -->
+        </section>
+    </div>
     
     <footer>
         <div class="footer-content">
-            <a href="sotube.html">About SoTube</a>
+            <a href="sotube">About SoTube</a>
             <p>&copy; 2023 YAMP. All rights reserved.</p>
         </div>
     </footer>
@@ -114,64 +116,5 @@
         </div>
     </div>
 
-    <script>
-        // Simulate user status
-        var isLoggedIn = false;
-    
-        window.onload = function () {
-            var btn = document.getElementById('login-button');
-            var modal = document.getElementById('loginModal');
-            var menuLinks = document.querySelectorAll('nav a');
-    
-            // When the user clicks on the button, open the modal 
-            btn.onclick = function() {
-                modal.style.display = 'block';
-            }
-    
-            // If a user tries to access any menu without login, open the login modal
-            menuLinks.forEach(function(link) {
-                link.onclick = function(e) {
-                    e.preventDefault();
-                    if (!isLoggedIn) {
-                        modal.style.display = 'block';
-                    }
-                }
-            });
-    
-            // Close modal when 'x' is clicked
-            var span = document.getElementsByClassName("close")[0];
-            span.onclick = function() {
-            modal.style.display = "none";
-            }
-    
-            // Close modal when clicked outside
-            window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-            }
-        }
-    
-        function nextStep(id) {
-            switch(id) {
-                case 'continueYoutube':
-                    // Continue with Youtube account
-                    // Add your Youtube authentication process here
-                    break;
-                case 'continueGoogle':
-                    // Continue with Google account
-                    // Add your Google authentication process here
-                    break;
-                case 'emailLogin':
-                    // Login with email
-                    window.location.href = "login.html";
-                    break;
-                case 'emailRegistration':
-                    // Register now
-                    window.location.href = "register.html";
-                    break;
-            }
-        }
-    </script>    
 </body>
 </html>

@@ -9,6 +9,17 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/sotube', methods=['GET', 'POST'])
+def about():
+    return render_template('sotube.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('login.html')
 # @app.route('/result', methods=['GET', 'POST'])
 # def result():
 #     if request.method=="POST":
