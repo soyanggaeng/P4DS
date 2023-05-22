@@ -78,7 +78,9 @@
     <section id="pricing">
         <h2>Our Pricing</h2>
         <p>Find a plan that's right for you. Check out our competitive pricing options:</p>
-        <img class="pricing-image" src="./P4DS IA_userflow_pricing.png" alt="Pricing Details" />
+        <div class="pricing-image-container">
+            <img src="./P4DS IA_userflow_pricing.png" alt="Pricing Details" />
+        </div>
         <!-- Replace "path_to_your_jpg_file.jpg" with the actual path of your pricing jpg file -->
     </section>
     
@@ -113,21 +115,35 @@
     </div>
 
     <script>
+        // Simulate user status
+        var isLoggedIn = false;
+    
         window.onload = function () {
             var btn = document.getElementById('login-button');
             var modal = document.getElementById('loginModal');
-
+            var menuLinks = document.querySelectorAll('nav a');
+    
             // When the user clicks on the button, open the modal 
             btn.onclick = function() {
                 modal.style.display = 'block';
             }
-
+    
+            // If a user tries to access any menu without login, open the login modal
+            menuLinks.forEach(function(link) {
+                link.onclick = function(e) {
+                    e.preventDefault();
+                    if (!isLoggedIn) {
+                        modal.style.display = 'block';
+                    }
+                }
+            });
+    
             // Close modal when 'x' is clicked
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() {
             modal.style.display = "none";
             }
-
+    
             // Close modal when clicked outside
             window.onclick = function(event) {
             if (event.target == modal) {
@@ -135,7 +151,7 @@
             }
             }
         }
-
+    
         function nextStep(id) {
             switch(id) {
                 case 'continueYoutube':
@@ -156,6 +172,6 @@
                     break;
             }
         }
-    </script>
+    </script>    
 </body>
 </html>

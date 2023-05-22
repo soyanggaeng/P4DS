@@ -80,9 +80,18 @@ section ul li {
     margin-bottom: 15px;
 }
 
+.pricing-image-container {
+    display: flex;
+    justify-content: center;
+}
+
 #pricing img {
-    max-width: 100%;
+    max-width: 60%;
     height: auto;
+}
+
+#pricing {
+    padding-bottom: 100px; /* Adjust the size as needed */
 }
 
 footer {
