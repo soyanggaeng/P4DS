@@ -9,14 +9,14 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/result', methods=['GET', 'POST'])
-def result():
-    if request.method=="POST":
-        summoner_name = request.form['summoner_name']
-        dt_obj = data.lol_api(summoner_name)
-        dt = dt_obj.allData()
+# @app.route('/result', methods=['GET', 'POST'])
+# def result():
+#     if request.method=="POST":
+#         summoner_name = request.form['summoner_name']
+#         dt_obj = data.lol_api(summoner_name)
+#         dt = dt_obj.allData()
 
-        return render_template('result.html', user_data=json.dumps(dt));
+#         return render_template('result.html', user_data=json.dumps(dt));
 
 
 app.run(port=5001, debug=True)
