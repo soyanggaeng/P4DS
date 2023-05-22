@@ -435,7 +435,7 @@ form button:hover {
     margin-bottom: 20px;
 }
 
-input[type="button"] {
+input[type="submit"] {
     background-color: #F38181;
     color: white;
     border: none;

@@ -22,14 +22,15 @@
 
     <div class="form-container">
         <h2>Register</h2>
-        <form action="/path_to_your_register_function" method="POST">
+        <form id = reg_form action="/add_user" method="POST">
             <label for="email">Email:</label><br>
             <input type="email" id="email" name="email" required><br>
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br>
             <label for="confirmPassword">Confirm Password:</label><br>
             <input type="password" id="confirmPassword" name="confirmPassword" required><br>
-            <input type="button" value="Register">
+            <input id="reg_btn" type="submit" value="Register">
+            <p id="passwordError" style="display: none; color: red;">Passwords do not match.</p>
         </form>
         <p>Already have an account? <a class="login-link" href="login">Login now</a></p>
     </div>
@@ -40,5 +41,27 @@
             <p>&copy; 2023 YAMP. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        function $(selector){
+            return document.querySelector(selector);
+        }
+        
+        $('#reg_btn').onclick = function(event){
+            if($('#password').value != $('#confirmPassword').value){    
+                $('#passwordError').style.display = "block";
+                event.preventDefault();
+                setTimeout(function() {
+                passwordError.style.display = "none";
+                }, 3000);
+
+            } else if($('reg_form').checkValidity()){
+                $('#reg_form').submit();
+                $('#passwordError').style.display = "none";
+            }
+        }
+        // document.querySelector('#reg_btn').onclick = function(){
+        //     alert('hi');
+        // };
+    </script>
 </body>
 </html>
