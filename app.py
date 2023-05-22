@@ -7,7 +7,6 @@ from pymongo import MongoClient
 client = MongoClient("mongodb://localhost:27017/")
 
 db = client['sotube']
-collection = db['user_info']
 
 app = Flask(__name__)
 
@@ -28,13 +27,24 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/add_user', methods=['GET', 'POST'])
+@app.route('/add_user', methods=['POST'])
 def add_user():
     if request.method=="POST":
+        collection = db['user_info']
         email = request.form['email']
         passwd = request.form['password']
         collection.insert_one({'email' : email, 'password' : passwd})
-    return redirect(url_for('home'))
+        return redirect(url_for('home'))
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    if request.method=="POST":
+        collection = db['contact']
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        collection.insert_one({'name' : name, 'email' : email, 'password' : message})
+        return redirect(url_for('home'))
 # @app.route('/result', methods=['GET', 'POST'])
 # def result():
 #     if request.method=="POST":
