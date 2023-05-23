@@ -30,7 +30,7 @@
             <label for="confirmPassword">Confirm Password:</label><br>
             <input type="password" id="confirmPassword" name="confirmPassword" required><br>
             <input id="reg_btn" type="submit" value="Register">
-            <p id="passwordError" style="display: none; color: red;">Passwords do not match.</p>
+            <p id="errorMessage" style="display: none; color: red;"></p>
         </form>
         <p>Already have an account? <a class="login-link" href="login">Login now</a></p>
     </div>
@@ -45,23 +45,62 @@
         function $(selector){
             return document.querySelector(selector);
         }
+
+        var email_exists = false;
+
+        document.getElementById('email').addEventListener('blur', function(event) {
+
+            var email_input = email.value; // Get form data
+
+            // Perform AJAX request using Fetch API
+            fetch('/email_check', {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({email : email_input})
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                email_exists = data.exists;
+                console.log(email_exists);
+                if(data.exists){
+                    errorMessage.innerHTML = "email already exists";
+                    errorMessage.style.display = 'block';
+                    setTimeout(function(){
+                        errorMessage.style.display = 'none';
+                    }, 3000);
+                }
+                else{
+                    errorMessage.style.display = 'none';
+                }
+            })
+       });
         
         $('#reg_btn').onclick = function(event){
             if($('#password').value != $('#confirmPassword').value){    
-                $('#passwordError').style.display = "block";
+                errorMessage.innerHTML = "Passwords do not match";
+                $('#errorMessage').style.display = "block";
                 event.preventDefault();
                 setTimeout(function() {
-                passwordError.style.display = "none";
+                    errorMessage.style.display = "none";
                 }, 3000);
 
+            } else if(email_exists){
+                errorMessage.innerHTML = "email already exists";
+                $('#errorMessage').style.display = "block";
+                event.preventDefault();
+                setTimeout(function() {
+                    errorMessage.style.display = "none";
+                }, 3000);
             } else if($('reg_form').checkValidity()){
                 $('#reg_form').submit();
-                $('#passwordError').style.display = "none";
+                $('#errorMessage').style.display = "none";
             }
         }
-        // document.querySelector('#reg_btn').onclick = function(){
-        //     alert('hi');
-        // };
+
     </script>
 </body>
 </html>

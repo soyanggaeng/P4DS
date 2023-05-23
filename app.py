@@ -59,6 +59,18 @@ def confirm_user():
             return jsonify({'message' : 'Login succeed'}), 200
         else:
             return jsonify({'message' : 'Invalid email or Password'}), 401
+        
+@app.route("/email_check", methods=['POST'])
+def email_check():
+    if request.method == "POST":
+        collection = db['user_info']
+        email = request.json['email']
+        user = collection.find_one({'email' : email})
 
+        if user:
+            return jsonify({'exists' : True})
+        else:
+            return jsonify({'exists' : False})
 
-app.run(port=5001, debug=True)
+if __name__ == '__main__':
+    app.run(port=5001, debug=True)

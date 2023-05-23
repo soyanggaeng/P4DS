@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YAMP: Youtube Ad Matching Platform</title>
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
+                </a>
+            </div>
+            <div class="header-text">
+                <h1>Welcome to YAMP!</h1>
+                <h3>The Ultimate Youtube Ad Matching Platform</h3>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">Channel Analysis</a>
+                <ul>
+                    <li><a href="#">Channel Overview</a></li>
+                    <li><a href="#">Video & Comment Analysis</a></li>
+                    <li><a href="#">Keyword Analysis</a></li>
+                    <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Analysis</a>
+                <ul>
+                    <li><a href="#">Ad View Estimation</a></li>
+                    <li><a href="#">Channel's Existing Ad Analysis</a></li>
+                    <li><a href="#">Advertiser's Ad Request Status</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Overview</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Proposal</a>
+                <ul>
+                    <li><a href="#">To YouTuber</a></li>
+                    <li><a href="#">To Advertiser</a></li>
+                </ul>
+            </li>
+            <li><a href="mypage.html">My Page</a> <!-- Link to My Page -->
+                <ul>
+                    <li><a href="mypage.html#member-information">Member Information</a></li> <!-- Link to Member Information -->
+                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
+                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
+                    <li><a href="feedback.html">Feedback</a></li> <!-- Link to Feedback -->
+                </ul>
+            </li>
+        </ul>
+        <div class="login-button-container">
+            <a href="#" id="login-button">Log In</a>
+        </div>
+    </nav>
+    
+    <section id="member-information">
+        <h2>Member Information</h2>
+        <div class="box">
+            <div class="profile-container">
+                <img src="profile-image.jpg" alt="Profile Image">
+                <div class="info-container">
+                    <p><strong>Name:</strong> John Doe</p>
+                    <p><strong>Account Type:</strong> YouTuber</p>
+                    <p><strong>Registered:</strong> January 1, 2023</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="analysis-history">
+        <h2>Recent Analysis History</h2>
+        <div class="box">
+            <table id="history-table">
+                <tr>
+                    <th>Type</th>
+                    <th>Date</th>
+                </tr>
+            </table>
+        </div>
+    </section>
+    
+    <section id="purchased-service">
+        <h2>My Purchased Service</h2>
+        <div class="box">
+            <div id="service-info"></div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <a href="sotube.html">About SoTube</a>
+            <p>&copy; 2023 YAMP. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <!-- YouTube Login -->
+            <div id="youtubeAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Youtuber</h3>
+                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
+            </div>
+
+            <!-- Advertiser Login -->
+            <div id="advertiserAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Advertiser</h3>
+                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
+                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
+                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate user status
+        var isLoggedIn = true; // made this true for convenience
+    
+        window.onload = function () {
+            var btn = document.getElementById('login-button');
+            var modal = document.getElementById('loginModal');
+            var menuLinks = document.querySelectorAll('nav a');
+
+            // When the user clicks on the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+
+            // If a user tries to access any menu without login, open the login modal
+            menuLinks.forEach(function(link) {
+                link.onclick = function(e) {
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        modal.style.display = 'block';
+                    } else if (link.hash !== '') {
+                        e.preventDefault();
+                        scrollToSection(link.hash);
+                    }
+                }
+            });
+
+            // Close modal when 'x' is clicked
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // Close modal when clicked outside
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            populateRecentAnalysisHistory();
+            populatePurchasedServices(); 
+        }
+    
+        function scrollToSection(sectionId) {
+            var section = document.querySelector(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    
+        function nextStep(id) {
+            switch(id) {
+                case 'continueYoutube':
+                    // Continue with Youtube account
+                    // Add your Youtube authentication process here
+                    break;
+                case 'continueGoogle':
+                    // Continue with Google account
+                    // Add your Google authentication process here
+                    break;
+                case 'emailLogin':
+                    // Login with email
+                    window.location.href = "login.html";
+                    break;
+                case 'emailRegistration':
+                    // Register now
+                    window.location.href = "register.html";
+                    break;
+            }
+        }
+        // The current user's recent analysis history and subscription level
+        var history = [
+            {type: 'Channel Overview', date: 'May 23, 2023'},
+            {type: 'Video & Comment Analysis', date: 'May 22, 2023'},
+            {type: 'Keyword Analysis', date: 'May 21, 2023'},
+            {type: 'Channel Controversy Check', date: 'May 20, 2023'},
+            {type: 'Keyword Analysis', date: 'May 19, 2023'}
+        ];
+        var subscription = 'Ultra Plus';
+        function populateRecentAnalysisHistory() {
+            var historyTable = document.getElementById('history-table');
+            var historyData = [
+                { type: 'Channel Overview', date: '2023-05-20' },
+                { type: 'Video & Comment Analysis', date: '2023-05-18' },
+                { type: 'Keyword Analysis', date: '2023-05-15' },
+            ];
+
+            historyData.forEach(function (item) {
+                var row = document.createElement('tr');
+                var typeCell = document.createElement('td');
+                var dateCell = document.createElement('td');
+                typeCell.textContent = item.type;
+                dateCell.textContent = item.date;
+                row.appendChild(typeCell);
+                row.appendChild(dateCell);
+                historyTable.appendChild(row);
+            });
+        }
+
+        function populatePurchasedServices() {
+            var serviceDiv = document.getElementById('service-info');
+            var serviceData = [
+                { service: 'Essential', details: ['Channel Overview', 'Video & Comment Analysis for 100 videos'], purchaseDate: '2023-05-23 15:00' },
+                // you can add more purchased services here
+            ];
+
+            serviceData.forEach(function (item) {
+                var serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+
+                var serviceH3 = document.createElement('h3');
+                var detailP = document.createElement('p');
+                var purchaseDateP = document.createElement('p');
+
+                serviceH3.textContent = item.service;
+                detailP.textContent = item.details.join(', ');
+                purchaseDateP.textContent = 'Purchased on: ' + item.purchaseDate;
+                purchaseDateP.className = 'purchase-date';
+
+                serviceCard.appendChild(serviceH3);
+                serviceCard.appendChild(detailP);
+                serviceCard.appendChild(purchaseDateP);
+                serviceDiv.appendChild(serviceCard);
+            });
+        }
+    </script>
+        
+</body>
+</html>

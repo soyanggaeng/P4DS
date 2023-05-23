@@ -61,7 +61,9 @@
                 }
             })
             .then(function(data) {
-                console.log(data)
+                setTimeout(function() {
+                    passwordError.style.display = "none";
+                }, 3000);
                 document.getElementById('errorText').textContent = data.message;
             })
             .catch(function(error) {
