@@ -59,29 +59,37 @@
         </div>
     </nav>
     
-    <section id="keyword-visualization">
-        <h2>Total Keyword Visualization</h2>
-        <p>Explore the current Youtube trends based on video comments' keyword analysis.</p>
-        <!-- Include your visualization tool here -->
-    </section>
-    
-    <section id="introduction">
-        <h2>About YAMP</h2>
-        <p>At YAMP, we are dedicated to aiding our customers - Advertisers and YouTubers - in the decision-making process by providing a platform that visualizes and analyzes reactions to an ads video on a specific YouTube channel and the keywords related to that channel. Whether you are an advertiser looking to advertise products on YouTube channels, or a YouTuber looking to promote your channel to advertisers, YAMP is your go-to platform. We stand out from our competitors by offering unique features such as:</p>
-        <ul>
-            <li>Identifying the types of products that are suitable for ads on channels.</li>
-            <li>Analyzing overall keywords that appear when searching for a YouTube channel.</li>
-            <li>Visualizing and analyzing reactions and evaluations of existing advertising videos on a specific YouTube channel.</li>
-        </ul>
-    </section>
-    
-    <section id="pricing">
-        <h2>Our Pricing</h2>
-        <p>Find a plan that's right for you. Check out our competitive pricing options:</p>
-        <div class="pricing-image-container">
-            <img src="./P4DS IA_userflow_pricing.png" alt="Pricing Details" />
+    <section id="member-information">
+        <h2>Member Information</h2>
+        <div class="box">
+            <div class="profile-container">
+                <img src="profile-image.jpg" alt="Profile Image">
+                <div class="info-container">
+                    <p><strong>Name:</strong> John Doe</p>
+                    <p><strong>Account Type:</strong> YouTuber</p>
+                    <p><strong>Registered:</strong> January 1, 2023</p>
+                </div>
+            </div>
         </div>
-        <!-- Replace "path_to_your_jpg_file.jpg" with the actual path of your pricing jpg file -->
+    </section>
+    
+    <section id="analysis-history">
+        <h2>Recent Analysis History</h2>
+        <div class="box">
+            <table id="history-table">
+                <tr>
+                    <th>Type</th>
+                    <th>Date</th>
+                </tr>
+            </table>
+        </div>
+    </section>
+    
+    <section id="purchased-service">
+        <h2>My Purchased Service</h2>
+        <div class="box">
+            <div id="service-info"></div>
+        </div>
     </section>
     
     <footer>
@@ -116,18 +124,18 @@
 
     <script>
         // Simulate user status
-        var isLoggedIn = false;
+        var isLoggedIn = true; // made this true for convenience
     
         window.onload = function () {
             var btn = document.getElementById('login-button');
             var modal = document.getElementById('loginModal');
             var menuLinks = document.querySelectorAll('nav a');
-    
+
             // When the user clicks on the button, open the modal 
             btn.onclick = function() {
                 modal.style.display = 'block';
             }
-    
+
             // If a user tries to access any menu without login, open the login modal
             menuLinks.forEach(function(link) {
                 link.onclick = function(e) {
@@ -140,19 +148,22 @@
                     }
                 }
             });
-    
+
             // Close modal when 'x' is clicked
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() {
                 modal.style.display = "none";
             }
-    
+
             // Close modal when clicked outside
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
             }
+
+            populateRecentAnalysisHistory();
+            populatePurchasedServices(); 
         }
     
         function scrollToSection(sectionId) {
@@ -182,6 +193,62 @@
                     break;
             }
         }
-    </script>   
+        // The current user's recent analysis history and subscription level
+        var history = [
+            {type: 'Channel Overview', date: 'May 23, 2023'},
+            {type: 'Video & Comment Analysis', date: 'May 22, 2023'},
+            {type: 'Keyword Analysis', date: 'May 21, 2023'},
+            {type: 'Channel Controversy Check', date: 'May 20, 2023'},
+            {type: 'Keyword Analysis', date: 'May 19, 2023'}
+        ];
+        var subscription = 'Ultra Plus';
+        function populateRecentAnalysisHistory() {
+            var historyTable = document.getElementById('history-table');
+            var historyData = [
+                { type: 'Channel Overview', date: '2023-05-20' },
+                { type: 'Video & Comment Analysis', date: '2023-05-18' },
+                { type: 'Keyword Analysis', date: '2023-05-15' },
+            ];
+
+            historyData.forEach(function (item) {
+                var row = document.createElement('tr');
+                var typeCell = document.createElement('td');
+                var dateCell = document.createElement('td');
+                typeCell.textContent = item.type;
+                dateCell.textContent = item.date;
+                row.appendChild(typeCell);
+                row.appendChild(dateCell);
+                historyTable.appendChild(row);
+            });
+        }
+
+        function populatePurchasedServices() {
+            var serviceDiv = document.getElementById('service-info');
+            var serviceData = [
+                { service: 'Essential', details: ['Channel Overview', 'Video & Comment Analysis for 100 videos'], purchaseDate: '2023-05-23 15:00' },
+                // you can add more purchased services here
+            ];
+
+            serviceData.forEach(function (item) {
+                var serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+
+                var serviceH3 = document.createElement('h3');
+                var detailP = document.createElement('p');
+                var purchaseDateP = document.createElement('p');
+
+                serviceH3.textContent = item.service;
+                detailP.textContent = item.details.join(', ');
+                purchaseDateP.textContent = 'Purchased on: ' + item.purchaseDate;
+                purchaseDateP.className = 'purchase-date';
+
+                serviceCard.appendChild(serviceH3);
+                serviceCard.appendChild(detailP);
+                serviceCard.appendChild(purchaseDateP);
+                serviceDiv.appendChild(serviceCard);
+            });
+        }
+    </script>
+        
 </body>
 </html>

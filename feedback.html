@@ -59,29 +59,26 @@
         </div>
     </nav>
     
-    <section id="keyword-visualization">
-        <h2>Total Keyword Visualization</h2>
-        <p>Explore the current Youtube trends based on video comments' keyword analysis.</p>
-        <!-- Include your visualization tool here -->
-    </section>
-    
-    <section id="introduction">
-        <h2>About YAMP</h2>
-        <p>At YAMP, we are dedicated to aiding our customers - Advertisers and YouTubers - in the decision-making process by providing a platform that visualizes and analyzes reactions to an ads video on a specific YouTube channel and the keywords related to that channel. Whether you are an advertiser looking to advertise products on YouTube channels, or a YouTuber looking to promote your channel to advertisers, YAMP is your go-to platform. We stand out from our competitors by offering unique features such as:</p>
-        <ul>
-            <li>Identifying the types of products that are suitable for ads on channels.</li>
-            <li>Analyzing overall keywords that appear when searching for a YouTube channel.</li>
-            <li>Visualizing and analyzing reactions and evaluations of existing advertising videos on a specific YouTube channel.</li>
-        </ul>
-    </section>
-    
-    <section id="pricing">
-        <h2>Our Pricing</h2>
-        <p>Find a plan that's right for you. Check out our competitive pricing options:</p>
-        <div class="pricing-image-container">
-            <img src="./P4DS IA_userflow_pricing.png" alt="Pricing Details" />
-        </div>
-        <!-- Replace "path_to_your_jpg_file.jpg" with the actual path of your pricing jpg file -->
+    <section id="feedback">
+        <h2>Feedback</h2>
+        <form id="feedback-form">
+            <label for="voucher-usage">광고를 통한 바우처 이벤트 기간 동안 바우처 이용 건수는 얼마나 되나요?</label>
+            <input type="text" id="voucher-usage" name="voucher-usage">
+
+            <label for="satisfaction-rating">서비스 전반에 대한 만족도 (Rating score of 1~5)</label>
+            <input type="number" id="satisfaction-rating" name="satisfaction-rating" min="1" max="5">
+            
+            <label for="service-improvements">서비스에 대한 개선 의견 (주관식)</label>
+            <textarea id="service-improvements" name="service-improvements"></textarea>
+            
+            <label for="youtuber-satisfaction">유튜버 만족도 (Rating score of 1~5)</label>
+            <input type="number" id="youtuber-satisfaction" name="youtuber-satisfaction" min="1" max="5">
+            
+            <label for="youtuber-feedback">유튜버에게 남기고 싶은 의견 (주관식)</label>
+            <textarea id="youtuber-feedback" name="youtuber-feedback"></textarea>
+            
+            <button type="submit">Submit Feedback</button>
+        </form>
     </section>
     
     <footer>
@@ -116,7 +113,7 @@
 
     <script>
         // Simulate user status
-        var isLoggedIn = false;
+        var isLoggedIn = true;
     
         window.onload = function () {
             var btn = document.getElementById('login-button');

@@ -44,12 +44,12 @@
                     <li><a href="#">To Advertiser</a></li>
                 </ul>
             </li>
-            <li><a href="#">My Page</a>
+            <li><a href="mypage.html">My Page</a> <!-- Link to My Page -->
                 <ul>
-                    <li><a href="#">Member Information</a></li>
-                    <li><a href="#">Recent Analysis History</a></li>
-                    <li><a href="#">My Purchased Service</a></li>
-                    <li><a href="#">Feedback</a></li>
+                    <li><a href="mypage.html#member-information">Member Information</a></li> <!-- Link to Member Information -->
+                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
+                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
+                    <li><a href="feedback.html">Feedback</a></li> <!-- Link to Feedback -->
                 </ul>
             </li>
         </ul>
@@ -57,6 +57,7 @@
             <a href="#" id="login-button">Log In</a>
         </div>
     </nav>
+    
     
     <main>
         <section id="team-members">
@@ -172,9 +173,12 @@
             // If a user tries to access any menu without login, open the login modal
             menuLinks.forEach(function(link) {
                 link.onclick = function(e) {
-                    e.preventDefault();
                     if (!isLoggedIn) {
+                        e.preventDefault();
                         modal.style.display = 'block';
+                    } else if (link.hash !== '') {
+                        e.preventDefault();
+                        scrollToSection(link.hash);
                     }
                 }
             });
@@ -182,14 +186,21 @@
             // Close modal when 'x' is clicked
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() {
-            modal.style.display = "none";
+                modal.style.display = "none";
             }
     
             // Close modal when clicked outside
             window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
             }
+        }
+    
+        function scrollToSection(sectionId) {
+            var section = document.querySelector(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
             }
         }
     
@@ -213,6 +224,6 @@
                     break;
             }
         }
-    </script>    
+    </script> 
 </body>
 </html>
