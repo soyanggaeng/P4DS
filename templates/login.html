@@ -22,12 +22,13 @@
 
     <div class="form-container">
         <h2>Login with Email</h2>
-        <form action="/path_to_your_login_function" method="POST">
+        <form id='loginForm' action="/confirm_user" method="POST">
             <label for="email">Email:</label><br>
             <input type="email" id="email" name="email" required><br>
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br>
             <input type="submit" value="Login">
+            <p id="errorText" style="color: red;"></p>
         </form>
         <p>Not registered yet? <a class="register-link" href="/register">Register now</a></p>
     </div>
@@ -38,5 +39,35 @@
             <p>&copy; 2023 YAMP. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var formData = new FormData(this); // Get form data
+
+            // Perform AJAX request using Fetch API
+            fetch('/confirm_user', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    // Successful login, redirect or perform other actions
+                    window.location.href = '/' //Redirect to the dashboard page
+                } else {
+                    // Failed login, display error message
+                    return response.json();
+                }
+            })
+            .then(function(data) {
+                console.log(data)
+                document.getElementById('errorText').textContent = data.message;
+            })
+            .catch(function(error) {
+                console.error('An error occurred:', error);
+            });
+       });
+    </script>
 </body>
 </html>

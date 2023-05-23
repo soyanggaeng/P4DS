@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 import requests
 from urllib import parse
 import json
@@ -45,14 +45,20 @@ def contact():
         message = request.form['message']
         collection.insert_one({'name' : name, 'email' : email, 'password' : message})
         return redirect(url_for('home'))
-# @app.route('/result', methods=['GET', 'POST'])
-# def result():
-#     if request.method=="POST":
-#         summoner_name = request.form['summoner_name']
-#         dt_obj = data.lol_api(summoner_name)
-#         dt = dt_obj.allData()
 
-#         return render_template('result.html', user_data=json.dumps(dt));
+@app.route("/confirm_user", methods=['POST'])
+def confirm_user():
+    if request.method == "POST":
+        collection = db['user_info']
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = collection.find_one({'email' : email, 'password' : password})
+
+        if user:
+            return jsonify({'message' : 'Login succeed'}), 200
+        else:
+            return jsonify({'message' : 'Invalid email or Password'}), 401
 
 
 app.run(port=5001, debug=True)
