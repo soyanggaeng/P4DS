@@ -42,9 +42,6 @@
         </div>
     </footer>
     <script>
-        function $(selector){
-            return document.querySelector(selector);
-        }
 
         var email_exists = false;
 
@@ -71,7 +68,7 @@
                     errorMessage.style.display = 'block';
                     setTimeout(function(){
                         errorMessage.style.display = 'none';
-                    }, 3000);
+                    }, 5000);
                 }
                 else{
                     errorMessage.style.display = 'none';
@@ -94,13 +91,16 @@
                 event.preventDefault();
                 setTimeout(function() {
                     errorMessage.style.display = "none";
-                }, 3000);
+                }, 5000);
             } else if($('reg_form').checkValidity()){
                 $('#reg_form').submit();
                 $('#errorMessage').style.display = "none";
             }
         }
-
+        
+        function $(selector){
+            return document.querySelector(selector);
+        }
     </script>
 </body>
 </html>

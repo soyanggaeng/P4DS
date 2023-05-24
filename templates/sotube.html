@@ -55,8 +55,11 @@
             </li>
         </ul>
         <div class="login-button-container">
-            <a href="#" id="login-button">Log In</a>
-        </div>
+            {% if login_status %}
+                <a href="#" id="login-button">Log Out</a>
+            {% else %}
+                <a href="#" id="login-button">Log In</a>
+            {% endif %}
     </nav>
     
     <main>

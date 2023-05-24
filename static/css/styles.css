@@ -151,7 +151,7 @@ nav {
     z-index: 5;
 }
 
-#login-button {
+#login-button, #logout-button {
     background-color: #F38181;
     color: white;
     border: none;
@@ -162,7 +162,7 @@ nav {
     text-decoration: none;
 }
 
-#login-button:hover {
+#login-button:hover, #logout-button:hover {
     background-color: #ea6a6a;
 }
 

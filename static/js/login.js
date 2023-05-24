@@ -1,24 +1,53 @@
-var isLoggedIn = false;
-
 window.onload = function () {
-    var btn = document.getElementById('login-button');
+    var btn = $('#login-button') != null ? $('#login-button') : $('#logout-button');
     var modal = document.getElementById('loginModal');
     var menuLinks = document.querySelectorAll('nav a');
+    var isLoggedIn = $('#login-button') != null ? false : true;
+
+    // fetch('./login_status')
+    // .then(response => response.json())
+    // .then(data => {
+    //     var isLoggedIn = data.login_status;
+
+    //     menuLinks.forEach(function(link) {
+    //         link.onclick = function(e) {
+    //             e.preventDefault();
+    //             if (!isLoggedIn) {
+    //                 modal.style.display = 'block';
+    //             }
+    //         }
+    //     });
+
+    //     if(isLoggedIn){
+    //         btn.onclick = function(e) {
+    //             e.preventDefault();
+    //             window.location.href = "/logout";
+    //         }
+    //     }
+    // });
+
+
 
     // When the user clicks on the button, open the modal 
-    btn.onclick = function() {
-        modal.style.display = 'block';
-    }
 
-    // If a user tries to access any menu without login, open the login modal
     menuLinks.forEach(function(link) {
         link.onclick = function(e) {
-            e.preventDefault();
             if (!isLoggedIn) {
+                e.preventDefault();
                 modal.style.display = 'block';
+
             }
+        }})
+
+    if(isLoggedIn){
+        btn.onclick = function() {
+            window.location.href = "/logout";
         }
-    });
+    }
+
+
+    // If a user tries to access any menu without login, open the login modal
+
 
     // Close modal when 'x' is clicked
     var span = document.getElementsByClassName("close")[0];
@@ -53,5 +82,10 @@ function nextStep(id) {
             window.location.href = "/register";
             break;
     }
+}
+
+
+function $(selector){
+    return document.querySelector(selector);
 }
 
