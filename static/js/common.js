@@ -11,7 +11,7 @@ window.addEventListener('load', function () {
             </div>
             <div class="header-text">
                 <h1>Welcome to YAMP!</h1>
-                <h3>The Ultimate You    tube Ad Matching Platform</h3>
+                <h3>The Ultimate Youtube Ad Matching Platform</h3>
             </div>
         </div>`;
 

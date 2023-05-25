@@ -96,7 +96,7 @@ section ul li {
 }
 
 #pricing img {
-    max-width: 60%;
+    max-width: 100%;
     height: auto;
 }
 
@@ -603,7 +603,6 @@ input[type="submit"]:active {
     margin-top: 10px;
     transition: background-color 0.3s ease;
 }
-
 #service-info .service-card button:hover {
     background-color: #ea6a6a;
 }
@@ -616,4 +615,8 @@ input[type="submit"]:active {
     position: absolute;
     bottom: 20px;
     left: 20px;
+}
+
+.form-container > h2, .form-container > p, #feedback > h2 {
+    text-align : center;
 }
