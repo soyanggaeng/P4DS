@@ -71,11 +71,9 @@
             <label for="service-improvements">서비스에 대한 개선 의견 (주관식)</label>
             <textarea id="service-improvements" name="service-improvements"></textarea>
             
-            <label for="youtuber-satisfaction">유튜버 만족도 (Rating score of 1~5)</label>
-            <input type="number" id="youtuber-satisfaction" name="youtuber-satisfaction" min="1" max="5">
-            
-            <label for="youtuber-feedback">유튜버에게 남기고 싶은 의견 (주관식)</label>
-            <textarea id="youtuber-feedback" name="youtuber-feedback"></textarea>
+            <!-- Loop through each channel for satisfaction rating and feedback -->
+            <h3>유튜버 만족도 및 의견</h3>
+            <div id="youtuber-feedback-container"></div>
             
             <button type="submit">Submit Feedback</button>
         </form>
@@ -150,6 +148,12 @@
                     modal.style.display = "none";
                 }
             }
+    
+            // If user already submitted a review, redirect to My Page
+            // if (localStorage.getItem('feedbackSubmitted') === 'true') {
+            //     alert('Already written review!');
+            //     window.location.href = 'mypage.html';
+            // }
         }
     
         function scrollToSection(sectionId) {
@@ -179,6 +183,52 @@
                     break;
             }
         }
-    </script>   
+
+        function generateYoutuberFeedbackInputs() {
+            var selectedChannels = ['Channel N', 'Channel L'];
+            var feedbackContainer = document.getElementById('youtuber-feedback-container');
+
+            selectedChannels.forEach(function (channel) {
+                var channelHeading = document.createElement('h4');
+                channelHeading.textContent = channel;
+
+                var satisfactionLabel = document.createElement('label');
+                satisfactionLabel.setAttribute('for', channel + '-satisfaction-rating');
+                satisfactionLabel.textContent = '유튜버 만족도 (Rating score of 1~5)';
+
+                var satisfactionInput = document.createElement('input');
+                satisfactionInput.setAttribute('type', 'number');
+                satisfactionInput.setAttribute('id', channel + '-satisfaction-rating');
+                satisfactionInput.setAttribute('name', channel + '-satisfaction-rating');
+                satisfactionInput.setAttribute('min', '1');
+                satisfactionInput.setAttribute('max', '5');
+
+                var feedbackLabel = document.createElement('label');
+                feedbackLabel.setAttribute('for', channel + '-feedback');
+                feedbackLabel.textContent = '유튜버에게 남기고 싶은 의견 (주관식)';
+
+                var feedbackTextarea = document.createElement('textarea');
+                feedbackTextarea.setAttribute('id', channel + '-feedback');
+                feedbackTextarea.setAttribute('name', channel + '-feedback');
+
+                feedbackContainer.appendChild(channelHeading);
+                feedbackContainer.appendChild(satisfactionLabel);
+                feedbackContainer.appendChild(satisfactionInput);
+                feedbackContainer.appendChild(feedbackLabel);
+                feedbackContainer.appendChild(feedbackTextarea);
+            });
+            }
+    
+        // Listen for the form submission, prevent default and store that feedback has been submitted
+        document.getElementById('feedback-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            localStorage.setItem('feedbackSubmitted', 'true');
+            alert('Feedback submitted!');
+            window.location.href = 'mypage.html';
+        });
+
+        // Generate Youtuber Feedback Inputs
+        generateYoutuberFeedbackInputs();
+    </script>    
 </body>
 </html>

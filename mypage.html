@@ -79,6 +79,7 @@
             <table id="history-table">
                 <tr>
                     <th>Type</th>
+                    <th>Channel</th>
                     <th>Date</th>
                 </tr>
             </table>
@@ -195,38 +196,53 @@
         }
         // The current user's recent analysis history and subscription level
         var history = [
-            {type: 'Channel Overview', date: 'May 23, 2023'},
-            {type: 'Video & Comment Analysis', date: 'May 22, 2023'},
-            {type: 'Keyword Analysis', date: 'May 21, 2023'},
-            {type: 'Channel Controversy Check', date: 'May 20, 2023'},
-            {type: 'Keyword Analysis', date: 'May 19, 2023'}
+            { type: 'Channel Overview', channel: ['Channel A', 'Channel B'], date: 'May 23, 2023' },
+            { type: 'Video & Comment Analysis', channel: ["-"], date: 'May 22, 2023' },
+            { type: 'Keyword Analysis', channel: ['Channel D', 'Channel E'], date: 'May 21, 2023' },
+            { type: 'Channel Controversy Check', channel: ['Channel F'], date: 'May 20, 2023' },
+            { type: 'Keyword Analysis', channel: ['Channel G', 'Channel H', 'Channel I'], date: 'May 19, 2023' },
+            { type: 'Ad View Estimation', channel: ['Channel J'], date: 'May 18, 2023' },
+            { type: 'Advertiser Overview', channel: ['Channel K'], date: 'May 17, 2023' },
+            { type: 'To YouTuber Proposal', channel: ['Channel N', 'Channel L'], date: 'May 16, 2023' },
+            { type: 'Youtuber Recommendation', channel: ['Channel L', 'Channel M', 'Channel J', 'Channel K', 'Channel A'], date: 'May 16, 2023' }
         ];
         var subscription = 'Ultra Plus';
         function populateRecentAnalysisHistory() {
             var historyTable = document.getElementById('history-table');
             var historyData = [
-                { type: 'Channel Overview', date: '2023-05-20' },
-                { type: 'Video & Comment Analysis', date: '2023-05-18' },
-                { type: 'Keyword Analysis', date: '2023-05-15' },
-            ];
+                { type: 'Channel Overview', channel: ['Channel A', 'Channel B'], date: 'May 23, 2023' },
+                { type: 'Video & Comment Analysis', channel: ["-"], date: 'May 22, 2023' },
+                { type: 'Keyword Analysis', channel: ['Channel D', 'Channel E'], date: 'May 21, 2023' },
+                { type: 'Channel Controversy Check', channel: ['Channel F'], date: 'May 20, 2023' },
+                { type: 'Keyword Analysis', channel: ['Channel G', 'Channel H', 'Channel I'], date: 'May 19, 2023' },
+                { type: 'Ad View Estimation', channel: ['Channel J'], date: 'May 18, 2023' },
+                { type: 'Advertiser Overview', channel: ['Channel K'], date: 'May 17, 2023' },
+                { type: 'To YouTuber Proposal', channel: ['Channel N', 'Channel L'], date: 'May 16, 2023' },
+                { type: 'Youtuber Recommendation', channel: ['Channel L', 'Channel M', 'Channel J', 'Channel K', 'Channel A'], date: 'May 16, 2023' }
+        ];
 
             historyData.forEach(function (item) {
                 var row = document.createElement('tr');
                 var typeCell = document.createElement('td');
+                var channelCell = document.createElement('td');
                 var dateCell = document.createElement('td');
                 typeCell.textContent = item.type;
+                channelCell.textContent = item.channel.join(', ');
                 dateCell.textContent = item.date;
                 row.appendChild(typeCell);
+                row.appendChild(channelCell);
                 row.appendChild(dateCell);
                 historyTable.appendChild(row);
+                // Store the selected channels in localStorage
+                localStorage.setItem('selectedChannels', JSON.stringify(item.channel));
             });
         }
 
         function populatePurchasedServices() {
             var serviceDiv = document.getElementById('service-info');
             var serviceData = [
-                { service: 'Essential', details: ['Channel Overview', 'Video & Comment Analysis for 100 videos'], purchaseDate: '2023-05-23 15:00' },
-                // you can add more purchased services here
+                { service: 'Ultra Plus', details: ['Channel Overview', 'Video & Comment Analysis for 500 videos', 'Keyword Analysis for 100 channels', 'Channel Controversy Check for 100 channels', 'Ad View Estimation for 100 channels', 'Channel\'s Existing Ad Analysis', 'Advertiser\'s Ad Request Status'], purchaseDate: 'May 01, 2023', feedbackSubmitted: false },
+                { service: 'Ultimate', details: ['Channel Overview', 'Video & Comment Analysis for 1000 videos', 'Keyword Analysis (unlimited)', 'Channel Controversy Check (unlimited)', 'Ad View Estimation (unlimited)', 'Channel\'s Existing Ad Analysis', 'Advertiser\'s Ad Request Status', 'Youtuber Recommendation'], purchaseDate: 'Feb 20, 2023', feedbackSubmitted: true }
             ];
 
             serviceData.forEach(function (item) {
@@ -236,15 +252,26 @@
                 var serviceH3 = document.createElement('h3');
                 var detailP = document.createElement('p');
                 var purchaseDateP = document.createElement('p');
+                var feedbackButton = document.createElement('button');
 
                 serviceH3.textContent = item.service;
                 detailP.textContent = item.details.join(', ');
                 purchaseDateP.textContent = 'Purchased on: ' + item.purchaseDate;
                 purchaseDateP.className = 'purchase-date';
 
+                feedbackButton.textContent = 'Submit Feedback';
+                feedbackButton.onclick = function() {
+                    if (item.feedbackSubmitted) {
+                        alert('Feedback already submitted for this service!');
+                        return;
+                    }
+                    window.location.href = 'feedback.html';
+                }
+
                 serviceCard.appendChild(serviceH3);
                 serviceCard.appendChild(detailP);
                 serviceCard.appendChild(purchaseDateP);
+                serviceCard.appendChild(feedbackButton);
                 serviceDiv.appendChild(serviceCard);
             });
         }
