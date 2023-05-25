@@ -71,6 +71,31 @@ def confirm_user():
 
         if user:
             session['login_status'] = True
+            session['email'] = email
             return jsonify({'message' : 'Login succeed'}), 200
         else:
             return jsonify({'message' : 'Invalid email or Password'}), 401
+
+
+@bp.route('/getFeedback', methods=['POST'])
+def get_feedback():
+    if request.method=="POST":
+        collection = db['feedback']
+        youtuber = request.form['youtuber']
+        voucher_usage = request.form['voucher-usage']
+        satisfaction_rating = request.form['satisfaction-rating']
+        service_improvements = request.form['service-improvements']
+        youtuber_satisfaction = request.form['youtuber-satisfaction']
+        youtuber_feedback = request.form['youtuber-feedback']
+        
+        dict_fb = {
+            'youtuber' : youtuber,
+            'voucher-usage' : voucher_usage,
+            'satisfaction-rating' : satisfaction_rating,
+            'service-improvements' : service_improvements,
+            'youtuber-satisfaction' : youtuber_satisfaction,
+            'youtuber-feedback' : youtuber_feedback
+        }
+
+        collection.insert_one(dict_fb)
+        return redirect(url_for('home'))

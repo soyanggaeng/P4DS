@@ -25,7 +25,7 @@ def home():
 
 @app.route('/sotube', methods=['GET', 'POST'])
 def about():
-    return render_template('sotube.html')
+    return render_template('sotube.html', login_status = session.get('login_status', False))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

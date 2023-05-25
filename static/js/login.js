@@ -35,7 +35,9 @@ window.onload = function () {
             if (!isLoggedIn) {
                 e.preventDefault();
                 modal.style.display = 'block';
-
+            }else if (link.hash !== '' && location.pathname == '/mypage') {
+                e.preventDefault();
+                scrollToSection(link.hash);
             }
         }})
 
@@ -87,5 +89,12 @@ function nextStep(id) {
 
 function $(selector){
     return document.querySelector(selector);
+}
+
+function scrollToSection(sectionId) {
+    var section = document.querySelector(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 

@@ -45,18 +45,18 @@
                     <li><a href="#">To Advertiser</a></li>
                 </ul>
             </li>
-            <li><a href="#">My Page</a>
+            <li><a href="/mypage">My Page</a> <!-- Link to My Page -->
                 <ul>
-                    <li><a href="#">Member Information</a></li>
-                    <li><a href="#">Recent Analysis History</a></li>
-                    <li><a href="#">My Purchased Service</a></li>
-                    <li><a href="#">Feedback</a></li>
+                    <li><a href="/mypage#member-information">Member Information</a></li> <!-- Link to Member Information -->
+                    <li><a href="/mypage#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
+                    <li><a href="/mypage#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
+                    <li><a href="/feedback">Feedback</a></li> <!-- Link to Feedback -->
                 </ul>
             </li>
         </ul>
         <div class="login-button-container">
             {% if login_status %}
-                <a href="#" id="login-button">Log Out</a>
+                <a href="#" id="logout-button">Log Out</a>
             {% else %}
                 <a href="#" id="login-button">Log In</a>
             {% endif %}

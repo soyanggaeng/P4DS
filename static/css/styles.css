@@ -457,3 +457,149 @@ input[type="submit"]:active {
     background-color: #C45B5B;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* reduces the shadow when button is clicked */
 }
+
+
+/* my page */
+/* Box Styling */
+.box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+#member-information {
+    margin: 30px;
+}
+
+#member-information h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    margin-right: 20px;
+}
+
+.info-container {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.info-container p {
+    margin-bottom: 10px;
+}
+
+/* analysis history */
+#analysis-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#analysis-history th,
+#analysis-history td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#analysis-history th {
+    background-color: #f2f2f2;
+    color: black;
+}
+
+#analysis-history td {
+    vertical-align: top;
+}
+
+/* purchased service */
+#purchased-service {
+    margin: 30px;
+    margin-bottom: 200px;
+}
+
+#purchased-service h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#service-info .service-card {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#service-info h3 {
+    color: #333;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+#service-info p {
+    color: #555;
+    font-size: 1.1em;
+}
+
+#service-info .purchase-date {
+    font-style: italic;
+    color: #888;
+    margin-top: 10px;
+}
+
+
+/* feedback page */
+#feedback {
+    margin: 100px;
+}
+
+#feedback h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#feedback-form label {
+    font-weight: bold;
+}
+
+#feedback-form input,
+#feedback-form textarea {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#feedback-form textarea {
+    resize: vertical;
+}
+
+#feedback-form button {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+}
+
+#feedback-form button:hover {
+    background-color: #ea6a6a;
+}

@@ -3,6 +3,7 @@
 <head>
     <title>YAMP: Youtube Ad Matching Platform</title>
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    <script type="text/javascript" src="static/js/login.js"></script>
 </head>
 <body>
     <header>
@@ -61,7 +62,10 @@
     
     <section id="feedback">
         <h2>Feedback</h2>
-        <form id="feedback-form">
+        <form id="feedback-form", action = '/getFeedback', method="POST">
+            <label for="youtuber">어떤 유튜버와 광고를 진행하셨나요?</label>
+            <input type="text" id="youtuber" name="youtuber">
+
             <label for="voucher-usage">광고를 통한 바우처 이벤트 기간 동안 바우처 이용 건수는 얼마나 되나요?</label>
             <input type="text" id="voucher-usage" name="voucher-usage">
 
@@ -88,97 +92,5 @@
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            
-            <!-- YouTube Login -->
-            <div id="youtubeAuth" class="auth-section">
-                <h2>Login</h2>
-                <h3>Youtuber</h3>
-                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
-            </div>
-
-            <!-- Advertiser Login -->
-            <div id="advertiserAuth" class="auth-section">
-                <h2>Login</h2>
-                <h3>Advertiser</h3>
-                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
-                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
-                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Simulate user status
-        var isLoggedIn = true;
-    
-        window.onload = function () {
-            var btn = document.getElementById('login-button');
-            var modal = document.getElementById('loginModal');
-            var menuLinks = document.querySelectorAll('nav a');
-    
-            // When the user clicks on the button, open the modal 
-            btn.onclick = function() {
-                modal.style.display = 'block';
-            }
-    
-            // If a user tries to access any menu without login, open the login modal
-            menuLinks.forEach(function(link) {
-                link.onclick = function(e) {
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        modal.style.display = 'block';
-                    } else if (link.hash !== '') {
-                        e.preventDefault();
-                        scrollToSection(link.hash);
-                    }
-                }
-            });
-    
-            // Close modal when 'x' is clicked
-            var span = document.getElementsByClassName("close")[0];
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-    
-            // Close modal when clicked outside
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-        }
-    
-        function scrollToSection(sectionId) {
-            var section = document.querySelector(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    
-        function nextStep(id) {
-            switch(id) {
-                case 'continueYoutube':
-                    // Continue with Youtube account
-                    // Add your Youtube authentication process here
-                    break;
-                case 'continueGoogle':
-                    // Continue with Google account
-                    // Add your Google authentication process here
-                    break;
-                case 'emailLogin':
-                    // Login with email
-                    window.location.href = "/login";
-                    break;
-                case 'emailRegistration':
-                    // Register now
-                    window.location.href = "/register";
-                    break;
-            }
-        }
-    </script>   
 </body>
 </html>
