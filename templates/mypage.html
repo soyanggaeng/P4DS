@@ -3,6 +3,7 @@
 <head>
     <title>YAMP: Youtube Ad Matching Platform</title>
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    <script type="text/javascript" src="static/js/login.js"></script>
 </head>
 <body>
     <header>
@@ -45,17 +46,17 @@
                     <li><a href="#">To Advertiser</a></li>
                 </ul>
             </li>
-            <li><a href="mypage.html">My Page</a> <!-- Link to My Page -->
+            <li><a href="/mypage">My Page</a> <!-- Link to My Page -->
                 <ul>
-                    <li><a href="mypage.html#member-information">Member Information</a></li> <!-- Link to Member Information -->
-                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
-                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
-                    <li><a href="feedback.html">Feedback</a></li> <!-- Link to Feedback -->
+                    <li><a href="/mypage#member-information">Member Information</a></li> <!-- Link to Member Information -->
+                    <li><a href="/mypage#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
+                    <li><a href="/mypage#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
+                    <li><a href="/feedback">Feedback</a></li> <!-- Link to Feedback -->
                 </ul>
             </li>
         </ul>
         <div class="login-button-container">
-            <a href="#" id="login-button">Log In</a>
+            <a href="#" id="logout-button">Log Out</a>
         </div>
     </nav>
     
@@ -127,41 +128,6 @@
         var isLoggedIn = true; // made this true for convenience
     
         window.onload = function () {
-            var btn = document.getElementById('login-button');
-            var modal = document.getElementById('loginModal');
-            var menuLinks = document.querySelectorAll('nav a');
-
-            // When the user clicks on the button, open the modal 
-            btn.onclick = function() {
-                modal.style.display = 'block';
-            }
-
-            // If a user tries to access any menu without login, open the login modal
-            menuLinks.forEach(function(link) {
-                link.onclick = function(e) {
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        modal.style.display = 'block';
-                    } else if (link.hash !== '') {
-                        e.preventDefault();
-                        scrollToSection(link.hash);
-                    }
-                }
-            });
-
-            // Close modal when 'x' is clicked
-            var span = document.getElementsByClassName("close")[0];
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            // Close modal when clicked outside
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
             populateRecentAnalysisHistory();
             populatePurchasedServices(); 
         }
@@ -172,27 +138,7 @@
                 section.scrollIntoView({ behavior: 'smooth' });
             }
         }
-    
-        function nextStep(id) {
-            switch(id) {
-                case 'continueYoutube':
-                    // Continue with Youtube account
-                    // Add your Youtube authentication process here
-                    break;
-                case 'continueGoogle':
-                    // Continue with Google account
-                    // Add your Google authentication process here
-                    break;
-                case 'emailLogin':
-                    // Login with email
-                    window.location.href = "/login";
-                    break;
-                case 'emailRegistration':
-                    // Register now
-                    window.location.href = "/register";
-                    break;
-            }
-        }
+
         // The current user's recent analysis history and subscription level
         var history = [
             {type: 'Channel Overview', date: 'May 23, 2023'},
@@ -201,7 +147,9 @@
             {type: 'Channel Controversy Check', date: 'May 20, 2023'},
             {type: 'Keyword Analysis', date: 'May 19, 2023'}
         ];
+
         var subscription = 'Ultra Plus';
+
         function populateRecentAnalysisHistory() {
             var historyTable = document.getElementById('history-table');
             var historyData = [
