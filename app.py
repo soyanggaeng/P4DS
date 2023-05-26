@@ -51,6 +51,16 @@ def mypage():
 def feedback():
     return render_template('feedback.html')
 
+@app.route('/overview', methods=['GET', 'POST'])
+@login_required
+def overview():
+    return render_template('overview.html')
+
+@app.route('/proposal', methods=['GET', 'POST'])
+@login_required
+def proposal():
+    return render_template('proposal.html')
+
 
 
 

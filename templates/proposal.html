@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YAMP: Youtube Ad Matching Platform - Proposal</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
+                </a>
+            </div>
+            <div class="header-text">
+                <h1>Channel Proposal</h1>
+                <h3>Recommendation and Submission</h3>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">Channel Analysis</a>
+                <ul>
+                    <li><a href="overview.html">Channel Overview</a></li>
+                    <li><a href="#">Video & Comment Analysis</a></li>
+                    <li><a href="#">Keyword Analysis</a></li>
+                    <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Analysis</a>
+                <ul>
+                    <li><a href="#">Ad View Estimation</a></li>
+                    <li><a href="#">Channel's Existing Ad Analysis</a></li>
+                    <li><a href="#">Advertiser's Ad Request Status</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Overview</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Proposal</a>
+                <ul>
+                    <li><a href="proposal.html">To YouTuber</a></li>
+                    <li><a href="#">To Advertiser</a></li>
+                </ul>
+            </li>
+            <li><a href="mypage.html">My Page</a>
+                <ul>
+                    <li><a href="mypage.html#member-information">Member Information</a></li>
+                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li>
+                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="login-button-container">
+            <a href="#" id="login-button">Log In</a>
+        </div>
+    </nav>
+    
+    <section id="proposal-recommendation">
+        <h2>Channel Recommendation</h2>
+        <p>Based on your budget and the product to be advertised, we have identified the YouTube channels that would be most effective for your advertising campaign:</p>
+        <!-- Include the channel recommendations here -->
+    </section>
+    
+    <section id="proposal-submission">
+        <h2>Proposal Submission</h2>
+        <p>Send a proposal to the recommended YouTubers through our YAMP service:</p>
+        <form id="proposal-form">
+            <label for="youtuber-name">YouTuber Name:</label>
+            <div class="search-container">
+                <input type="text" id="youtuber-name" name="youtuber-name" placeholder="Enter YouTuber's Name" required>
+                <button id="search-button" type="button">Search</button>
+            </div>
+            
+            <label for="contact-email">Contact Email:</label>
+            <input type="email" id="contact-email" name="contact-email" placeholder="Enter Your Email Address" required>
+            
+            <label for="product">Product:</label>
+            <select id="product" name="product" required>
+                <option value="" disabled selected>Select Product Type</option>
+                <option value="technology">Technology</option>
+                <option value="gaming">Gaming</option>
+                <option value="beauty-fashion">Beauty and Fashion</option>
+                <option value="food-beverage">Food and Beverage</option>
+                <option value="health-fitness">Health and Fitness</option>
+                <option value="travel-tourism">Travel and Tourism</option>
+                <option value="automotive">Automotive</option>
+                <option value="entertainment-media">Entertainment and Media</option>
+                <option value="home-lifestyle">Home and Lifestyle</option>
+                <option value="financial-services">Financial Services</option>
+            </select>
+            
+            <label for="budget">Budget:</label>
+            <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>
+            
+            <label for="timeline">Timeline:</label>
+            <input type="text" id="timeline" name="timeline" placeholder="Enter Proposed Timeline" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" placeholder="Enter Your Proposal Message" required></textarea>
+            
+            <input type="submit" value="Send Proposal">
+        </form>        
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <a href="sotube.html">About SoTube</a>
+            <p>&copy; 2023 YAMP. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <div id="youtubeAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Youtuber</h3>
+                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
+            </div>
+
+            <div id="advertiserAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Advertiser</h3>
+                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
+                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
+                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var isLoggedIn = true;
+    
+        window.onload = function () {
+            var btn = document.getElementById('login-button');
+            var modal = document.getElementById('loginModal');
+            var menuLinks = document.querySelectorAll('nav a');
+    
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+    
+            menuLinks.forEach(function(link) {
+                link.onclick = function(e) {
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        modal.style.display = 'block';
+                    } else if (link.hash !== '') {
+                        e.preventDefault();
+                        scrollToSection(link.hash);
+                    }
+                }
+            });
+    
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+    
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            var searchButton = document.getElementById("search-button");
+            searchButton.addEventListener("click", searchYouTuber);
+
+            function searchYouTuber() {
+                var youtuberName = document.getElementById("youtuber-name").value;
+
+                var database = [
+                    {
+                        // mere example...
+                        name: "Yeonkyoung",
+                        email: "ykso@example.com"
+                    },
+                    {
+                        name: "Rick",
+                        email: "rick@example.com"
+                    },
+                    // Add more YouTuber data as needed
+                ];
+
+                var contactEmail = document.getElementById("contact-email");
+                var foundYoutuber = database.find(function(youtuber) {
+                    return youtuber.name.toLowerCase() === youtuberName.toLowerCase();
+                });
+
+                if (foundYoutuber) {
+                    contactEmail.value = foundYoutuber.email;
+                } else {
+                    contactEmail.value = "";
+                    alert("YouTuber not found in the database.");
+                }
+            }
+
+            var timelineInput = document.getElementById("timeline");
+            var currentDatetime = new Date();
+            var currentDatetimeString = currentDatetime.toISOString().slice(0, 19).replace("T", " ");
+            timelineInput.value = currentDatetimeString;
+        }
+    
+        function scrollToSection(sectionId) {
+            var section = document.querySelector(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    
+        function nextStep(id) {
+            switch(id) {
+                case 'continueYoutube':
+                    // Continue with Youtube account
+                    // Add your Youtube authentication process here
+                    break;
+                case 'continueGoogle':
+                    // Continue with Google account
+                    // Add your Google authentication process here
+                    break;
+                case 'emailLogin':
+                    // Login with email
+                    window.location.href = "login.html";
+                    break;
+                case 'emailRegistration':
+                    // Register now
+                    window.location.href = "register.html";
+                    break;
+            }
+        }
+    </script>   
+</body>
+</html>
+
