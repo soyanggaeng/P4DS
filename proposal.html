@@ -24,7 +24,7 @@
         <ul>
             <li><a href="#">Channel Analysis</a>
                 <ul>
-                    <li><a href="#">Channel Overview</a></li>
+                    <li><a href="overview.html">Channel Overview</a></li>
                     <li><a href="#">Video & Comment Analysis</a></li>
                     <li><a href="#">Keyword Analysis</a></li>
                     <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
@@ -79,7 +79,19 @@
             <input type="email" id="contact-email" name="contact-email" placeholder="Enter Your Email Address" required>
             
             <label for="product">Product:</label>
-            <input type="text" id="product" name="product" placeholder="Enter Product Name" required>
+            <select id="product" name="product" required>
+                <option value="" disabled selected>Select Product Type</option>
+                <option value="technology">Technology</option>
+                <option value="gaming">Gaming</option>
+                <option value="beauty-fashion">Beauty and Fashion</option>
+                <option value="food-beverage">Food and Beverage</option>
+                <option value="health-fitness">Health and Fitness</option>
+                <option value="travel-tourism">Travel and Tourism</option>
+                <option value="automotive">Automotive</option>
+                <option value="entertainment-media">Entertainment and Media</option>
+                <option value="home-lifestyle">Home and Lifestyle</option>
+                <option value="financial-services">Financial Services</option>
+            </select>
             
             <label for="budget">Budget:</label>
             <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>

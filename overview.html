@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>YAMP: Youtube Ad Matching Platform</title>
+    <title>YAMP: Youtube Ad Matching Platform - Channel Overview</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -14,8 +14,7 @@
                 </a>
             </div>
             <div class="header-text">
-                <h1>Welcome to YAMP!</h1>
-                <h3>The Ultimate Youtube Ad Matching Platform</h3>
+                <h1>Channel Overview</h1>
             </div>
         </div>
     </header>
@@ -45,12 +44,12 @@
                     <li><a href="#">To Advertiser</a></li>
                 </ul>
             </li>
-            <li><a href="mypage.html">My Page</a> <!-- Link to My Page -->
+            <li><a href="mypage.html">My Page</a>
                 <ul>
-                    <li><a href="mypage.html#member-information">Member Information</a></li> <!-- Link to Member Information -->
-                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
-                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
-                    <li><a href="feedback.html">Feedback</a></li> <!-- Link to Feedback -->
+                    <li><a href="mypage.html#member-information">Member Information</a></li>
+                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li>
+                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
                 </ul>
             </li>
         </ul>
@@ -59,31 +58,18 @@
         </div>
     </nav>
     
-    <section id="keyword-visualization">
-        <h2>Total Keyword Visualization</h2>
-        <p>Explore the current Youtube trends based on video comments' keyword analysis.</p>
-        <!-- Include your visualization tool here -->
-    </section>
-    
-    <section id="introduction">
-        <h2>About YAMP</h2>
-        <p>At YAMP, we are dedicated to aiding our customers - Advertisers and YouTubers - in the decision-making process by providing a platform that visualizes and analyzes reactions to an ads video on a specific YouTube channel and the keywords related to that channel. Whether you are an advertiser looking to advertise products on YouTube channels, or a YouTuber looking to promote your channel to advertisers, YAMP is your go-to platform. We stand out from our competitors by offering unique features such as:</p>
-        <ul>
-            <li>Identifying the types of products that are suitable for ads on channels.</li>
-            <li>Analyzing overall keywords that appear when searching for a YouTube channel.</li>
-            <li>Visualizing and analyzing reactions and evaluations of existing advertising videos on a specific YouTube channel.</li>
-        </ul>
-    </section>
-    
-    <section id="pricing">
-        <h2>Our Pricing</h2>
-        <p>Find a plan that's right for you. Check out our competitive pricing options:</p>
-        <div class="pricing-image-container">
-            <img src="./P4DS IA_userflow_pricing.png" alt="Pricing Details" />
+    <section id="channel-overview">
+        <h2>Channel Overview</h2>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search YouTuber...">
+            <button onclick="searchYoutuber()">Search</button>
         </div>
-        <!-- Replace "path_to_your_jpg_file.jpg" with the actual path of your pricing jpg file -->
+        <div id="overview-content" class="overview-content">
+            <!-- Channel overview content will be added dynamically -->
+        </div>
     </section>
-    
+
+
     <footer>
         <div class="footer-content">
             <a href="sotube.html">About SoTube</a>
@@ -91,19 +77,16 @@
         </div>
     </footer>
 
-    <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             
-            <!-- YouTube Login -->
             <div id="youtubeAuth" class="auth-section">
                 <h2>Login</h2>
                 <h3>Youtuber</h3>
                 <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
             </div>
 
-            <!-- Advertiser Login -->
             <div id="advertiserAuth" class="auth-section">
                 <h2>Login</h2>
                 <h3>Advertiser</h3>
@@ -116,18 +99,18 @@
 
     <script>
         // Simulate user status
-        var isLoggedIn = false;
+        var isLoggedIn = true; // made this true for convenience
     
         window.onload = function () {
             var btn = document.getElementById('login-button');
             var modal = document.getElementById('loginModal');
             var menuLinks = document.querySelectorAll('nav a');
-    
+
             // When the user clicks on the button, open the modal 
             btn.onclick = function() {
                 modal.style.display = 'block';
             }
-    
+
             // If a user tries to access any menu without login, open the login modal
             menuLinks.forEach(function(link) {
                 link.onclick = function(e) {
@@ -140,13 +123,13 @@
                     }
                 }
             });
-    
+
             // Close modal when 'x' is clicked
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() {
                 modal.style.display = "none";
             }
-    
+
             // Close modal when clicked outside
             window.onclick = function(event) {
                 if (event.target == modal) {
@@ -182,6 +165,89 @@
                     break;
             }
         }
-    </script>   
+        // Simulate user status and database response
+        var isLoggedIn = true; // made this true for convenience
+        var database = [
+            {
+                category: 'LIFE',
+                searchTerm: '유소나',
+                youtuber: '유소나',
+                subscriberCount: '구독자 64만명',
+                lastVideo: '2023. 5. 20.',
+                thumbnail: 'https://yt3.ggpht.com/PD1lG6qCr5EVJJKDLBcYay3T02byOoQ2oAHYuHIa1BsdmyRTah8mUgz_WIMevKYTRjktRSR4=s800-c-k-c0x00ffffff-no-rj',
+                description: '💙광고문의 usona_official@naver.com💙',
+                subscriberChange: '+500',
+                dailyViewChange: '+10,000'
+            },
+            {
+                category: 'LIFE',
+                searchTerm: '김무비',
+                youtuber: '김무비 KIM MOVIE',
+                subscriberCount: '구독자 36,707명',
+                lastVideo: '2023. 5. 17.',
+                thumbnail: 'https://yt3.ggpht.com/RJ58TgVEK71ej3iT5kmJ2JvYmP1ZWAETQxMce-rNQJU5hshH0c7Kzr67xZJ2zCVEWQMsbLR04w=s800-c-k-c0x00ffffff-no-rj',
+                description: '🌼instagram - @yyyyyyyyyyhk\n🌸contact - thwl0608@icecreative.kr',
+                subscriberChange: '+1,000',
+                dailyViewChange: '+5,000'
+            },
+            // Add more YouTuber data as needed
+        ];
+
+        var overviewContent = document.getElementById('overview-content');
+        var searchInput = document.getElementById('search-input');
+
+        function searchYoutuber() {
+            var searchTerm = searchInput.value;
+            var filteredData = database.filter(function (item) {
+                return item.searchTerm === searchTerm;
+            });
+
+            if (filteredData.length > 0) {
+                overviewContent.innerHTML = ''; // Clear previous search results
+
+                for (var i = 0; i < filteredData.length; i++) {
+                    var channelItem = document.createElement('div');
+                    channelItem.classList.add('channel-item');
+
+                    var thumbnail = document.createElement('img');
+                    thumbnail.src = filteredData[i].thumbnail;
+                    thumbnail.alt = filteredData[i].youtuber;
+                    channelItem.appendChild(thumbnail);
+
+                    var channelInfo = document.createElement('div');
+                    channelInfo.classList.add('channel-info');
+
+                    var youtuberName = document.createElement('h3');
+                    youtuberName.textContent = filteredData[i].youtuber;
+                    channelInfo.appendChild(youtuberName);
+
+                    var subscriberCount = document.createElement('p');
+                    subscriberCount.textContent = 'Subscriber Count: ' + filteredData[i].subscriberCount;
+                    channelInfo.appendChild(subscriberCount);
+
+                    var subscriberChange = document.createElement('p');
+                    subscriberChange.textContent = 'Subscriber Change: ' + filteredData[i].subscriberChange;
+                    channelInfo.appendChild(subscriberChange);
+
+                    var lastVideo = document.createElement('p');
+                    lastVideo.textContent = 'Last Video: ' + filteredData[i].lastVideo;
+                    channelInfo.appendChild(lastVideo);
+
+                    var dailyViewChange = document.createElement('p');
+                    dailyViewChange.textContent = 'Daily View Change: ' + filteredData[i].dailyViewChange;
+                    channelInfo.appendChild(dailyViewChange);
+
+                    var description = document.createElement('p');
+                    description.textContent = filteredData[i].description;
+                    channelInfo.appendChild(description);
+
+                    channelItem.appendChild(channelInfo);
+                    overviewContent.appendChild(channelItem);
+                }
+            } else {
+                overviewContent.innerHTML = '<p>No results found.</p>';
+            }
+        }
+    </script>
 </body>
 </html>
