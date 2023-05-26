@@ -1,4 +1,5 @@
-
+var h1 = "Welcome to YAMP!";
+var h3 = "The Ultimate Youtube Ad Matching Platform";
 
 window.addEventListener('load', function () {
 
@@ -10,8 +11,8 @@ window.addEventListener('load', function () {
                 </a>
             </div>
             <div class="header-text">
-                <h1>Welcome to YAMP!</h1>
-                <h3>The Ultimate Youtube Ad Matching Platform</h3>
+                <h1>${h1}</h1>
+                <h3>${h3}</h3>
             </div>
         </div>`;
 
@@ -41,7 +42,7 @@ window.addEventListener('load', function () {
     var nav = `<ul>
     <li><a href="#">Channel Analysis</a>
         <ul>
-            <li><a href="#">Channel Overview</a></li>
+            <li><a href="/overview">Channel Overview</a></li>
             <li><a href="#">Video & Comment Analysis</a></li>
             <li><a href="#">Keyword Analysis</a></li>
             <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
@@ -58,16 +59,16 @@ window.addEventListener('load', function () {
     </li>
     <li><a href="#">Advertisement Proposal</a>
         <ul>
-            <li><a href="#">To YouTuber</a></li>
+            <li><a href="/proposal">To YouTuber</a></li>
             <li><a href="#">To Advertiser</a></li>
         </ul>
     </li>
-    <li><a href="/mypage">My Page</a> <!-- Link to My Page -->
+    <li><a href="/mypage">My Page</a>
         <ul>
-            <li><a href="/mypage#member-information">Member Information</a></li> <!-- Link to Member Information -->
-            <li><a href="/mypage#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
-            <li><a href="/mypage#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
-            <li><a href="/feedback">Feedback</a></li> <!-- Link to Feedback -->
+            <li><a href="/mypage#member-information">Member Information</a></li>
+            <li><a href="/mypage#analysis-history">Recent Analysis History</a></li>
+            <li><a href="/mypage#purchased-service">My Purchased Service</a></li>
+            <li><a href="/feedback">Feedback</a></li>
         </ul>
     </li>
 </ul>`;

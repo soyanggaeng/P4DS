@@ -2,60 +2,20 @@
 <html>
 <head>
     <title>YAMP: Youtube Ad Matching Platform - Proposal</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    <script type="text/javascript" src="static/js/common.js"></script>
 </head>
 <body>
     <header>
-        <div class="header-overlay"></div>
-        <div class="header-content">
-            <div class="logo-container">
-                <a href="index.html">
-                    <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
-                </a>
-            </div>
-            <div class="header-text">
-                <h1>Channel Proposal</h1>
-                <h3>Recommendation and Submission</h3>
-            </div>
-        </div>
+        <script>
+            h1 = "Channel Proposal"
+            h3 = "Recommendation and Submission"
+        </script>
     </header>
 
     <nav>
-        <ul>
-            <li><a href="#">Channel Analysis</a>
-                <ul>
-                    <li><a href="overview.html">Channel Overview</a></li>
-                    <li><a href="#">Video & Comment Analysis</a></li>
-                    <li><a href="#">Keyword Analysis</a></li>
-                    <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Advertisement Analysis</a>
-                <ul>
-                    <li><a href="#">Ad View Estimation</a></li>
-                    <li><a href="#">Channel's Existing Ad Analysis</a></li>
-                    <li><a href="#">Advertiser's Ad Request Status</a></li>
-                    <li class="youtuber-only"><a href="#">Advertiser Overview</a></li>
-                    <li class="youtuber-only"><a href="#">Advertiser Controversy Check</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Advertisement Proposal</a>
-                <ul>
-                    <li><a href="proposal.html">To YouTuber</a></li>
-                    <li><a href="#">To Advertiser</a></li>
-                </ul>
-            </li>
-            <li><a href="mypage.html">My Page</a>
-                <ul>
-                    <li><a href="mypage.html#member-information">Member Information</a></li>
-                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li>
-                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li>
-                    <li><a href="feedback.html">Feedback</a></li>
-                </ul>
-            </li>
-        </ul>
         <div class="login-button-container">
-            <a href="#" id="login-button">Log In</a>
+            <a href="#" id="logout-button">Log Out</a>
         </div>
     </nav>
     
@@ -107,67 +67,11 @@
     </section>
     
     <footer>
-        <div class="footer-content">
-            <a href="sotube.html">About SoTube</a>
-            <p>&copy; 2023 YAMP. All rights reserved.</p>
-        </div>
     </footer>
 
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            
-            <div id="youtubeAuth" class="auth-section">
-                <h2>Login</h2>
-                <h3>Youtuber</h3>
-                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
-            </div>
-
-            <div id="advertiserAuth" class="auth-section">
-                <h2>Login</h2>
-                <h3>Advertiser</h3>
-                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
-                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
-                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
-            </div>
-        </div>
-    </div>
-
     <script>
-        var isLoggedIn = true;
     
         window.onload = function () {
-            var btn = document.getElementById('login-button');
-            var modal = document.getElementById('loginModal');
-            var menuLinks = document.querySelectorAll('nav a');
-    
-            btn.onclick = function() {
-                modal.style.display = 'block';
-            }
-    
-            menuLinks.forEach(function(link) {
-                link.onclick = function(e) {
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        modal.style.display = 'block';
-                    } else if (link.hash !== '') {
-                        e.preventDefault();
-                        scrollToSection(link.hash);
-                    }
-                }
-            });
-    
-            var span = document.getElementsByClassName("close")[0];
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-    
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
             var searchButton = document.getElementById("search-button");
             searchButton.addEventListener("click", searchYouTuber);
 
@@ -204,34 +108,6 @@
             var currentDatetime = new Date();
             var currentDatetimeString = currentDatetime.toISOString().slice(0, 19).replace("T", " ");
             timelineInput.value = currentDatetimeString;
-        }
-    
-        function scrollToSection(sectionId) {
-            var section = document.querySelector(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    
-        function nextStep(id) {
-            switch(id) {
-                case 'continueYoutube':
-                    // Continue with Youtube account
-                    // Add your Youtube authentication process here
-                    break;
-                case 'continueGoogle':
-                    // Continue with Google account
-                    // Add your Google authentication process here
-                    break;
-                case 'emailLogin':
-                    // Login with email
-                    window.location.href = "login.html";
-                    break;
-                case 'emailRegistration':
-                    // Register now
-                    window.location.href = "register.html";
-                    break;
-            }
         }
     </script>   
 </body>

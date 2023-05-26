@@ -51,6 +51,7 @@ def update_user():
         user = collection.find_one(user_filter, {'_id': False})
         return jsonify(user)
 
+
 @bp.route('/get_user', methods=['POST'])
 @login_required
 def get_user():
@@ -104,21 +105,22 @@ def confirm_user():
 def get_feedback():
     if request.method=="POST":
         collection = db['feedback']
-        youtuber = request.form['youtuber']
-        voucher_usage = request.form['voucher-usage']
-        satisfaction_rating = request.form['satisfaction-rating']
-        service_improvements = request.form['service-improvements']
-        youtuber_satisfaction = request.form['youtuber-satisfaction']
-        youtuber_feedback = request.form['youtuber-feedback']
+        form_data = request.form.to_dict()
+        print(form_data)
+        # youtuber = request.form['youtuber']
+        # voucher_usage = request.form['voucher-usage']
+        # satisfaction_rating = request.form['satisfaction-rating']
+        # service_improvements = request.form['service-improvements']
+        # youtuber_satisfaction = request.form['youtuber-satisfaction']
+        # youtuber_feedback = request.form['youtuber-feedback']
         
-        dict_fb = {
-            'youtuber' : youtuber,
-            'voucher-usage' : voucher_usage,
-            'satisfaction-rating' : satisfaction_rating,
-            'service-improvements' : service_improvements,
-            'youtuber-satisfaction' : youtuber_satisfaction,
-            'youtuber-feedback' : youtuber_feedback
-        }
-
-        collection.insert_one(dict_fb)
-        return redirect(url_for('home'))
+        # dict_fb = {
+        #     'youtuber' : youtuber,
+        #     'voucher-usage' : voucher_usage,
+        #     'satisfaction-rating' : satisfaction_rating,
+        #     'service-improvements' : service_improvements,
+        #     'youtuber-satisfaction' : youtuber_satisfaction,
+        #     'youtuber-feedback' : youtuber_feedback
+        # }
+        collection.insert_one(form_data)
+        return redirect(url_for('mypage'))
