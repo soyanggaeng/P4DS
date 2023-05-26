@@ -99,3 +99,5 @@ def get_feedback():
 
         collection.insert_one(dict_fb)
         return redirect(url_for('home'))
+    
+    testtesttets
