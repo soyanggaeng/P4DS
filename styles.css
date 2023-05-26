@@ -607,3 +607,109 @@ input[type="submit"]:active {
     bottom: 20px;
     left: 20px;
 }
+
+/* Add any custom styles specific to the proposal.html page here */
+
+#proposal-recommendation {
+    margin: 30px;
+}
+  
+#proposal-recommendation h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+  
+#proposal-recommendation p {
+    font-size: 1.1em;
+    color: #333;
+}
+  
+#proposal-submission {
+    margin: 30px;
+}
+  
+#proposal-submission h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+  
+#proposal-submission p {
+    font-size: 1.1em;
+    color: #333;
+}
+  
+#proposal-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 100px;
+}
+  
+#proposal-form h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+  
+#proposal-form label {
+    font-weight: bold;
+}
+  
+#proposal-form input[type="text"],
+#proposal-form input[type="email"],
+#proposal-form input[type="number"],
+#proposal-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+  
+#proposal-form textarea {
+    resize: vertical;
+}
+  
+#proposal-form input[type="submit"] {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+  
+#proposal-form input[type="submit"]:hover {
+    background-color: #ea6a6a;
+}
+  
+#proposal-form input[type="submit"]:active {
+    background-color: #C45B5B;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+  /* Add this CSS code to your existing styles.css file or add it to a new CSS file */
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+#youtuber-name {
+    width: 70%;
+}
+
+#search-button {
+    margin-left: 10px;
+    padding: 8px 12px;
+}

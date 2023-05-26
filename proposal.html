@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>YAMP: Youtube Ad Matching Platform</title>
+    <title>YAMP: Youtube Ad Matching Platform - Proposal</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -14,8 +14,8 @@
                 </a>
             </div>
             <div class="header-text">
-                <h1>Welcome to YAMP!</h1>
-                <h3>The Ultimate Youtube Ad Matching Platform</h3>
+                <h1>Channel Proposal</h1>
+                <h3>Recommendation and Submission</h3>
             </div>
         </div>
     </header>
@@ -45,12 +45,12 @@
                     <li><a href="#">To Advertiser</a></li>
                 </ul>
             </li>
-            <li><a href="mypage.html">My Page</a> <!-- Link to My Page -->
+            <li><a href="mypage.html">My Page</a>
                 <ul>
-                    <li><a href="mypage.html#member-information">Member Information</a></li> <!-- Link to Member Information -->
-                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li> <!-- Link to Recent Analysis History -->
-                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li> <!-- Link to My Purchased Service -->
-                    <li><a href="feedback.html">Feedback</a></li> <!-- Link to Feedback -->
+                    <li><a href="mypage.html#member-information">Member Information</a></li>
+                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li>
+                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
                 </ul>
             </li>
         </ul>
@@ -59,24 +59,39 @@
         </div>
     </nav>
     
-    <section id="feedback">
-        <h2>Feedback</h2>
-        <form id="feedback-form">
-            <label for="voucher-usage">광고를 통한 바우처 이벤트 기간 동안 바우처 이용 건수는 얼마나 되나요?</label>
-            <input type="text" id="voucher-usage" name="voucher-usage">
-
-            <label for="satisfaction-rating">서비스 전반에 대한 만족도 (Rating score of 1~5)</label>
-            <input type="number" id="satisfaction-rating" name="satisfaction-rating" min="1" max="5">
+    <section id="proposal-recommendation">
+        <h2>Channel Recommendation</h2>
+        <p>Based on your budget and the product to be advertised, we have identified the YouTube channels that would be most effective for your advertising campaign:</p>
+        <!-- Include the channel recommendations here -->
+    </section>
+    
+    <section id="proposal-submission">
+        <h2>Proposal Submission</h2>
+        <p>Send a proposal to the recommended YouTubers through our YAMP service:</p>
+        <form id="proposal-form">
+            <label for="youtuber-name">YouTuber Name:</label>
+            <div class="search-container">
+                <input type="text" id="youtuber-name" name="youtuber-name" placeholder="Enter YouTuber's Name" required>
+                <button id="search-button" type="button">Search</button>
+            </div>
             
-            <label for="service-improvements">서비스에 대한 개선 의견 (주관식)</label>
-            <textarea id="service-improvements" name="service-improvements"></textarea>
+            <label for="contact-email">Contact Email:</label>
+            <input type="email" id="contact-email" name="contact-email" placeholder="Enter Your Email Address" required>
             
-            <!-- Loop through each channel for satisfaction rating and feedback -->
-            <h3>유튜버 만족도 및 의견</h3>
-            <div id="youtuber-feedback-container"></div>
+            <label for="product">Product:</label>
+            <input type="text" id="product" name="product" placeholder="Enter Product Name" required>
             
-            <button type="submit">Submit Feedback</button>
-        </form>
+            <label for="budget">Budget:</label>
+            <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>
+            
+            <label for="timeline">Timeline:</label>
+            <input type="text" id="timeline" name="timeline" placeholder="Enter Proposed Timeline" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" placeholder="Enter Your Proposal Message" required></textarea>
+            
+            <input type="submit" value="Send Proposal">
+        </form>        
     </section>
     
     <footer>
@@ -86,19 +101,16 @@
         </div>
     </footer>
 
-    <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             
-            <!-- YouTube Login -->
             <div id="youtubeAuth" class="auth-section">
                 <h2>Login</h2>
                 <h3>Youtuber</h3>
                 <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
             </div>
 
-            <!-- Advertiser Login -->
             <div id="advertiserAuth" class="auth-section">
                 <h2>Login</h2>
                 <h3>Advertiser</h3>
@@ -110,7 +122,6 @@
     </div>
 
     <script>
-        // Simulate user status
         var isLoggedIn = true;
     
         window.onload = function () {
@@ -118,12 +129,10 @@
             var modal = document.getElementById('loginModal');
             var menuLinks = document.querySelectorAll('nav a');
     
-            // When the user clicks on the button, open the modal 
             btn.onclick = function() {
                 modal.style.display = 'block';
             }
     
-            // If a user tries to access any menu without login, open the login modal
             menuLinks.forEach(function(link) {
                 link.onclick = function(e) {
                     if (!isLoggedIn) {
@@ -136,24 +145,53 @@
                 }
             });
     
-            // Close modal when 'x' is clicked
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() {
                 modal.style.display = "none";
             }
     
-            // Close modal when clicked outside
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
             }
-    
-            // If user already submitted a review, redirect to My Page
-            // if (localStorage.getItem('feedbackSubmitted') === 'true') {
-            //     alert('Already written review!');
-            //     window.location.href = 'mypage.html';
-            // }
+
+            var searchButton = document.getElementById("search-button");
+            searchButton.addEventListener("click", searchYouTuber);
+
+            function searchYouTuber() {
+                var youtuberName = document.getElementById("youtuber-name").value;
+
+                var database = [
+                    {
+                        // mere example...
+                        name: "Yeonkyoung",
+                        email: "ykso@example.com"
+                    },
+                    {
+                        name: "Rick",
+                        email: "rick@example.com"
+                    },
+                    // Add more YouTuber data as needed
+                ];
+
+                var contactEmail = document.getElementById("contact-email");
+                var foundYoutuber = database.find(function(youtuber) {
+                    return youtuber.name.toLowerCase() === youtuberName.toLowerCase();
+                });
+
+                if (foundYoutuber) {
+                    contactEmail.value = foundYoutuber.email;
+                } else {
+                    contactEmail.value = "";
+                    alert("YouTuber not found in the database.");
+                }
+            }
+
+            var timelineInput = document.getElementById("timeline");
+            var currentDatetime = new Date();
+            var currentDatetimeString = currentDatetime.toISOString().slice(0, 19).replace("T", " ");
+            timelineInput.value = currentDatetimeString;
         }
     
         function scrollToSection(sectionId) {
@@ -183,52 +221,7 @@
                     break;
             }
         }
-
-        function generateYoutuberFeedbackInputs() {
-            var selectedChannels = ['Channel N', 'Channel L'];
-            var feedbackContainer = document.getElementById('youtuber-feedback-container');
-
-            selectedChannels.forEach(function (channel) {
-                var channelHeading = document.createElement('h4');
-                channelHeading.textContent = channel;
-
-                var satisfactionLabel = document.createElement('label');
-                satisfactionLabel.setAttribute('for', channel + '-satisfaction-rating');
-                satisfactionLabel.textContent = '유튜버 만족도 (Rating score of 1~5)';
-
-                var satisfactionInput = document.createElement('input');
-                satisfactionInput.setAttribute('type', 'number');
-                satisfactionInput.setAttribute('id', channel + '-satisfaction-rating');
-                satisfactionInput.setAttribute('name', channel + '-satisfaction-rating');
-                satisfactionInput.setAttribute('min', '1');
-                satisfactionInput.setAttribute('max', '5');
-
-                var feedbackLabel = document.createElement('label');
-                feedbackLabel.setAttribute('for', channel + '-feedback');
-                feedbackLabel.textContent = '유튜버에게 남기고 싶은 의견 (주관식)';
-
-                var feedbackTextarea = document.createElement('textarea');
-                feedbackTextarea.setAttribute('id', channel + '-feedback');
-                feedbackTextarea.setAttribute('name', channel + '-feedback');
-
-                feedbackContainer.appendChild(channelHeading);
-                feedbackContainer.appendChild(satisfactionLabel);
-                feedbackContainer.appendChild(satisfactionInput);
-                feedbackContainer.appendChild(feedbackLabel);
-                feedbackContainer.appendChild(feedbackTextarea);
-            });
-            }
-    
-        // Listen for the form submission, prevent default and store that feedback has been submitted
-        document.getElementById('feedback-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            localStorage.setItem('feedbackSubmitted', 'true');
-            alert('Feedback submitted!');
-            window.location.href = 'mypage.html';
-        });
-
-        // Generate Youtuber Feedback Inputs
-        generateYoutuberFeedbackInputs();
-    </script>    
+    </script>   
 </body>
 </html>
+
