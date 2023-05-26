@@ -35,6 +35,18 @@ window.onload = function () {
             if (!isLoggedIn) {
                 e.preventDefault();
                 modal.style.display = 'block';
+                    // Close modal when 'x' is clicked
+                var span = document.getElementsByClassName("close")[0];
+                span.onclick = function() {
+                modal.style.display = "none";
+                }
+
+                // Close modal when clicked outside
+                window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+                }
             }else if (link.hash !== '' && location.pathname == '/mypage') {
                 e.preventDefault();
                 scrollToSection(link.hash);
@@ -45,23 +57,6 @@ window.onload = function () {
         btn.onclick = function() {
             window.location.href = "/logout";
         }
-    }
-
-
-    // If a user tries to access any menu without login, open the login modal
-
-
-    // Close modal when 'x' is clicked
-    var span = document.getElementsByClassName("close")[0];
-    span.onclick = function() {
-    modal.style.display = "none";
-    }
-
-    // Close modal when clicked outside
-    window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
     }
 }
 

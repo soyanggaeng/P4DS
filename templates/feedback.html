@@ -41,8 +41,8 @@
 
 
     <script>
-            function generateYoutuberFeedbackInputs() {
-            var selectedChannels = ['Channel N', 'Channel L'];
+            function generateYoutuberFeedbackInputs(user) {
+            var selectedChannels = user.selectedChannels;
             var feedbackContainer = document.getElementById('youtuber-feedback-container');
 
             selectedChannels.forEach(function (channel) {

@@ -620,3 +620,17 @@ input[type="submit"]:active {
 .form-container > h2, .form-container > p, #feedback > h2 {
     text-align : center;
 }
+
+.name_container {
+    display: inline-block;
+    position: relative;
+    border : none;
+}
+
+.name_container img {
+    width: 1em; /* Adjust the size as desired */
+    height: 1em; /* Adjust the size as desired */
+    vertical-align: middle;
+    cursor : pointer;
+  }
+  

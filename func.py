@@ -2,6 +2,7 @@ from flask import Blueprint, session, redirect, url_for, jsonify, request
 from pymongo import MongoClient
 from config import *
 from functools import wraps
+import datetime
 
 client = MongoClient(MONGODB_HOST)
 
@@ -9,6 +10,7 @@ db = client[MONGODB_DATABASE]
 
 bp = Blueprint("fun_blueprint", __name__);
 
+#decorater
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -17,6 +19,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+#login / logout
 @bp.route("/logout")
 @login_required
 def logout():
@@ -34,8 +37,28 @@ def add_user():
         collection = db['user_info']
         email = request.form['email']
         passwd = request.form['password']
-        collection.insert_one({'email' : email, 'password' : passwd})
+        registered =datetime.datetime.utcnow()
+        collection.insert_one({'email' : email, 'password' : passwd, 'registered' : registered})
         return redirect(url_for('login'))
+    
+@bp.route('/update_user', methods=['POST'])
+@login_required
+def update_user():
+    if request.method=="POST":
+        collection = db['user_info']
+        user_filter = {'email' : session.get("email")}
+        collection.update_one(user_filter, {"$set" : request.json})
+        user = collection.find_one(user_filter, {'_id': False})
+        return jsonify(user)
+
+@bp.route('/get_user', methods=['POST'])
+@login_required
+def get_user():
+    if request.method=="POST":
+        collection = db['user_info']
+        user_filter = {'email' : session.get("email")}
+        user = collection.find_one(user_filter, {'_id': False})
+        return jsonify(user)
 
 
 @bp.route('/contact', methods=['POST'])

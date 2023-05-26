@@ -5,6 +5,8 @@
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
     <script type="text/javascript" src="static/js/common.js"></script>
     <script type="text/javascript" src="static/js/login.js"></script>
+    <script type="text/javascript" src="static/js/user.js"></script>
+
 </head>
 <body>
     <header>
@@ -22,9 +24,17 @@
             <div class="profile-container">
                 <img src="profile-image.jpg" alt="Profile Image">
                 <div class="info-container">
-                    <p><strong>Name:</strong> John Doe</p>
+                    <p><strong>Name:</strong> 
+                    <span class="name_container">
+                        <span class="name_text"></span>
+                        <img src="static/img/edit_icon.svg" alt="edit your name" class="edit_button">
+                    </span></p>
                     <p><strong>Account Type:</strong> YouTuber</p>
-                    <p><strong>Registered:</strong> January 1, 2023</p>
+                    <p><strong>Registered:</strong> 
+                        <span id = "registered">
+                        January 1, 2023
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -54,7 +64,55 @@
     </footer>
 
     <script>
-        // Simulate user status
+        communicate('/get_user', {})
+        .then(data => {
+            if ('name' in data){
+                $('.name_text').textContent = data.name;
+            } else{
+                $('.name_text').textContent = data.email.split("@")[0];
+            }
+
+            const registerdTime = new Date(data.registered);
+            const formattedTime = registerdTime.toLocaleString('en-US',{
+                month : 'long',
+                day : 'numeric',
+                year : 'numeric'
+            })
+
+            $('#registered').textContent = formattedTime;
+        });
+
+        ['keydown', 'blur'].forEach(function(event){
+            $('.name_text').addEventListener(event, function(e){
+            if(e.key == 'Enter' || e.type == 'blur'){
+                e.preventDefault();
+                $('.name_text').setAttribute('contenteditable', 'false');
+                $('.name_text').setAttribute('style', `
+                border : noen;
+                background : none;
+                border-radius : none;
+                box-sizing : none;
+                `);
+
+                var name_data = {'name' : $('.name_text').textContent};
+                communicate('/update_user', name_data);
+                }
+            })
+        })
+
+        $('.edit_button').addEventListener('click', function(event) {
+            if ($('.name_text').getAttribute('contenteditable') !== 'true') {
+                $('.name_text').setAttribute('contenteditable', 'true');
+                $('.name_text').setAttribute('style', `
+                border : 2px solid #ddd;
+                background : white;
+                border-radius : 5px;
+                box-sizing : border-box;
+                `);
+                $('.name_text').focus();
+            }
+            });
+            // Simulate user status
         // made this true for convenience    
         window.addEventListener('load', function () {
             populateRecentAnalysisHistory();
@@ -144,6 +202,8 @@
                 serviceDiv.appendChild(serviceCard);
             });
         }
+
+        
     </script>
         
 </body>
