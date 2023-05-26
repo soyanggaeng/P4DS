@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>YAMP: Youtube Ad Matching Platform - Channel Overview</title>
+    <title>YAMP: Youtube Ad Matching Platform - Proposal</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -14,7 +14,8 @@
                 </a>
             </div>
             <div class="header-text">
-                <h1>Channel Overview</h1>
+                <h1>Channel Proposal</h1>
+                <h3>Recommendation and Submission</h3>
             </div>
         </div>
     </header>
@@ -58,18 +59,53 @@
         </div>
     </nav>
     
-    <section id="channel-overview">
-        <h2>Channel Overview</h2>
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Search YouTuber...">
-            <button onclick="searchYoutuber()">Search</button>
-        </div>
-        <div id="overview-content" class="overview-content">
-            <!-- Channel overview content will be added dynamically -->
-        </div>
+    <section id="proposal-recommendation">
+        <h2>Channel Recommendation</h2>
+        <p>Based on your budget and the product to be advertised, we have identified the YouTube channels that would be most effective for your advertising campaign:</p>
+        <!-- Include the channel recommendations here -->
     </section>
-
-
+    
+    <section id="proposal-submission">
+        <h2>Proposal Submission</h2>
+        <p>Send a proposal to the recommended YouTubers through our YAMP service:</p>
+        <form id="proposal-form">
+            <label for="youtuber-name">YouTuber Name:</label>
+            <div class="search-container">
+                <input type="text" id="youtuber-name" name="youtuber-name" placeholder="Enter YouTuber's Name" required>
+                <button id="search-button" type="button">Search</button>
+            </div>
+            
+            <label for="contact-email">Contact Email:</label>
+            <input type="email" id="contact-email" name="contact-email" placeholder="Enter Your Email Address" required>
+            
+            <label for="product">Product:</label>
+            <select id="product" name="product" required>
+                <option value="" disabled selected>Select Product Type</option>
+                <option value="technology">Technology</option>
+                <option value="gaming">Gaming</option>
+                <option value="beauty-fashion">Beauty and Fashion</option>
+                <option value="food-beverage">Food and Beverage</option>
+                <option value="health-fitness">Health and Fitness</option>
+                <option value="travel-tourism">Travel and Tourism</option>
+                <option value="automotive">Automotive</option>
+                <option value="entertainment-media">Entertainment and Media</option>
+                <option value="home-lifestyle">Home and Lifestyle</option>
+                <option value="financial-services">Financial Services</option>
+            </select>
+            
+            <label for="budget">Budget:</label>
+            <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>
+            
+            <label for="timeline">Timeline:</label>
+            <input type="text" id="timeline" name="timeline" placeholder="Enter Proposed Timeline" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" placeholder="Enter Your Proposal Message" required></textarea>
+            
+            <input type="submit" value="Send Proposal">
+        </form>        
+    </section>
+    
     <footer>
         <div class="footer-content">
             <a href="sotube.html">About SoTube</a>
@@ -98,20 +134,17 @@
     </div>
 
     <script>
-        // Simulate user status
-        var isLoggedIn = true; // made this true for convenience
+        var isLoggedIn = true;
     
         window.onload = function () {
             var btn = document.getElementById('login-button');
             var modal = document.getElementById('loginModal');
             var menuLinks = document.querySelectorAll('nav a');
-
-            // When the user clicks on the button, open the modal 
+    
             btn.onclick = function() {
                 modal.style.display = 'block';
             }
-
-            // If a user tries to access any menu without login, open the login modal
+    
             menuLinks.forEach(function(link) {
                 link.onclick = function(e) {
                     if (!isLoggedIn) {
@@ -123,19 +156,54 @@
                     }
                 }
             });
-
-            // Close modal when 'x' is clicked
+    
             var span = document.getElementsByClassName("close")[0];
             span.onclick = function() {
                 modal.style.display = "none";
             }
-
-            // Close modal when clicked outside
+    
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
             }
+
+            var searchButton = document.getElementById("search-button");
+            searchButton.addEventListener("click", searchYouTuber);
+
+            function searchYouTuber() {
+                var youtuberName = document.getElementById("youtuber-name").value;
+
+                var database = [
+                    {
+                        // mere example...
+                        name: "Yeonkyoung",
+                        email: "ykso@example.com"
+                    },
+                    {
+                        name: "Rick",
+                        email: "rick@example.com"
+                    },
+                    // Add more YouTuber data as needed
+                ];
+
+                var contactEmail = document.getElementById("contact-email");
+                var foundYoutuber = database.find(function(youtuber) {
+                    return youtuber.name.toLowerCase() === youtuberName.toLowerCase();
+                });
+
+                if (foundYoutuber) {
+                    contactEmail.value = foundYoutuber.email;
+                } else {
+                    contactEmail.value = "";
+                    alert("YouTuber not found in the database.");
+                }
+            }
+
+            var timelineInput = document.getElementById("timeline");
+            var currentDatetime = new Date();
+            var currentDatetimeString = currentDatetime.toISOString().slice(0, 19).replace("T", " ");
+            timelineInput.value = currentDatetimeString;
         }
     
         function scrollToSection(sectionId) {
@@ -165,89 +233,7 @@
                     break;
             }
         }
-        // Simulate user status and database response
-        var isLoggedIn = true; // made this true for convenience
-        var database = [
-            {
-                category: 'LIFE',
-                searchTerm: '유소나',
-                youtuber: '유소나',
-                subscriberCount: '구독자 64만명',
-                lastVideo: '2023. 5. 20.',
-                thumbnail: 'https://yt3.ggpht.com/PD1lG6qCr5EVJJKDLBcYay3T02byOoQ2oAHYuHIa1BsdmyRTah8mUgz_WIMevKYTRjktRSR4=s800-c-k-c0x00ffffff-no-rj',
-                description: '💙광고문의 usona_official@naver.com💙',
-                subscriberChange: '+500',
-                dailyViewChange: '+10,000'
-            },
-            {
-                category: 'LIFE',
-                searchTerm: '김무비',
-                youtuber: '김무비 KIM MOVIE',
-                subscriberCount: '구독자 36,707명',
-                lastVideo: '2023. 5. 17.',
-                thumbnail: 'https://yt3.ggpht.com/RJ58TgVEK71ej3iT5kmJ2JvYmP1ZWAETQxMce-rNQJU5hshH0c7Kzr67xZJ2zCVEWQMsbLR04w=s800-c-k-c0x00ffffff-no-rj',
-                description: '🌼instagram - @yyyyyyyyyyhk\n🌸contact - thwl0608@icecreative.kr',
-                subscriberChange: '+1,000',
-                dailyViewChange: '+5,000'
-            },
-            // Add more YouTuber data as needed
-        ];
-
-        var overviewContent = document.getElementById('overview-content');
-        var searchInput = document.getElementById('search-input');
-
-        function searchYoutuber() {
-            var searchTerm = searchInput.value;
-            var filteredData = database.filter(function (item) {
-                return item.searchTerm === searchTerm;
-            });
-
-            if (filteredData.length > 0) {
-                overviewContent.innerHTML = ''; // Clear previous search results
-
-                for (var i = 0; i < filteredData.length; i++) {
-                    var channelItem = document.createElement('div');
-                    channelItem.classList.add('channel-item');
-
-                    var thumbnail = document.createElement('img');
-                    thumbnail.src = filteredData[i].thumbnail;
-                    thumbnail.alt = filteredData[i].youtuber;
-                    channelItem.appendChild(thumbnail);
-
-                    var channelInfo = document.createElement('div');
-                    channelInfo.classList.add('channel-info');
-
-                    var youtuberName = document.createElement('h3');
-                    youtuberName.textContent = filteredData[i].youtuber;
-                    channelInfo.appendChild(youtuberName);
-
-                    var subscriberCount = document.createElement('p');
-                    subscriberCount.textContent = 'Subscriber Count: ' + filteredData[i].subscriberCount;
-                    channelInfo.appendChild(subscriberCount);
-
-                    var subscriberChange = document.createElement('p');
-                    subscriberChange.textContent = 'Subscriber Change: ' + filteredData[i].subscriberChange;
-                    channelInfo.appendChild(subscriberChange);
-
-                    var lastVideo = document.createElement('p');
-                    lastVideo.textContent = 'Last Video: ' + filteredData[i].lastVideo;
-                    channelInfo.appendChild(lastVideo);
-
-                    var dailyViewChange = document.createElement('p');
-                    dailyViewChange.textContent = 'Daily View Change: ' + filteredData[i].dailyViewChange;
-                    channelInfo.appendChild(dailyViewChange);
-
-                    var description = document.createElement('p');
-                    description.textContent = filteredData[i].description;
-                    channelInfo.appendChild(description);
-
-                    channelItem.appendChild(channelInfo);
-                    overviewContent.appendChild(channelItem);
-                }
-            } else {
-                overviewContent.innerHTML = '<p>No results found.</p>';
-            }
-        }
-    </script>
+    </script>   
 </body>
 </html>
+

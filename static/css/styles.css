@@ -620,6 +620,112 @@ input[type="submit"]:active {
 .form-container > h2, .form-container > p, #feedback > h2 {
     text-align : center;
 }
+/* Add any custom styles specific to the proposal.html page here */
+
+#proposal-recommendation {
+    margin: 30px;
+}
+  
+#proposal-recommendation h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+  
+#proposal-recommendation p {
+    font-size: 1.1em;
+    color: #333;
+}
+  
+#proposal-submission {
+    margin: 30px;
+}
+  
+#proposal-submission h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+  
+#proposal-submission p {
+    font-size: 1.1em;
+    color: #333;
+}
+  
+#proposal-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 100px;
+}
+  
+#proposal-form h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+  
+#proposal-form label {
+    font-weight: bold;
+}
+  
+#proposal-form input[type="text"],
+#proposal-form input[type="email"],
+#proposal-form input[type="number"],
+#proposal-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+  
+#proposal-form textarea {
+    resize: vertical;
+}
+  
+#proposal-form input[type="submit"] {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+  
+#proposal-form input[type="submit"]:hover {
+    background-color: #ea6a6a;
+}
+  
+#proposal-form input[type="submit"]:active {
+    background-color: #C45B5B;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* proposal.html specific styles */
+
+#proposal-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
 
 .name_container {
     display: inline-block;
@@ -634,3 +740,98 @@ input[type="submit"]:active {
     cursor : pointer;
   }
   
+#search-button {
+    margin-left: 10px;
+    padding: 8px 12px;
+}
+
+/* Additional CSS for overview.html */
+
+#channel-overview {
+    margin: 30px;
+    margin-bottom: 200px;
+}
+
+#channel-overview h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    padding: 10px;
+    width: 300px;
+    font-size: 16px;
+}
+
+#search-input::placeholder {
+    color: #999;
+}
+
+.search-container button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #F38181;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #F38181;
+}
+
+.overview-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.channel-item {
+    width: calc(50% - 20px);
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.channel-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.channel-info h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.channel-info p {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.channel-info p:last-child {
+    margin-bottom: 0;
+}
+
+.channel-info img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+}
+
+.channel-item img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
