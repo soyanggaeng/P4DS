@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YAMP: Youtube Ad Matching Platform - Channel Overview</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="./YAMP_logo.png" alt="YAMP Logo" id="logo" />
+                </a>
+            </div>
+            <div class="header-text">
+                <h1>Channel Overview</h1>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">Channel Analysis</a>
+                <ul>
+                    <li><a href="overview.html">Channel Overview</a></li>
+                    <li><a href="#">Video & Comment Analysis</a></li>
+                    <li><a href="#">Keyword Analysis</a></li>
+                    <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Analysis</a>
+                <ul>
+                    <li><a href="#">Ad View Estimation</a></li>
+                    <li><a href="#">Channel's Existing Ad Analysis</a></li>
+                    <li><a href="#">Advertiser's Ad Request Status</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Overview</a></li>
+                    <li class="youtuber-only"><a href="#">Advertiser Controversy Check</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Advertisement Proposal</a>
+                <ul>
+                    <li><a href="proposal.html">To YouTuber</a></li>
+                    <li><a href="#">To Advertiser</a></li>
+                </ul>
+            </li>
+            <li><a href="mypage.html">My Page</a>
+                <ul>
+                    <li><a href="mypage.html#member-information">Member Information</a></li>
+                    <li><a href="mypage.html#analysis-history">Recent Analysis History</a></li>
+                    <li><a href="mypage.html#purchased-service">My Purchased Service</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="login-button-container">
+            <a href="#" id="login-button">Log In</a>
+        </div>
+    </nav>
+    
+    <section id="channel-overview">
+        <h2>Channel Overview</h2>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search YouTuber...">
+            <button onclick="searchYoutuber()">Search</button>
+        </div>
+        <div id="overview-content" class="overview-content">
+            <!-- Channel overview content will be added dynamically -->
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="footer-content">
+            <a href="sotube.html">About SoTube</a>
+            <p>&copy; 2023 YAMP. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <div id="youtubeAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Youtuber</h3>
+                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
+            </div>
+
+            <div id="advertiserAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Advertiser</h3>
+                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
+                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
+                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate user status
+        var isLoggedIn = true; // made this true for convenience
+    
+        window.onload = function () {
+            var btn = document.getElementById('login-button');
+            var modal = document.getElementById('loginModal');
+            var menuLinks = document.querySelectorAll('nav a');
+
+            // When the user clicks on the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+
+            // If a user tries to access any menu without login, open the login modal
+            menuLinks.forEach(function(link) {
+                link.onclick = function(e) {
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        modal.style.display = 'block';
+                    } else if (link.hash !== '') {
+                        e.preventDefault();
+                        scrollToSection(link.hash);
+                    }
+                }
+            });
+
+            // Close modal when 'x' is clicked
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // Close modal when clicked outside
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+    
+        function scrollToSection(sectionId) {
+            var section = document.querySelector(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    
+        function nextStep(id) {
+            switch(id) {
+                case 'continueYoutube':
+                    // Continue with Youtube account
+                    // Add your Youtube authentication process here
+                    break;
+                case 'continueGoogle':
+                    // Continue with Google account
+                    // Add your Google authentication process here
+                    break;
+                case 'emailLogin':
+                    // Login with email
+                    window.location.href = "login.html";
+                    break;
+                case 'emailRegistration':
+                    // Register now
+                    window.location.href = "register.html";
+                    break;
+            }
+        }
+        // Simulate user status and database response
+        var isLoggedIn = true; // made this true for convenience
+        var database = [
+            {
+                category: 'LIFE',
+                searchTerm: '유소나',
+                youtuber: '유소나',
+                subscriberCount: '구독자 64만명',
+                lastVideo: '2023. 5. 20.',
+                thumbnail: 'https://yt3.ggpht.com/PD1lG6qCr5EVJJKDLBcYay3T02byOoQ2oAHYuHIa1BsdmyRTah8mUgz_WIMevKYTRjktRSR4=s800-c-k-c0x00ffffff-no-rj',
+                description: '💙광고문의 usona_official@naver.com💙',
+                subscriberChange: '+500',
+                dailyViewChange: '+10,000'
+            },
+            {
+                category: 'LIFE',
+                searchTerm: '김무비',
+                youtuber: '김무비 KIM MOVIE',
+                subscriberCount: '구독자 36,707명',
+                lastVideo: '2023. 5. 17.',
+                thumbnail: 'https://yt3.ggpht.com/RJ58TgVEK71ej3iT5kmJ2JvYmP1ZWAETQxMce-rNQJU5hshH0c7Kzr67xZJ2zCVEWQMsbLR04w=s800-c-k-c0x00ffffff-no-rj',
+                description: '🌼instagram - @yyyyyyyyyyhk\n🌸contact - thwl0608@icecreative.kr',
+                subscriberChange: '+1,000',
+                dailyViewChange: '+5,000'
+            },
+            // Add more YouTuber data as needed
+        ];
+
+        var overviewContent = document.getElementById('overview-content');
+        var searchInput = document.getElementById('search-input');
+
+        function searchYoutuber() {
+            var searchTerm = searchInput.value;
+            var filteredData = database.filter(function (item) {
+                return item.searchTerm === searchTerm;
+            });
+
+            if (filteredData.length > 0) {
+                overviewContent.innerHTML = ''; // Clear previous search results
+
+                for (var i = 0; i < filteredData.length; i++) {
+                    var channelItem = document.createElement('div');
+                    channelItem.classList.add('channel-item');
+
+                    var thumbnail = document.createElement('img');
+                    thumbnail.src = filteredData[i].thumbnail;
+                    thumbnail.alt = filteredData[i].youtuber;
+                    channelItem.appendChild(thumbnail);
+
+                    var channelInfo = document.createElement('div');
+                    channelInfo.classList.add('channel-info');
+
+                    var youtuberName = document.createElement('h3');
+                    youtuberName.textContent = filteredData[i].youtuber;
+                    channelInfo.appendChild(youtuberName);
+
+                    var subscriberCount = document.createElement('p');
+                    subscriberCount.textContent = 'Subscriber Count: ' + filteredData[i].subscriberCount;
+                    channelInfo.appendChild(subscriberCount);
+
+                    var subscriberChange = document.createElement('p');
+                    subscriberChange.textContent = 'Subscriber Change: ' + filteredData[i].subscriberChange;
+                    channelInfo.appendChild(subscriberChange);
+
+                    var lastVideo = document.createElement('p');
+                    lastVideo.textContent = 'Last Video: ' + filteredData[i].lastVideo;
+                    channelInfo.appendChild(lastVideo);
+
+                    var dailyViewChange = document.createElement('p');
+                    dailyViewChange.textContent = 'Daily View Change: ' + filteredData[i].dailyViewChange;
+                    channelInfo.appendChild(dailyViewChange);
+
+                    var description = document.createElement('p');
+                    description.textContent = filteredData[i].description;
+                    channelInfo.appendChild(description);
+
+                    channelItem.appendChild(channelInfo);
+                    overviewContent.appendChild(channelItem);
+                }
+            } else {
+                overviewContent.innerHTML = '<p>No results found.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
