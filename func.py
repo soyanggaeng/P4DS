@@ -19,17 +19,10 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-#login / logout
-@bp.route("/logout")
-@login_required
-def logout():
-    session.pop('login_status', None)
-    return redirect(url_for('home'))
 
 @bp.route("/login_status")
 def login_status():
     return jsonify({'login_status' : session.get("login_status", False)})
-
 
 @bp.route('/add_user', methods=['POST'])
 def add_user():
@@ -40,6 +33,12 @@ def add_user():
         registered =datetime.datetime.utcnow()
         collection.insert_one({'email' : email, 'password' : passwd, 'registered' : registered})
         return redirect(url_for('login'))
+
+@bp.route("/logout")
+@login_required
+def logout():
+    session.pop('login_status', None)
+    return redirect(url_for('home'))
     
 @bp.route('/update_user', methods=['POST'])
 @login_required
@@ -63,6 +62,7 @@ def get_user():
 
 
 @bp.route('/contact', methods=['POST'])
+@login_required
 def contact():
     if request.method=="POST":
         collection = db['contact']
@@ -74,6 +74,7 @@ def contact():
 
         
 @bp.route("/email_check", methods=['POST'])
+@login_required
 def email_check():
     if request.method == "POST":
         collection = db['user_info']
@@ -86,6 +87,7 @@ def email_check():
             return jsonify({'exists' : False})
         
 @bp.route("/confirm_user", methods=['POST'])
+@login_required
 def confirm_user():
     if request.method == "POST":
         collection = db['user_info']
@@ -101,26 +103,20 @@ def confirm_user():
             return jsonify({'message' : 'Invalid email or Password'}), 401
 
 
-@bp.route('/getFeedback', methods=['POST'])
-def get_feedback():
+@bp.route('/updateFeedback', methods=['POST'])
+@login_required
+def update_feedback():
     if request.method=="POST":
         collection = db['feedback']
         form_data = request.form.to_dict()
-        print(form_data)
-        # youtuber = request.form['youtuber']
-        # voucher_usage = request.form['voucher-usage']
-        # satisfaction_rating = request.form['satisfaction-rating']
-        # service_improvements = request.form['service-improvements']
-        # youtuber_satisfaction = request.form['youtuber-satisfaction']
-        # youtuber_feedback = request.form['youtuber-feedback']
-        
-        # dict_fb = {
-        #     'youtuber' : youtuber,
-        #     'voucher-usage' : voucher_usage,
-        #     'satisfaction-rating' : satisfaction_rating,
-        #     'service-improvements' : service_improvements,
-        #     'youtuber-satisfaction' : youtuber_satisfaction,
-        #     'youtuber-feedback' : youtuber_feedback
-        # }
         collection.insert_one(form_data)
         return redirect(url_for('mypage'))
+    
+@bp.route('/getYoutuberInfo', methods=['POST'])
+@login_required
+def get_youtuber_info():
+    if request.method=="POST":
+        collection = db['youtuber_info']
+        cursor = collection.find({}, {'_id': False})
+        youtuber_info = [doc for doc in cursor]
+        return jsonify(youtuber_info)
