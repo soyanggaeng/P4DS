@@ -41,39 +41,7 @@
     <script>
         var activeSuggestion = -1;
 
-        // document.querySelector('#search-input').addEventListener('keyup', function(e){
-
-        //     const suggestionsDiv = document.getElementById('suggestions');
-        //     const children = Array.from(suggestionsDiv.children);
-
-        //     if(e.key == 'Enter'){
-        //         e.preventDefault();
-        //         if(activeSuggestion > -1){
-        //             children[activeSuggestion].click();
-        //         }
-        //         document.querySelector('#search-input').blur();
-        //         document.querySelector('#search_btn').click();
-        //         suggestionsDiv.innerHTML = "";
-        //         suggestionsDiv.style.display = "none";
-        //         activeSuggestion = -1
-        //     } else if (e.key === 'ArrowDown') {
-        //         e.preventDefault();
-        //         const nextIndex = activeSuggestion >= 0 ? (activeSuggestion + 1) % children.length : activeSuggestion+1;
-        //         // const nextIndex = activeSuggestion+1;
-        //         setActiveSuggestion(nextIndex);
-        //     } else if (e.key === 'ArrowUp') {
-        //         e.preventDefault();
-        //         const prevIndex = activeSuggestion > -1 ? activeSuggestion - 1 : -1;
-        //         setActiveSuggestion(prevIndex);
-        //     } else{
-        //         e.preventDefault();
-        //         autocomplete(e);
-        //     }
-        //     console.log(activeSuggestion);
-        // })
-
         document.querySelector('#search-input').addEventListener('keyup', function(e){
-
             const suggestionsDiv = document.getElementById('suggestions');
             const children = Array.from(suggestionsDiv.children);
 
@@ -109,21 +77,7 @@
             } else if (e.key != "Enter") {
                 autocomplete(e);
             }
-            console.log(activeSuggestion);
         })
-
-//         category : "LIFE"
-// channelId: "UCI-eA4j8S-uWZMxE8PZgtDQ"
-// dailyViewCount: -364
-// description: null
-// lastVideo: {__typename: 'Video', videoId: '4hfzFKPGjIM'}
-// links: null
-// subscriberChange: -6
-// subscriberCount: 83700
-// thumbnails: 
-// "https://yt3.ggpht.com/0NJms_SRQaGDe-qLX2zKjEG7sp62soh7VT5bIEzr9rLROSnTo_Gamd6uyK4Ij02pAm_qzD1lpg=s800-c-k-c0x00ffffff-no-rj"
-// title: "소원명상"
-        
 
         function searchYoutuber() {
             communicate('/getYoutuberInfo', {})
@@ -190,6 +144,7 @@
                 const input = document.getElementById('search-input');
                 const query = input.value.toLowerCase();
                 
+                console.log(query);
 
                 // Filter the search targets based on the query
                 const sug_list = data.filter(function(item) {
@@ -217,7 +172,6 @@
                         } else{
                             setActiveSuggestion(-1);
                         }
-                        console.log(activeSuggestion);
                     };
                     suggestionsDiv.appendChild(div);
                 });

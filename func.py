@@ -112,6 +112,16 @@ def update_feedback():
         collection.insert_one(form_data)
         return redirect(url_for('mypage'))
     
+@bp.route('/updateProposal', methods=['POST'])
+@login_required
+def update_proposal():
+    if request.method=="POST":
+        collection = db['proposal']
+        form_data = request.form.to_dict()
+        form_data['user_email'] = session['email'];
+        collection.insert_one(form_data)
+        return redirect(url_for('mypage'))
+    
 @bp.route('/getYoutuberInfo', methods=['POST'])
 @login_required
 def get_youtuber_info():
@@ -120,3 +130,5 @@ def get_youtuber_info():
         cursor = collection.find({}, {'_id': False})
         youtuber_info = [doc for doc in cursor]
         return jsonify(youtuber_info)
+    
+
