@@ -47,8 +47,9 @@ def mypage():
     return render_template('mypage.html')
 
 @app.route('/feedback', methods=['GET', 'POST'])
+@app.route('/feedback/<service>')
 @login_required
-def feedback():
+def feedback(service=None):
     return render_template('feedback.html')
 
 @app.route('/overview', methods=['GET', 'POST'])

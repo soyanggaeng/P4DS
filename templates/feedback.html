@@ -22,6 +22,7 @@
     <section id="feedback">
         <h2>Feedback</h2>
         <form id="feedback-form", action = '/updateFeedback', method="POST">
+            <input type="text" id="hash_val" name="hash_val">
             <label for="voucher-usage">광고를 통한 바우처 이벤트 기간 동안 바우처 이용 건수는 얼마나 되나요?</label>
             <input type="text" id="voucher-usage" name="voucher-usage">
 
@@ -48,7 +49,6 @@
                 .then(data => {
                 if ('history' in data){
                     var filteredData = data.history.filter(item => item.type == "To YouTuber Proposal")[0];
-                    console.log(filteredData);
                     var selectedChannels = filteredData.channel;
                     var feedbackContainer = document.getElementById('youtuber-feedback-container');
 
@@ -89,6 +89,10 @@
             alert('Feedback submitted!');
             $('#feedback-form').submit();
         });
+
+        console.log(location.hash);
+        document.getElementById('hash_val').value = decodeURIComponent(location.hash.substr(1));
+        document.getElementById('hash_val').style.display = 'none';
 
         // Generate Youtuber Feedback Inputs
         generateYoutuberFeedbackInputs();

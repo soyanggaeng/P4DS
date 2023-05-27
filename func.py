@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from config import *
 from functools import wraps
 import datetime
+from dummy import *
 
 client = MongoClient(MONGODB_HOST)
 
@@ -27,11 +28,17 @@ def login_status():
 @bp.route('/add_user', methods=['POST'])
 def add_user():
     if request.method=="POST":
+        service_info = db['service_info'].find_one({}, {'_id' : 0})    
+        channels = []
+        for doc in db['youtuber_info'].find({}, {'_id' : 0, 'title' : 1}):
+            channels.append(doc['title'])
+
         collection = db['user_info']
         email = request.form['email']
         passwd = request.form['password']
-        registered =datetime.datetime.utcnow()
-        collection.insert_one({'email' : email, 'password' : passwd, 'registered' : registered})
+        registered = datetime.datetime.utcnow()
+        history, serviceData = create_dummy_data(channels, service_info)
+        collection.insert_one({'email' : email, 'password' : passwd, 'registered' : registered, 'history' : history, 'serviceData' : serviceData})
         return redirect(url_for('login'))
 
 @bp.route("/logout")
@@ -57,6 +64,20 @@ def get_user():
     if request.method=="POST":
         collection = db['user_info']
         user_filter = {'email' : session.get("email")}
+        user = collection.find_one(user_filter, {'_id': False})
+
+        if 'registered' not in user:
+            registered = datetime.datetime.utcnow()
+            collection.update_one(user_filter, {"$set" : {'registered' : registered}})
+
+        if 'history' not in user and 'serviceData' not in user:
+            service_info = db['service_info'].find_one({}, {'_id' : 0})    
+            channels = []
+            for doc in db['youtuber_info'].find({}, {'_id' : 0, 'title' : 1}):
+                channels.append(doc['title'])
+            history, serviceData = create_dummy_data(channels, service_info)
+            collection.update_one(user_filter, {"$set" : {'history' : history, 'serviceData' : serviceData}})
+
         user = collection.find_one(user_filter, {'_id': False})
         return jsonify(user)
 
@@ -87,7 +108,6 @@ def email_check():
             return jsonify({'exists' : False})
         
 @bp.route("/confirm_user", methods=['POST'])
-@login_required
 def confirm_user():
     if request.method == "POST":
         collection = db['user_info']
@@ -107,6 +127,10 @@ def confirm_user():
 @login_required
 def update_feedback():
     if request.method=="POST":
+        hash = request.form.get('hash_val')
+        query = {'email' : session.get("email"), 'serviceData.service' : hash}
+        db['user_info'].update_one(query, {"$set" : {'serviceData.$.feedbackSubmitted' : True}})
+
         collection = db['feedback']
         form_data = request.form.to_dict()
         collection.insert_one(form_data)

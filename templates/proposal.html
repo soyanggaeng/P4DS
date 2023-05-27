@@ -155,7 +155,7 @@
 
         var timelineInput = document.getElementById("timeline");
         var currentDatetime = new Date();
-        var currentDatetimeString = currentDatetime.toISOString().slice(0, 19).replace("T", " ");
+        var currentDatetimeString = currentDatetime.toLocaleString('en-US');
         timelineInput.value = currentDatetimeString;
 
 
