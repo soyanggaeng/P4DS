@@ -33,6 +33,8 @@
     <section id="proposal-recommendation">
         <h2>Channel Recommendation</h2>
         <p>Based on your budget and the product to be advertised, we have identified the YouTube channels that would be most effective for your advertising campaign:</p>
+        <div id="recommendations"></div>
+        <button id="select-channel" type="button">Select Channel</button>
         <!-- Include the channel recommendations here -->
     </section>
     
@@ -85,6 +87,8 @@
 
     <script>
         var database;
+        var selectedChannel;
+
         window.onload = function () {
             communicate('/getYoutuberInfo', {})
                 .then(data => {

@@ -9,7 +9,7 @@ client = MongoClient(MONGODB_HOST)
 
 db = client[MONGODB_DATABASE]
 
-bp = Blueprint("fun_blueprint", __name__);
+bp = Blueprint("func_blueprint", __name__);
 
 #decorater
 def login_required(f):
