@@ -18,7 +18,6 @@ client = MongoClient(app.config["MONGODB_HOST"])
 db = client[app.config["MONGODB_DATABASE"]]
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('index.html', login_status = session.get('login_status', False))
