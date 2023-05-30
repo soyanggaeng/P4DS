@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyword Analysis | YAMP: Youtube Ad Matching Platform</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <script type="text/javascript" src="/static/js/common.js"></script>
+    <script type="text/javascript" src="/static/js/keyword.js"></script>
+</head>
+<body>
+    <header>
+    </header>
+    <nav>
+        <div class="login-button-container">
+            {% if login_status %}
+                <a href="#" id="logout-button">Log Out</a>
+            {% else %}
+                <a href="#" id="login-button">Log In</a>
+            {% endif %}
+    </nav>
+
+    <div class="container">
+        <section id="keyword-search">
+            <h2>Keyword Analysis</h2>
+            <p>Enter a YouTube channel or a keyword to generate analysis.</p>
+            <form id="channel-form">
+                <div class="form-group">
+                    <label for="channel-name">YouTube Channel</label>
+                    <input type="text" id="channel-name" placeholder="Enter YouTube channel name">
+                    <button type="button" id="channel-submit" onclick="channelAnalysis()">Generate Channel Analysis</button>
+                </div>
+            </form>
+            <form id="keyword-form">
+                <div class="form-group">
+                    <label for="keyword-name">Keyword</label>
+                    <input type="text" id="keyword-name" placeholder="Enter keyword">
+                    <button type="button" id="keyword-submit" onclick="keywordAnalysis()">Generate Keyword Analysis</button>
+                </div>
+            </form>
+        </section>
+        
+        <section id="channel-result">
+            <h2>Channel Analysis Results</h2>
+            <div id="channel-wordcloud" class="wordcloud"></div>
+        </section>
+
+        <section id="keyword-result">
+            <h2>Keyword Analysis Results</h2>
+            <div id="keyword-wordcloud" class="wordcloud"></div>
+        </section>
+    </div>
+
+    <footer>
+    </footer>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <!-- YouTube Login -->
+            <div id="youtubeAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Youtuber</h3>
+                <button id="continueYoutube" class="auth-button" type="button" onclick="nextStep('continueYoutube')">Continue with Youtube account</button>
+            </div>
+
+            <!-- Advertiser Login -->
+            <div id="advertiserAuth" class="auth-section">
+                <h2>Login</h2>
+                <h3>Advertiser</h3>
+                <button id="continueGoogle" class="auth-button" type="button" onclick="nextStep('continueGoogle')">Continue with Google account</button>
+                <button id="emailLogin" class="auth-button" type="button" onclick="nextStep('emailLogin')">Login with email</button>
+                <p>Not registered yet? <a class="register-link" href="#" id="emailRegistration" onclick="nextStep('emailRegistration')">Register now</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
