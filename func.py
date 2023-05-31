@@ -144,6 +144,10 @@ def update_proposal():
         form_data = request.form.to_dict()
         form_data['user_email'] = session['email'];
         collection.insert_one(form_data)
+
+        query = {'email' : session.get("email"), 'history.type' : 'To YouTuber Proposal'}
+        g.db['user_info'].update_one(query, {"$push" : { 'history.$.channel': form_data['youtuber-name'] }})
+
         return redirect(url_for('mypage'))
     
 @bp.route('/getYoutuberInfo', methods=['POST'])
