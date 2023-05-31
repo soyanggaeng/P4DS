@@ -1,8 +1,6 @@
 var h1 = "Welcome to YAMP!";
 var h3 = "The Ultimate Youtube Ad Matching Platform";
 
-commit test remote
-
 window.addEventListener('load', function () {
 
     var header = `<div class="header-overlay"></div>
