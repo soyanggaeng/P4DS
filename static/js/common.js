@@ -46,7 +46,7 @@ window.addEventListener('load', function () {
         <ul>
             <li><a href="/overview">Channel Overview</a></li>
             <li><a href="#">Video & Comment Analysis</a></li>
-            <li><a href="#">Keyword Analysis</a></li>
+            <li><a href="/keyword">Keyword Analysis</a></li>
             <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
         </ul>
     </li>

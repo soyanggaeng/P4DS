@@ -90,6 +90,29 @@ section ul li {
     margin-bottom: 15px;
 }
 
+#keyword-visualization {
+    margin-bottom: 30px;
+}
+
+#keyword-visualization h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#keyword-visualization p {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.wordcloud {
+    width: 100%;
+    height: 400px;
+    background-color: #eee;
+    /* Add any additional styling for the word cloud visualization */
+}
+
 .pricing-image-container {
     display: flex;
     justify-content: center;
@@ -918,3 +941,73 @@ input[type="submit"]:active {
     font-size : 5px;
     margin-right : 20px;
 } */
+
+/* Additional CSS for keyword.html */
+
+#keyword-search {
+    margin-bottom: 20px;
+}
+
+#keyword-search h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#keyword-search p {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#keyword-search form {
+    margin-bottom: 20px;
+}
+
+#keyword-search .form-group {
+    margin-bottom: 10px;
+}
+
+#keyword-search label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+#keyword-search input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    font-size: 16px;
+}
+
+#keyword-search button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #F38181;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#keyword-search button:hover {
+    background-color: #ea6a6a;
+}
+
+#channel-result, #keyword-result {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 100px;
+}
+
+#channel-result:hover, #keyword-result:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.wordcloud {
+    width: 100%;
+    height: 500px;
+    background: #eee;
+}
