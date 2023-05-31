@@ -93,8 +93,8 @@
 
     <script>
         var database;
-                
-        window.addEventLister('load', function () {
+
+        window.addEventListener('load', function () {
             communicate('/getYoutuberInfo', {})
                 .then(data => {
                     database = data;
@@ -136,6 +136,9 @@
                         var channelItem = document.createElement('div');
                         channelItem.classList.add('channel-item');
 
+                        channelItem.dataset.title = Youtubers[i].title;
+                        channelItem.dataset.mails = Youtubers[i].mails;
+
                         var thumbnail = document.createElement('img');
                         thumbnail.src = Youtubers[i].thumbnails;
                         thumbnail.alt = Youtubers[i].youtuber;
@@ -166,6 +169,11 @@
 
                         channelItem.appendChild(channelInfo);
                         $('#recommendations').appendChild(channelItem);
+
+                        channelItem.addEventListener('click', function() {
+                            document.getElementById("youtuber-name").value = this.dataset.title;
+                            document.getElementById("contact-email").value = this.dataset.mails;
+                        });
                     }
                 } else {
                     $('#recommendations').innerHTML = '<p>No results found.</p>';
@@ -176,8 +184,7 @@
 
 
 
-        function searchYouTuber() {
-            var youtuberName = document.getElementById("youtuber-name").value;
+        function searchYouTuber(youtuberName) {
             var contactEmail = document.getElementById("contact-email");
             var foundYoutuber = database.find(function(youtuber) {
                 return youtuber.title.toLowerCase() === youtuberName.toLowerCase();

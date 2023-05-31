@@ -976,17 +976,19 @@ input[type="submit"]:active {
 
 #keyword-search input[type="text"] {
     padding: 10px;
-    width: 300px;
+    width: 326px;
     font-size: 16px;
 }
 
 #keyword-search button {
     padding: 10px 15px;
+    width  : 350px;
     font-size: 16px;
     background-color: #F38181;
     color: white;
     border: none;
     cursor: pointer;
+    margin-top : 10px;
 }
 
 #keyword-search button:hover {
@@ -1011,3 +1013,21 @@ input[type="submit"]:active {
     height: 500px;
     background: #eee;
 }
+
+.channel-item {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1); /* Add shadow for depth */
+    border-radius: 5px; /* Round the corners */
+    cursor: pointer; /* Change the cursor to indicate clickable */
+    background-color: #ffffff; /* Add a background color */
+    transition: 0.3s; /* Add transition for hover effect */
+    margin-bottom : 40px;
+    text-align : center;
+}
+
+.channel-item:hover {
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.2); /* Add deeper shadow on hover */
+}
+
