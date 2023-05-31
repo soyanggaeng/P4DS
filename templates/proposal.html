@@ -4,7 +4,10 @@
     <title>YAMP: Youtube Ad Matching Platform - Proposal</title>
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
     <script type="text/javascript" src="static/js/common.js"></script>
+    <script type="text/javascript" src="static/js/login.js"></script>
     <script type="text/javascript" src="static/js/user.js"></script>
+    
+
     <style>
         /* .search-container {
             padding-left : 0px;
@@ -90,14 +93,14 @@
 
     <script>
         var database;
-        var selectedChannel;
-
-        window.onload = function () {
+                
+        window.addEventLister('load', function () {
             communicate('/getYoutuberInfo', {})
                 .then(data => {
                     database = data;
                 });
             }
+        )
 
         var currentDatetime = new Date();
         var currentDatetimeString = currentDatetime.toLocaleString('en-US');

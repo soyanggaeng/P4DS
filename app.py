@@ -68,6 +68,11 @@ def overview():
 def proposal():
     return render_template('proposal.html')
 
+@app.route('/keyword', methods=['GET', 'POST'])
+@login_required
+def keyword():
+    return render_template('keyword.html')
+
 
 
 if __name__ == '__main__':
