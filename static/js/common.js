@@ -1,6 +1,8 @@
 var h1 = "Welcome to YAMP!";
 var h3 = "The Ultimate Youtube Ad Matching Platform";
 
+
+
 window.addEventListener('load', function () {
 
     var header = `<div class="header-overlay"></div>
@@ -82,3 +84,7 @@ window.addEventListener('load', function () {
     document.querySelector('footer').innerHTML = footer;
     document.querySelector('nav').innerHTML = nav + document.querySelector('nav').innerHTML;
 });
+
+function $(selector){
+    return document.querySelector(selector);
+}

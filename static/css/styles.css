@@ -652,7 +652,7 @@ input[type="submit"]:active {
     color: #333;
 }
   
-#proposal-form {
+#proposal-form, #recommend-form {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
@@ -660,20 +660,24 @@ input[type="submit"]:active {
     margin-bottom: 100px;
 }
   
-#proposal-form h2 {
+#proposal-form h2, #recommend-form h2 {
     text-align: center;
     font-size: 2em;
     margin-bottom: 20px;
 }
   
-#proposal-form label {
+#proposal-form label, #recommend-form label {
     font-weight: bold;
 }
   
 #proposal-form input[type="text"],
 #proposal-form input[type="email"],
 #proposal-form input[type="number"],
-#proposal-form textarea {
+#proposal-form textarea,
+#recommend-form input[type="text"],
+#recommend-form input[type="email"],
+#recommend-form input[type="number"],
+#recommend-form textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -682,11 +686,11 @@ input[type="submit"]:active {
     margin-bottom: 20px;
 }
   
-#proposal-form textarea {
+#proposal-form textarea, #recommend-form textarea {
     resize: vertical;
 }
   
-#proposal-form input[type="submit"] {
+#proposal-form input[type="submit"], #recommend-form input[type="submit"]{
     background-color: #F38181;
     color: white;
     border: none;
@@ -700,18 +704,18 @@ input[type="submit"]:active {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
   
-#proposal-form input[type="submit"]:hover {
+#proposal-form input[type="submit"]:hover, #recommend-form input[type="submit"]:hover {
     background-color: #ea6a6a;
 }
   
-#proposal-form input[type="submit"]:active {
+#proposal-form input[type="submit"]:active, #recommend-form input[type="submit"]:active {
     background-color: #C45B5B;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* proposal.html specific styles */
 
-#proposal-form select {
+#proposal-form select, #recommend-form select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;

@@ -1,13 +1,13 @@
-from flask import Blueprint, session, redirect, url_for, jsonify, request
-from pymongo import MongoClient
+from flask import Blueprint, session, redirect, url_for, jsonify, request, g
+# from pymongo import MongoClient
 from config import *
 from functools import wraps
 import datetime
 from dummy import *
 
-client = MongoClient(MONGODB_HOST)
+# client = MongoClient(MONGODB_HOST)
 
-db = client[MONGODB_DATABASE]
+# db = client[MONGODB_DATABASE]
 
 bp = Blueprint("func_blueprint", __name__);
 
@@ -28,12 +28,12 @@ def login_status():
 @bp.route('/add_user', methods=['POST'])
 def add_user():
     if request.method=="POST":
-        service_info = db['service_info'].find_one({}, {'_id' : 0})    
+        service_info = g.db['service_info'].find_one({}, {'_id' : 0})    
         channels = []
-        for doc in db['youtuber_info'].find({}, {'_id' : 0, 'title' : 1}):
+        for doc in g.db['youtuber_info'].find({}, {'_id' : 0, 'title' : 1}):
             channels.append(doc['title'])
 
-        collection = db['user_info']
+        collection = g.db['user_info']
         email = request.form['email']
         passwd = request.form['password']
         registered = datetime.datetime.utcnow()
@@ -51,7 +51,7 @@ def logout():
 @login_required
 def update_user():
     if request.method=="POST":
-        collection = db['user_info']
+        collection = g.db['user_info']
         user_filter = {'email' : session.get("email")}
         collection.update_one(user_filter, {"$set" : request.json})
         user = collection.find_one(user_filter, {'_id': False})
@@ -62,7 +62,7 @@ def update_user():
 @login_required
 def get_user():
     if request.method=="POST":
-        collection = db['user_info']
+        collection = g.db['user_info']
         user_filter = {'email' : session.get("email")}
         user = collection.find_one(user_filter, {'_id': False})
 
@@ -71,9 +71,9 @@ def get_user():
             collection.update_one(user_filter, {"$set" : {'registered' : registered}})
 
         if 'history' not in user and 'serviceData' not in user:
-            service_info = db['service_info'].find_one({}, {'_id' : 0})    
+            service_info = g.db['service_info'].find_one({}, {'_id' : 0})    
             channels = []
-            for doc in db['youtuber_info'].find({}, {'_id' : 0, 'title' : 1}):
+            for doc in g.db['youtuber_info'].find({}, {'_id' : 0, 'title' : 1}):
                 channels.append(doc['title'])
             history, serviceData = create_dummy_data(channels, service_info)
             collection.update_one(user_filter, {"$set" : {'history' : history, 'serviceData' : serviceData}})
@@ -86,7 +86,7 @@ def get_user():
 @login_required
 def contact():
     if request.method=="POST":
-        collection = db['contact']
+        collection = g.db['contact']
         name = request.form['name']
         email = request.form['email']
         message = request.form['message']
@@ -98,7 +98,7 @@ def contact():
 @login_required
 def email_check():
     if request.method == "POST":
-        collection = db['user_info']
+        collection = g.db['user_info']
         email = request.json['email']
         user = collection.find_one({'email' : email})
 
@@ -110,7 +110,7 @@ def email_check():
 @bp.route("/confirm_user", methods=['POST'])
 def confirm_user():
     if request.method == "POST":
-        collection = db['user_info']
+        collection = g.db['user_info']
         email = request.form.get('email')
         password = request.form.get('password')
         user = collection.find_one({'email' : email, 'password' : password})
@@ -129,9 +129,9 @@ def update_feedback():
     if request.method=="POST":
         hash = request.form.get('hash_val')
         query = {'email' : session.get("email"), 'serviceData.service' : hash}
-        db['user_info'].update_one(query, {"$set" : {'serviceData.$.feedbackSubmitted' : True}})
+        g.db['user_info'].update_one(query, {"$set" : {'serviceData.$.feedbackSubmitted' : True}})
 
-        collection = db['feedback']
+        collection = g.db['feedback']
         form_data = request.form.to_dict()
         collection.insert_one(form_data)
         return redirect(url_for('mypage'))
@@ -140,7 +140,7 @@ def update_feedback():
 @login_required
 def update_proposal():
     if request.method=="POST":
-        collection = db['proposal']
+        collection = g.db['proposal']
         form_data = request.form.to_dict()
         form_data['user_email'] = session['email'];
         collection.insert_one(form_data)
@@ -150,7 +150,7 @@ def update_proposal():
 @login_required
 def get_youtuber_info():
     if request.method=="POST":
-        collection = db['youtuber_info']
+        collection = g.db['youtuber_info']
         cursor = collection.find({}, {'_id': False})
         youtuber_info = [doc for doc in cursor]
         return jsonify(youtuber_info)

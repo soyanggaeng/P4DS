@@ -6,14 +6,14 @@
     <script type="text/javascript" src="static/js/common.js"></script>
     <script type="text/javascript" src="static/js/user.js"></script>
     <style>
-        .search-container {
+        /* .search-container {
             padding-left : 0px;
         }
 
         #proposal-form input[name="youtuber-name"]{
             margin-bottom : 0px;
             width : 200px;
-        }
+        } */
     </style>
 </head>
 <body>
@@ -33,27 +33,8 @@
     <section id="proposal-recommendation">
         <h2>Channel Recommendation</h2>
         <p>Based on your budget and the product to be advertised, we have identified the YouTube channels that would be most effective for your advertising campaign:</p>
-        <div id="recommendations"></div>
-        <button id="select-channel" type="button">Select Channel</button>
         <!-- Include the channel recommendations here -->
-    </section>
-    
-    <section id="proposal-submission">
-        <h2>Proposal Submission</h2>
-        <p>Send a proposal to the recommended YouTubers through our YAMP service:</p>
-        <form id="proposal-form" action="/updateProposal", method="post">
-            <label for="youtuber-name">YouTuber Name:</label>
-            <div class="search-container">
-                <div class="autocomplete">
-                    <input type="text" id="youtuber-name" name="youtuber-name" placeholder="Enter YouTuber's Name" required>
-                    <div id="suggestions"></div>
-                </div>
-                <button id="search_btn" type="button">Search</button>
-            </div>
-            
-            <label for="contact-email">Contact Email:</label>
-            <input type="email" id="contact-email" name="contact-email" placeholder="Enter Your Email Address" required>
-            
+        <form id="recommend-form", method="post">            
             <label for="product">Product:</label>
             <select id="product" name="product" required>
                 <option value="" disabled selected>Select Product Type</option>
@@ -67,16 +48,38 @@
                 <option value="entertainment-media">Entertainment and Media</option>
                 <option value="home-lifestyle">Home and Lifestyle</option>
                 <option value="financial-services">Financial Services</option>
+                <button id="select-channel" type="button">Select Channel</button>
             </select>
             
             <label for="budget">Budget:</label>
             <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>
             
+            <label for="keywords">Keywords:</label>
+            <textarea id="keywords" name="keywords" placeholder="Enter Your Keywords" required></textarea>
+            
+            <input type="submit" value="Get Recommendations">
+        </form>
+        <div id="recommendations"></div>        
+    </section>
+    
+    <section id="proposal-submission">
+        <h2>Proposal Submission</h2>
+        <p>Send a proposal to the recommended YouTubers through our YAMP service:</p>
+        <form id="proposal-form" action="/updateProposal", method="post">
+            <label for="youtuber-name">YouTuber Name:</label>
+            <input type="text" id="youtuber-name" name="youtuber-name" placeholder="Recommended YouTuber's Name" required readonly>
+            
+            <label for="contact-email">Contact Email:</label>
+            <input type="email" id="contact-email" name="contact-email" placeholder="Recommended YouTuber's Email Address" required readonly>
+
             <label for="timeline">Timeline:</label>
-            <input type="text" id="timeline" name="timeline" placeholder="Enter Proposed Timeline" required>
+            <input type="text" id="timeline" name="timeline" placeholder="Proposed Timeline" required>
             
             <label for="message">Message:</label>
             <textarea id="message" name="message" placeholder="Enter Your Proposal Message" required></textarea>
+
+            <input type="hidden" id="hidden-product" name="product">
+            <input type="hidden" id="hidden-budget" name="budget">
             
             <input type="submit" value="Send Proposal">
         </form>        
@@ -96,51 +99,79 @@
                 });
             }
 
+        var currentDatetime = new Date();
+        var currentDatetimeString = currentDatetime.toLocaleString('en-US');
+        $("#timeline").value = currentDatetimeString;
+            
+        $('#proposal-form').addEventListener('submit', function() {
+            // copy product value
+            $('#hidden-product').value = $('#product').value;
 
-        var activeSuggestion = -1;
+            // copy budget value
+            $('#hidden-budget').value = $('#budget').value;;
+        });
 
-        document.querySelector('#youtuber-name').addEventListener('keyup', function(e){
-            const suggestionsDiv = document.getElementById('suggestions');
-            const children = Array.from(suggestionsDiv.children);
 
-            if(e.key == 'Enter'){
-                e.preventDefault();
-                if(activeSuggestion > -1){
-                    children[activeSuggestion].click();
+        $('#recommend-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            var formData = new FormData(this); // Get form data
+
+            // Perform AJAX request using Fetch API
+            fetch('/getRecommendedChannels', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var Youtubers = database.filter(item => data.includes(item.title));
+
+                if (Youtubers.length > 0) {
+                    $('#recommendations').innerHTML = ''; // Clear previous search results
+
+                    for (var i = 0; i < Youtubers.length; i++) {
+                        var channelItem = document.createElement('div');
+                        channelItem.classList.add('channel-item');
+
+                        var thumbnail = document.createElement('img');
+                        thumbnail.src = Youtubers[i].thumbnails;
+                        thumbnail.alt = Youtubers[i].youtuber;
+                        channelItem.appendChild(thumbnail);
+
+                        var channelInfo = document.createElement('div');
+                        channelInfo.classList.add('channel-info');
+
+                        var youtuberName = document.createElement('h3');
+                        youtuberName.textContent = Youtubers[i].title;
+                        channelInfo.appendChild(youtuberName);
+
+                        var subscriberCount = document.createElement('p');
+                        subscriberCount.textContent = 'Subscriber Count: ' + Youtubers[i].subscriberCount;
+                        channelInfo.appendChild(subscriberCount);
+
+                        var subscriberChange = document.createElement('p');
+                        subscriberChange.textContent = 'Subscriber Change: ' + Youtubers[i].subscriberChange;
+                        channelInfo.appendChild(subscriberChange);
+
+                        var dailyViewCount = document.createElement('p');
+                        dailyViewCount.textContent = 'Daily View Count: ' + Youtubers[i].dailyViewCount;
+                        channelInfo.appendChild(dailyViewCount);
+
+                        var description = document.createElement('p');
+                        description.textContent = Youtubers[i].description;
+                        channelInfo.appendChild(description);
+
+                        channelItem.appendChild(channelInfo);
+                        $('#recommendations').appendChild(channelItem);
+                    }
+                } else {
+                    $('#recommendations').innerHTML = '<p>No results found.</p>';
                 }
-                else{
-                    document.querySelector('#youtuber-name').blur();
-                    document.querySelector('#search_btn').click();
-                    suggestionsDiv.innerHTML = "";
-                    suggestionsDiv.style.display = "none";
-                    activeSuggestion = -1
-                }
-                }
-            });
 
-        document.querySelector('#youtuber-name').addEventListener('keydown', function(e){
-            const suggestionsDiv = document.getElementById('suggestions');
-            const children = Array.from(suggestionsDiv.children);
-
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                const nextIndex = activeSuggestion >= 0 ? (activeSuggestion + 1) % children.length : activeSuggestion+1;
-                // const nextIndex = activeSuggestion+1;
-                setActiveSuggestion(nextIndex);
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                const prevIndex = activeSuggestion > -1 ? activeSuggestion - 1 : -1;
-                setActiveSuggestion(prevIndex);
-            } else if (e.key != "Enter") {
-                setTimeout(() => {autocomplete(e);}, 0);
-            } else if(e.key == "Enter"){
-                e.preventDefault();
-            }
-        })
+            })
+        });
 
 
-        var searchButton = document.getElementById("search_btn");
-        searchButton.addEventListener("click", searchYouTuber);
 
         function searchYouTuber() {
             var youtuberName = document.getElementById("youtuber-name").value;
@@ -157,89 +188,127 @@
             }
         }
 
-        var timelineInput = document.getElementById("timeline");
-        var currentDatetime = new Date();
-        var currentDatetimeString = currentDatetime.toLocaleString('en-US');
-        timelineInput.value = currentDatetimeString;
+        // var activeSuggestion = -1;
+
+        // document.querySelector('#youtuber-name').addEventListener('keyup', function(e){
+        //     const suggestionsDiv = document.getElementById('suggestions');
+        //     const children = Array.from(suggestionsDiv.children);
+
+        //     if(e.key == 'Enter'){
+        //         e.preventDefault();
+        //         if(activeSuggestion > -1){
+        //             children[activeSuggestion].click();
+        //         }
+        //         else{
+        //             document.querySelector('#youtuber-name').blur();
+        //             document.querySelector('#search_btn').click();
+        //             suggestionsDiv.innerHTML = "";
+        //             suggestionsDiv.style.display = "none";
+        //             activeSuggestion = -1
+        //         }
+        //         }
+        //     });
+
+        // document.querySelector('#youtuber-name').addEventListener('keydown', function(e){
+        //     const suggestionsDiv = document.getElementById('suggestions');
+        //     const children = Array.from(suggestionsDiv.children);
+
+        //     if (e.key === 'ArrowDown') {
+        //         e.preventDefault();
+        //         const nextIndex = activeSuggestion >= 0 ? (activeSuggestion + 1) % children.length : activeSuggestion+1;
+        //         // const nextIndex = activeSuggestion+1;
+        //         setActiveSuggestion(nextIndex);
+        //     } else if (e.key === 'ArrowUp') {
+        //         e.preventDefault();
+        //         const prevIndex = activeSuggestion > -1 ? activeSuggestion - 1 : -1;
+        //         setActiveSuggestion(prevIndex);
+        //     } else if (e.key != "Enter") {
+        //         setTimeout(() => {autocomplete(e);}, 0);
+        //     } else if(e.key == "Enter"){
+        //         e.preventDefault();
+        //     }
+        // })
 
 
+        // var searchButton = document.getElementById("search_btn");
+        // searchButton.addEventListener("click", searchYouTuber);
         
-        function autocomplete(e) {
-                const suggestionsDiv = document.getElementById('suggestions');
-                let suggestions=[];
+        // function autocomplete(e) {
+        //         const suggestionsDiv = document.getElementById('suggestions');
+        //         let suggestions=[];
 
-                const input = document.getElementById('youtuber-name');
-                const query = input.value.toLowerCase();
+        //         const input = document.getElementById('youtuber-name');
+        //         const query = input.value.toLowerCase();
                 
-                console.log(query)
+        //         console.log(query)
 
-                // Filter the search targets based on the query
-                const sug_list = database.filter(function(item) {
-                    return item.title.toLowerCase().includes(query)
-                });
-                if (input.value != ""){
-                    suggestions = sug_list.map(item => item.title);
-                }
+        //         // Filter the search targets based on the query
+        //         const sug_list = database.filter(function(item) {
+        //             return item.title.toLowerCase().includes(query)
+        //         });
+        //         if (input.value != ""){
+        //             suggestions = sug_list.map(item => item.title);
+        //         }
 
-                // console.log(suggestions);
+        //         // console.log(suggestions);
 
-                suggestionsDiv.innerHTML = ''
+        //         suggestionsDiv.innerHTML = ''
 
-                // Display the suggestions
+        //         // Display the suggestions
 
-                suggestions.forEach((suggestion, index) => {
-                    const div = document.createElement('div');
-                    div.textContent = suggestion;
-                    div.id = 'suggestion-' + index;
-                    div.onclick = selectSuggestion;
-                    div.onmouseover = function() {
-                        setActiveSuggestion(index);
-                    };
-                    div.onmouseleave = function() {
-                        if(isKorean(e.key)){
-                            setActiveSuggestion(-2);
-                        } else{
-                            setActiveSuggestion(-1);
-                        }
-                    };
-                    suggestionsDiv.appendChild(div);
-                });
+        //         suggestions.forEach((suggestion, index) => {
+        //             const div = document.createElement('div');
+        //             div.textContent = suggestion;
+        //             div.id = 'suggestion-' + index;
+        //             div.onclick = selectSuggestion;
+        //             div.onmouseover = function() {
+        //                 setActiveSuggestion(index);
+        //             };
+        //             div.onmouseleave = function() {
+        //                 if(isKorean(e.key)){
+        //                     setActiveSuggestion(-2);
+        //                 } else{
+        //                     setActiveSuggestion(-1);
+        //                 }
+        //             };
+        //             suggestionsDiv.appendChild(div);
+        //         });
 
-                suggestionsDiv.style.display = suggestions.length ? 'block' : 'none';
+        //         suggestionsDiv.style.display = suggestions.length ? 'block' : 'none';
 
-                activeSuggestion = isKorean(e.key) ? -2 : -1;
-            }
+        //         activeSuggestion = isKorean(e.key) ? -2 : -1;
+        //     }
 
-            function setActiveSuggestion(index) {
-                const suggestionsDiv = document.getElementById('suggestions');
-                const children = Array.from(suggestionsDiv.children);
-                children.forEach((child, i) => {
-                    child.style.background = i === index ? '#ddd' : '#fff';
-                });
-                activeSuggestion = index;
+        //     function setActiveSuggestion(index) {
+        //         const suggestionsDiv = document.getElementById('suggestions');
+        //         const children = Array.from(suggestionsDiv.children);
+        //         children.forEach((child, i) => {
+        //             child.style.background = i === index ? '#ddd' : '#fff';
+        //         });
+        //         activeSuggestion = index;
 
-                if (activeSuggestion >= 0) {
-                    children[activeSuggestion].scrollIntoView({ block: 'nearest' });
-                }
-            }
+        //         if (activeSuggestion >= 0) {
+        //             children[activeSuggestion].scrollIntoView({ block: 'nearest' });
+        //         }
+        //     }
 
-            function selectSuggestion() {
-                const input = document.getElementById('youtuber-name');
-                const suggestionsDiv = document.getElementById('suggestions');
-                input.value = this.textContent;
-                input.focus();
-                suggestionsDiv.style.display = 'none';
-                activeSuggestion = -1;
-            }
+        //     function selectSuggestion() {
+        //         const input = document.getElementById('youtuber-name');
+        //         const suggestionsDiv = document.getElementById('suggestions');
+        //         input.value = this.textContent;
+        //         input.focus();
+        //         suggestionsDiv.style.display = 'none';
+        //         activeSuggestion = -1;
+        //     }
 
-            function isKorean(char) {
-            const unicode = char.charCodeAt(0);
-            return ((unicode >= 0xAC00 && unicode <= 0xD7A3) ||  // Hangul Syllables
-                    (unicode >= 0x1100 && unicode <= 0x11FF) ||  // Hangul Jamo
-                    (unicode >= 0x3130 && unicode <= 0x318F) ||  // Hangul Compatibility Jamo
-                    (unicode >= 0xA960 && unicode <= 0xA97F) ||  // Hangul Jamo Extended-A
-                    (unicode >= 0xD7B0 && unicode <= 0xD7FF));   // Hangul Jamo Extended-B
-        }
+        //     function isKorean(char) {
+        //     const unicode = char.charCodeAt(0);
+        //     return ((unicode >= 0xAC00 && unicode <= 0xD7A3) ||  // Hangul Syllables
+        //             (unicode >= 0x1100 && unicode <= 0x11FF) ||  // Hangul Jamo
+        //             (unicode >= 0x3130 && unicode <= 0x318F) ||  // Hangul Compatibility Jamo
+        //             (unicode >= 0xA960 && unicode <= 0xA97F) ||  // Hangul Jamo Extended-A
+        //             (unicode >= 0xD7B0 && unicode <= 0xD7FF));   // Hangul Jamo Extended-B
+        // }
     </script>   
 </body>
 </html>

@@ -1,21 +1,28 @@
-from flask import Flask, request, render_template, redirect, url_for, jsonify, session
+from flask import Flask, request, render_template, redirect, url_for, jsonify, session, g
 import json
-from pymongo import MongoClient
+# from pymongo import MongoClient
 from config import *
+from db_setup import get_db
 
 app = Flask(__name__)
 
 from func import bp, login_required
+from recommend import bp2
 
 app.register_blueprint(bp)
+app.register_blueprint(bp2)
 
 app.config.from_pyfile('config.py')
 
 secret_key = app.config.get('SECRET_KEY', 'default_secret')
 
-client = MongoClient(app.config["MONGODB_HOST"])
+@app.before_request
+def before_request():
+    g.db = get_db()
 
-db = client[app.config["MONGODB_DATABASE"]]
+@app.teardown_appcontext
+def teardown_db(exc):
+    db = g.pop('db', None)
 
 
 @app.route('/', methods=['GET', 'POST'])
