@@ -1,0 +1,1009 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container{
+    display : flex;
+    flex-direction : column;
+    align-items: center;
+}
+
+.container section{
+    width : 1000px;
+}
+
+nav {
+    position: relative;
+    z-index: 5;
+}
+
+header {
+    position: relative;
+    background-image: url('../img/cardmapr-nl-tvzykmBf3r0-unsplash.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    height: 800px;
+    z-index: 1;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.header-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.logo-container {
+    margin-bottom: 20px;
+}
+
+#logo {
+    width: 150px;
+    height: auto;
+}
+
+header h1,
+header h3 {
+    margin: 10px 0;
+}
+
+section {
+    margin: 30px;
+}
+
+section h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+section p,
+section ul {
+    color: #333;
+    font-size: 1.1em;
+}
+
+section ul {
+    padding-left: 40px;
+}
+
+section ul li {
+    margin-bottom: 15px;
+}
+
+#keyword-visualization {
+    margin-bottom: 30px;
+}
+
+#keyword-visualization h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#keyword-visualization p {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.wordcloud {
+    width: 100%;
+    height: 400px;
+    background-color: #eee;
+    /* Add any additional styling for the word cloud visualization */
+}
+
+.pricing-image-container {
+    display: flex;
+    justify-content: center;
+}
+
+#pricing img {
+    max-width: 100%;
+    height: auto;
+}
+
+#pricing {
+    padding-bottom: 100px; /* Adjust the size as needed */
+}
+
+footer {
+    background-color: #F38181;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    margin-right: 20px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.pricing-image {
+    max-width: 100%;
+    height: auto;
+}
+nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 4;
+    width: 100%; /* Revert width back to 100% */
+}
+
+.login-button-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: 5;
+}
+
+#login-button, #logout-button {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+#login-button:hover, #logout-button:hover {
+    background-color: #ea6a6a;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    position: relative;
+    padding: 10px;
+    font-size: 1.1em;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: #F38181;
+}
+
+nav ul li ul li a {
+    color: black;
+}
+
+nav ul li ul li a:hover {
+    color: #F38181;
+}
+
+nav ul li ul {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    z-index: 10;
+}
+
+nav ul li:hover ul {
+    display: block;
+}
+
+.advertiser-only,
+.youtuber-only {
+    display: none;
+}
+
+/* sotube.css */
+#team-members {
+    margin: 30px;
+}
+
+#team-members h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.team_logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.team_logo img {
+    width: 150px;
+    height: auto;
+}
+
+.member {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.member h3 {
+    margin: 10px 0;
+}
+
+.member p {
+    color: #333;
+}
+
+#goals {
+    margin: 30px;
+}
+
+#goals h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#goals ul {
+    color: #333;
+    padding-left: 20px;
+}
+
+#goals ul li {
+    margin-bottom: 10px;
+}
+
+#contact {
+    margin: 30px;
+    padding-bottom: 120px; /* Add this line */
+}
+
+#contact-form {
+    display: grid;
+    grid-gap: 10px;
+}
+
+#contact-form label {
+    font-weight: bold;
+}
+
+#contact-form input,
+#contact-form textarea {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#contact-form textarea {
+    resize: vertical;
+}
+
+#contact-form button {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#contact-form button:hover {
+    background-color: #ea6a6a;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 500px; /* Could be more or less, depending on screen size */
+    border-radius: 15px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.auth-section {
+    background-color: #f8f8f8;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 10px;
+    display: block;
+}
+
+.auth-button {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.auth-button:hover {
+    background-color: #ea6a6a;
+}
+
+.register-link {
+    color: #F38181;
+}
+
+.register-link:hover {
+    color: #ea6a6a;
+    text-decoration: underline;
+}
+
+
+form {
+    max-width: 400px;
+    margin: 0 auto 100px; /* Add a bottom margin that is at least the height of your footer */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+form h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+form p {
+    font-size: 1.1em;
+    color: #333;
+}
+
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+form button {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+}
+
+form button:hover {
+    background-color: #ea6a6a;
+}
+
+.form-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #F38181;
+}
+
+.form-link:hover {
+    color: #ea6a6a;
+    text-decoration: underline;
+}
+
+.notice {
+    color: #ea6a6a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;  /* to add some space above the button */
+    width: 100%; /* makes the button stretch to full width of its container */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* adds a slight shadow for a 3D effect */
+}
+
+input[type="submit"]:hover {
+    background-color: #ea6a6a;
+}
+
+input[type="submit"]:active {
+    background-color: #C45B5B;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* reduces the shadow when button is clicked */
+}
+
+/* feedback.html */
+
+/* Adjust the margin and padding as needed */
+#feedback {
+    margin: 100px;
+}
+
+#feedback h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#feedback-form label {
+    font-weight: bold;
+}
+
+#feedback-form input,
+#feedback-form textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#feedback-form textarea {
+    resize: vertical;
+}
+
+#feedback-form button {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+}
+
+#feedback-form button:hover {
+    background-color: #ea6a6a;
+}
+
+
+/* mypage.html */
+
+/* Box Styling */
+.box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+#member-information {
+    margin: 30px;
+}
+
+#member-information h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    margin-right: 20px;
+}
+
+.info-container {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.info-container p {
+    margin-bottom: 10px;
+}
+
+/* analysis history */
+#analysis-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#analysis-history th,
+#analysis-history td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#analysis-history th {
+    background-color: #f2f2f2;
+    color: black;
+}
+
+#analysis-history td {
+    vertical-align: top;
+}
+
+/* purchased service */
+#purchased-service {
+    margin: 30px;
+    margin-bottom: 200px;
+}
+
+#purchased-service h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#service-info .service-card {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative; /* Added */
+}
+
+#service-info .service-card button {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+#service-info .service-card button:hover {
+    background-color: #ea6a6a;
+}
+
+#service-info .service-card button:active {
+    background-color: #C45B5B;
+}
+
+#service-info .service-card button.feedback-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.form-container > h2, .form-container > p, #feedback > h2 {
+    text-align : center;
+}
+/* Add any custom styles specific to the proposal.html page here */
+
+#proposal-recommendation {
+    margin: 30px;
+}
+  
+#proposal-recommendation h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+  
+#proposal-recommendation p {
+    font-size: 1.1em;
+    color: #333;
+}
+  
+#proposal-submission {
+    margin: 30px;
+}
+  
+#proposal-submission h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+  
+#proposal-submission p {
+    font-size: 1.1em;
+    color: #333;
+}
+  
+#proposal-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 100px;
+}
+  
+#proposal-form h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+  
+#proposal-form label {
+    font-weight: bold;
+}
+  
+#proposal-form input[type="text"],
+#proposal-form input[type="email"],
+#proposal-form input[type="number"],
+#proposal-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+  
+#proposal-form textarea {
+    resize: vertical;
+}
+  
+#proposal-form input[type="submit"] {
+    background-color: #F38181;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+  
+#proposal-form input[type="submit"]:hover {
+    background-color: #ea6a6a;
+}
+  
+#proposal-form input[type="submit"]:active {
+    background-color: #C45B5B;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* proposal.html specific styles */
+
+#proposal-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.name_container {
+    display: inline-block;
+    position: relative;
+    border : none;
+}
+
+.name_container img {
+    width: 1em; /* Adjust the size as desired */
+    height: 1em; /* Adjust the size as desired */
+    vertical-align: middle;
+    cursor : pointer;
+  }
+  
+#search-button {
+    margin-left: 10px;
+    padding: 8px 12px;
+}
+
+/* Additional CSS for overview.html */
+
+#channel-overview {
+    margin: 30px;
+    margin-bottom: 230px;
+}
+
+#channel-overview h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    padding: 10px;
+    width: 300px;
+    font-size: 16px;
+}
+
+#search-input::placeholder {
+    color: #999;
+}
+
+.search-container button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #F38181;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #F38181;
+}
+
+.overview-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.channel-item {
+    width: calc(50% - 20px);
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.channel-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.channel-info h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.channel-info p {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.channel-info p:last-child {
+    margin-bottom: 0;
+}
+
+.channel-info img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+}
+
+.channel-item img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+.search-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.autocomplete {
+    position: relative;
+    margin-right: 10px;
+}
+
+.autocomplete input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.autocomplete #suggestions {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    padding: 10px;
+    display: none;
+    box-sizing: border-box;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.autocomplete #suggestions div {
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.autocomplete #suggestions div:hover {
+    background: #ddd;
+}
+
+#search_btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    background: #F38181;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#search_btn:hover {
+    background: #ea6a6a;
+}
+
+
+/* .image-container{
+    width:150px;
+    margin-right : 100px;
+}
+
+#profile-upload {
+    display : block;
+    margin-bottom : 0px;
+}
+
+.image-container #profile-upload input{
+    width : auto;
+    margin-right : 20px;
+}
+
+.image-container #profile-upload input[type='submit']{
+    height : 10px;
+    width : auto;
+    font-size : 5px;
+    margin-right : 20px;
+} */
+
+/* Additional CSS for keyword.html */
+
+#keyword-search {
+    margin-bottom: 20px;
+}
+
+#keyword-search h2 {
+    color: #1a1a1a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#keyword-search p {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#keyword-search form {
+    margin-bottom: 20px;
+}
+
+#keyword-search .form-group {
+    margin-bottom: 10px;
+}
+
+#keyword-search label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+#keyword-search input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    font-size: 16px;
+}
+
+#keyword-search button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #F38181;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#keyword-search button:hover {
+    background-color: #ea6a6a;
+}
+
+#channel-result, #keyword-result {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 100px;
+}
+
+#channel-result:hover, #keyword-result:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.wordcloud {
+    width: 100%;
+    height: 500px;
+    background: #eee;
+}
