@@ -7,18 +7,6 @@
     <script type="text/javascript" src="static/js/login.js"></script>
     <script type="text/javascript" src="static/js/user.js"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    
-
-    <style>
-        /* .search-container {
-            padding-left : 0px;
-        }
-
-        #proposal-form input[name="youtuber-name"]{
-            margin-bottom : 0px;
-            width : 200px;
-        } */
-    </style>
 </head>
 <body>
     <header>
@@ -52,7 +40,6 @@
                 <option value="entertainment-media">Entertainment and Media</option>
                 <option value="home-lifestyle">Home and Lifestyle</option>
                 <option value="financial-services">Financial Services</option>
-                <button id="select-channel" type="button">Select Channel</button>
             </select>
             
             <label for="budget">Budget:</label>
@@ -61,6 +48,7 @@
             <label for="keywords">Keywords:</label>
             <div id="keyword-container">
                 <input type="text" id="keyword-0" name="keywords[]" placeholder="Enter Your Keyword" required>
+                <div id="suggestions"></div> <!-- Suggestions container -->
             </div>
             <button type="button" id="add-keyword">+</button>
 
@@ -99,91 +87,98 @@
     </footer>
 
     <script>
-        document.getElementById("add-keyword").addEventListener("click", function() {
+        document.addEventListener("DOMContentLoaded", function() {
             var keywordContainer = document.getElementById("keyword-container");
-            var newKeywordInput = document.createElement("input");
-            newKeywordInput.type = "text";
-            newKeywordInput.name = "keywords[]";
-            newKeywordInput.placeholder = "Enter Your Keyword";
-            newKeywordInput.required = true;
-            keywordContainer.appendChild(newKeywordInput);
-        });
-
-        function setExampleKeywords(productType) {
-            var exampleKeywords = [];
-            switch (productType) {
-                case "technology":
-                    exampleKeywords = ["스마트폰", "컴퓨터", "인터넷", "IT", "디지털"];
-                    break;
-                case "gaming":
-                    exampleKeywords = ["게임", "오버워치", "리그오브레전드", "마인크래프트", "롤"];
-                    break;
-                case "beauty-fashion":
-                    exampleKeywords = ["화장품", "패션", "뷰티", "메이크업", "스타일"];
-                    break;
-                case "food-beverage":
-                    exampleKeywords = ["음식", "요리", "음료", "레시피", "식품"];
-                    break;
-                case "health-fitness":
-                    exampleKeywords = ["건강", "운동", "다이어트", "피트니스", "웰빙"];
-                    break;
-                case "travel-tourism":
-                    exampleKeywords = ["여행", "관광", "해외여행", "국내여행", "여행팁"];
-                    break;
-                case "automotive":
-                    exampleKeywords = ["자동차", "차량", "자동차리뷰", "자동차정비", "자동차운전"];
-                    break;
-                case "entertainment-media":
-                    exampleKeywords = ["엔터테인먼트", "영화", "드라마", "연예인", "미디어"];
-                    break;
-                case "home-lifestyle":
-                    exampleKeywords = ["가정", "인테리어", "라이프스타일", "가구", "홈케어"];
-                    break;
-                case "financial-services":
-                    exampleKeywords = ["금융", "재테크", "보험", "은행", "금융상품"];
-                    break;
-                default:
-                    break;
+            var suggestionsContainer = document.getElementById("suggestions");
+            var keywordInputs = keywordContainer.getElementsByTagName("input");
+    
+            // Add event listeners for keyword inputs
+            for (var i = 0; i < keywordInputs.length; i++) {
+                keywordInputs[i].addEventListener("input", function() {
+                    var keyword = this.value;
+                    showSuggestions(keyword);
+                });
             }
-            var keywordContainer = document.getElementById("keyword-container");
-            keywordContainer.innerHTML = "";
-            exampleKeywords.forEach(function(keyword) {
-                var newKeywordInput = document.createElement("input");
-                newKeywordInput.type = "text";
-                newKeywordInput.name = "keywords[]";
-                newKeywordInput.placeholder = keyword;
-                newKeywordInput.required = true;
-                keywordContainer.appendChild(newKeywordInput);
+    
+            function showSuggestions(keyword) {
+                // Clear previous suggestions
+                suggestionsContainer.innerHTML = "";
+    
+                // Generate suggestions based on keyword
+                if (keyword.trim() !== "") {
+                    var productType = document.getElementById("product").value;
+                    var exampleKeywords = getExampleKeywords(productType);
+                    var filteredKeywords = exampleKeywords.filter(function(exampleKeyword) {
+                        return exampleKeyword.toLowerCase().startsWith(keyword.toLowerCase());
+                    });
+    
+                    // Display suggestions
+                    filteredKeywords.forEach(function(filteredKeyword) {
+                        var suggestion = document.createElement("div");
+                        suggestion.textContent = filteredKeyword;
+                        suggestion.addEventListener("click", function() {
+                            var keywordInput = document.activeElement;
+                            keywordInput.value = this.textContent;
+                            suggestionsContainer.innerHTML = "";
+                        });
+                        suggestionsContainer.appendChild(suggestion);
+                    });
+                }
+            }
+    
+            function getExampleKeywords(productType) {
+                var exampleKeywords = [];
+                switch (productType) {
+                    case "technology":
+                        exampleKeywords = ["스마트폰", "컴퓨터", "인터넷", "IT", "디지털"];
+                        break;
+                    case "gaming":
+                        exampleKeywords = ["게임", "오버워치", "리그오브레전드", "마인크래프트", "롤"];
+                        break;
+                    case "beauty-fashion":
+                        exampleKeywords = ["화장품", "패션", "뷰티", "메이크업", "스타일"];
+                        break;
+                    case "food-beverage":
+                        exampleKeywords = ["음식", "요리", "음료", "레시피", "식품"];
+                        break;
+                    case "health-fitness":
+                        exampleKeywords = ["건강", "운동", "다이어트", "피트니스", "웰빙"];
+                        break;
+                    case "travel-tourism":
+                        exampleKeywords = ["여행", "관광", "해외여행", "국내여행", "여행팁"];
+                        break;
+                    case "automotive":
+                        exampleKeywords = ["자동차", "차량", "자동차리뷰", "자동차정비", "자동차운전"];
+                        break;
+                    case "entertainment-media":
+                        exampleKeywords = ["엔터테인먼트", "영화", "드라마", "연예인", "미디어"];
+                        break;
+                    case "home-lifestyle":
+                        exampleKeywords = ["가정", "인테리어", "라이프스타일", "가구", "홈케어"];
+                        break;
+                    case "financial-services":
+                        exampleKeywords = ["금융", "재테크", "보험", "은행", "금융상품"];
+                        break;
+                    default:
+                        break;
+                }
+                return exampleKeywords;
+            }
+    
+            document.getElementById("add-keyword").addEventListener("click", function() {
+                if (keywordInputs.length < 3) {
+                    var newKeywordInput = document.createElement("input");
+                    newKeywordInput.type = "text";
+                    newKeywordInput.name = "keywords[]";
+                    newKeywordInput.placeholder = "Enter Your Keyword";
+                    newKeywordInput.required = true;
+                    keywordContainer.appendChild(newKeywordInput);
+                }
             });
-        }
-
-        // Add a new global variable
-        var keywordCount = 0;
-
-        // Modify your keyword addition function
-        $('#add-keyword-button').addEventListener('click', function() {
-            if (keywordCount < 3) {
-                var keywordInput = document.createElement('textarea');
-                keywordInput.placeholder = "Enter another keyword";
-                keywordInput.name = "keywords";
-                keywordInput.required = true;
-                keywordInput.style.marginBottom = "20px";
-                keywordInput.style.width = "100%";
-                keywordInput.style.padding = "10px";
-                keywordInput.style.border = "1px solid #ddd";
-                keywordInput.style.borderRadius = "5px";
-                keywordInput.style.boxSizing = "border-box";
-                document.getElementById('keywords-container').appendChild(keywordInput);
-                keywordCount++;
-            }
-            if (keywordCount >= 3) {
-                document.getElementById('add-keyword-button').disabled = true;
-            }
         });
-
-
+    
         var database;
-
+    
         window.addEventListener('load', function () {
             communicate('/getYoutuberInfo', {})
                 .then(data => {
@@ -191,25 +186,25 @@
                 });
             }
         )
-
+    
         var currentDatetime = new Date();
         var currentDatetimeString = currentDatetime.toLocaleString('en-US');
         $("#timeline").value = currentDatetimeString;
-
+    
         $('#proposal-form').addEventListener('submit', function() {
             // copy product value
             $('#hidden-product').value = $('#product').value;
-
+    
             // copy budget value
             $('#hidden-budget').value = $('#budget').value;;
         });
-
-
+    
+    
         $('#recommend-form').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent default form submission
-
+    
             var formData = new FormData(this); // Get form data
-
+    
             // Perform AJAX request using Fetch API
             fetch('/getRecommendedChannels', {
                 method: 'POST',
@@ -218,48 +213,48 @@
             .then(response => response.json())
             .then(data => {
                 var Youtubers = database.filter(item => data.includes(item.title));
-
+    
                 if (Youtubers.length > 0) {
                     $('#recommendations').innerHTML = ''; // Clear previous search results
-
+    
                     for (var i = 0; i < Youtubers.length; i++) {
                         var channelItem = document.createElement('div');
                         channelItem.classList.add('channel-item');
-
+    
                         channelItem.dataset.title = Youtubers[i].title;
                         channelItem.dataset.mails = Youtubers[i].mails;
-
+    
                         var thumbnail = document.createElement('img');
                         thumbnail.src = Youtubers[i].thumbnails;
                         thumbnail.alt = Youtubers[i].youtuber;
                         channelItem.appendChild(thumbnail);
-
+    
                         var channelInfo = document.createElement('div');
                         channelInfo.classList.add('channel-info');
-
+    
                         var youtuberName = document.createElement('h3');
                         youtuberName.textContent = Youtubers[i].title;
                         channelInfo.appendChild(youtuberName);
-
+    
                         var subscriberCount = document.createElement('p');
                         subscriberCount.textContent = 'Subscriber Count: ' + Youtubers[i].subscriberCount;
                         channelInfo.appendChild(subscriberCount);
-
+    
                         var subscriberChange = document.createElement('p');
                         subscriberChange.textContent = 'Subscriber Change: ' + Youtubers[i].subscriberChange;
                         channelInfo.appendChild(subscriberChange);
-
+    
                         var dailyViewCount = document.createElement('p');
                         dailyViewCount.textContent = 'Daily View Count: ' + Youtubers[i].dailyViewCount;
                         channelInfo.appendChild(dailyViewCount);
-
+    
                         var description = document.createElement('p');
                         description.textContent = Youtubers[i].description;
                         channelInfo.appendChild(description);
-
+    
                         channelItem.appendChild(channelInfo);
                         $('#recommendations').appendChild(channelItem);
-
+    
                         channelItem.addEventListener('click', function() {
                             document.getElementById("youtuber-name").value = this.dataset.title;
                             document.getElementById("contact-email").value = this.dataset.mails;
@@ -268,18 +263,18 @@
                 } else {
                     $('#recommendations').innerHTML = '<p>No results found.</p>';
                 }
-
+    
             })
         });
-
-
-
+    
+    
+    
         function searchYouTuber(youtuberName) {
             var contactEmail = document.getElementById("contact-email");
             var foundYoutuber = database.find(function(youtuber) {
                 return youtuber.title.toLowerCase() === youtuberName.toLowerCase();
             });
-
+    
             if (foundYoutuber) {
                 contactEmail.value = foundYoutuber.mails;
             } else {
@@ -287,67 +282,7 @@
                 alert("YouTuber not found in the database.");
             }
         }
-        // D3.js visualization
-        // SVG 크기 설정
-        const width = 800;
-        const height = 600;
-
-        // 데이터 로드 및 처리
-        d3.json('data.json').then(data => {
-          // x축 스케일 설정
-          const xScale = d3.scaleLinear()
-            .domain([0, 1]) // score1의 범위
-            .range([100, width - 100]);
-
-          // y축 스케일 설정
-          const yScale = d3.scaleLinear()
-            .domain([0, 1]) // score2의 범위
-            .range([height - 100, 100]);
-
-          // 색상 스케일 설정
-          const colorScale = d3.scaleOrdinal()
-            .domain(data.map(d => d.channelName))
-            .range(['red', 'orange', 'yellow', 'green', 'blue']);
-
-          // SVG 요소 생성
-          const svg = d3.select('#chart')
-            .attr('width', width)
-            .attr('height', height);
-
-          // 데이터 포인트 그리기
-          svg.selectAll('circle')
-            .data(data)
-            .enter()
-            .append('circle')
-            .attr('cx', d => xScale(d.score1))
-            .attr('cy', d => yScale(d.score2))
-            .attr('r', 5)
-            .attr('fill', d => colorScale(d.channelName));
-
-          // x축 그리기
-          svg.append('g')
-            .attr('transform', `translate(0, ${height - 100})`)
-            .call(d3.axisBottom(xScale));
-
-          // y축 그리기
-          svg.append('g')
-            .attr('transform', `translate(100, 0)`)
-            .call(d3.axisLeft(yScale));
-
-          // 축 레이블
-          svg.append('text')
-            .attr('x', width / 2)
-            .attr('y', height - 20)
-            .style('text-anchor', 'middle')
-            .text('score1');
-
-          svg.append('text')
-            .attr('x', 20)
-            .attr('y', height / 2)
-            .style('text-anchor', 'middle')
-            .attr('transform', 'rotate(-90, 20, 300)')
-            .text('score2');
-        });
-    </script>
+    </script>   
 </body>
 </html>
+
