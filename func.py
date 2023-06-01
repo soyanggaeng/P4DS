@@ -159,4 +159,14 @@ def get_youtuber_info():
         youtuber_info = [doc for doc in cursor]
         return jsonify(youtuber_info)
     
+@bp.route('/getChannelInfo', methods=['POST'])
+@login_required
+def get_channel_info():
+    if request.method=="POST":
+        collection = g.db['channel_info']
+        title = request.json['title']
+        query = {'title' : title}
+        user = collection.find_one(query)
+        return jsonify(user['stat'])
+    
 

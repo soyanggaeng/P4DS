@@ -6,6 +6,8 @@
     <script type="text/javascript" src="static/js/common.js"></script>
     <script type="text/javascript" src="static/js/user.js"></script>
     <script type="text/javascript" src="static/js/login.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
 
 </head>
 <body>
@@ -14,6 +16,12 @@
             h1 = "Channel Overview"
             h3 = ""
         </script>
+
+        <style>
+            div#sub-chart{
+                margin-bottom : 20px;
+            }
+        </style>
     </header>
 
     <nav>
@@ -35,8 +43,6 @@
             <!-- Channel overview content will be added dynamically -->
         </div>
     </section>
-
-
     <footer>
     </footer>
 
@@ -88,48 +94,61 @@
                 var searchInput = document.getElementById('search-input');
                 var title = searchInput.value;
 
-                var filteredData = data.filter(function (item) {
-                    return item.title === title;
+                var filteredData = data.find(function (item) {
+                    return item.title == title;
                 });
 
-                if (filteredData.length > 0) {
+                if (filteredData) {
                     overviewContent.innerHTML = ''; // Clear previous search results
+                
+                    var channelItem = document.createElement('div');
+                    channelItem.classList.add('channel-item');
 
-                    for (var i = 0; i < filteredData.length; i++) {
-                        var channelItem = document.createElement('div');
-                        channelItem.classList.add('channel-item');
+                    var thumbnail = document.createElement('img');
+                    thumbnail.src = filteredData.thumbnails;
+                    thumbnail.alt = filteredData.youtuber;
+                    channelItem.appendChild(thumbnail);
 
-                        var thumbnail = document.createElement('img');
-                        thumbnail.src = filteredData[i].thumbnails;
-                        thumbnail.alt = filteredData[i].youtuber;
-                        channelItem.appendChild(thumbnail);
+                    var channelInfo = document.createElement('div');
+                    channelInfo.classList.add('channel-info');
 
-                        var channelInfo = document.createElement('div');
-                        channelInfo.classList.add('channel-info');
+                    var youtuberName = document.createElement('h3');
+                    youtuberName.textContent = filteredData.title;
+                    channelInfo.appendChild(youtuberName);
 
-                        var youtuberName = document.createElement('h3');
-                        youtuberName.textContent = filteredData[i].title;
-                        channelInfo.appendChild(youtuberName);
+                    var subscriberCount = document.createElement('p');
+                    subscriberCount.textContent = 'Subscriber Count: ' + filteredData.subscriberCount;
+                    channelInfo.appendChild(subscriberCount);
 
-                        var subscriberCount = document.createElement('p');
-                        subscriberCount.textContent = 'Subscriber Count: ' + filteredData[i].subscriberCount;
-                        channelInfo.appendChild(subscriberCount);
+                    var subscriberChange = document.createElement('p');
+                    subscriberChange.textContent = 'Subscriber Change: ' + filteredData.subscriberChange;
+                    channelInfo.appendChild(subscriberChange);
 
-                        var subscriberChange = document.createElement('p');
-                        subscriberChange.textContent = 'Subscriber Change: ' + filteredData[i].subscriberChange;
-                        channelInfo.appendChild(subscriberChange);
+                    var dailyViewCount = document.createElement('p');
+                    dailyViewCount.textContent = 'Daily View Count: ' + filteredData.dailyViewCount;
+                    channelInfo.appendChild(dailyViewCount);
 
-                        var dailyViewCount = document.createElement('p');
-                        dailyViewCount.textContent = 'Daily View Count: ' + filteredData[i].dailyViewCount;
-                        channelInfo.appendChild(dailyViewCount);
+                    var description = document.createElement('p');
+                    description.textContent = filteredData.description;
+                    channelInfo.appendChild(description);
 
-                        var description = document.createElement('p');
-                        description.textContent = filteredData[i].description;
-                        channelInfo.appendChild(description);
+                    channelItem.appendChild(channelInfo);
+                    overviewContent.appendChild(channelItem);
 
-                        channelItem.appendChild(channelInfo);
-                        overviewContent.appendChild(channelItem);
-                    }
+                    var subChart = document.createElement('div');
+                    subChart.setAttribute('id', 'sub-chart');
+                    overviewContent.appendChild(subChart)
+
+                    var viewChart = document.createElement('div');
+                    viewChart.setAttribute('id', 'view-chart');
+                    overviewContent.appendChild(viewChart)
+
+                    communicate("/getChannelInfo", {'title' : filteredData.title})
+                    .then(data => {
+                        drawGraph("#sub-chart", data, "subscriberCount", "Subscriber Count", "Subscriber Number Trend");
+                        drawGraph("#view-chart", data, "dailyViewCount","Daily View Count", "Daily View Count Trend");
+                    })
+
                 } else {
                     overviewContent.innerHTML = '<p>No results found.</p>';
                 }
@@ -150,7 +169,7 @@
                 const sug_list = data.filter(function(item) {
                     return item.title.toLowerCase().includes(query)
                 });
-                
+
                 if (input.value != ""){
                     suggestions = sug_list.map(item => item.title);
                 }
@@ -213,6 +232,107 @@
                     (unicode >= 0xA960 && unicode <= 0xA97F) ||  // Hangul Jamo Extended-A
                     (unicode >= 0xD7B0 && unicode <= 0xD7FF));   // Hangul Jamo Extended-B
         }
+
+        function drawGraph(id, data, value, y_label, title){
+            var svgWidth = 1200, svgHeight = 460;
+            var margin = { top: 60, right: 20, bottom: 30, left: 100};
+            var width = svgWidth - margin.left - margin.right;
+            var height = svgHeight - margin.top - margin.bottom;
+            
+            data.forEach(function(d) {
+                d.searchDate = new Date(d.searchDate);
+                d[value] = d[value] >0 ? +d[value] : 0;
+            });
+
+            var svg = d3.select(id)
+                .append("svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight);
+
+            var g = svg.append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var x = d3.scaleTime().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+
+            x.domain(d3.extent(data, function(d) { return d.searchDate }));
+            y.domain(d3.extent(data, function(d) { return d[value] }));
+
+            var line = d3.line()
+                .x(function(d) { return x(d.searchDate)})
+                .y(function(d) { return y(d[value])})           
+
+            var x_axis = g.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .style("font-size", "14px")
+                .call(d3.axisBottom(x)
+                .tickValues(x.ticks(d3.timeMonth.every(2)))
+                .tickFormat(d3.timeFormat("%b %Y"))); 
+
+            x_axis.selectAll(".tick line").attr("opacity", 0);
+            x_axis.select(".domain").remove();
+
+            // The same for y_axis, append it to the group 'g'.
+            var y_axis = g.append("g")
+                .call(d3.axisLeft(y)
+                    .ticks(5)
+                    .tickFormat(d=>{
+                        if(d>1000){
+                            return `${(d/1000).toFixed(0)}k`;
+                        } else{
+                            return d;
+                        }
+                    })
+                )
+                .style("font-size", "14px")
+
+            y_axis.select(".domain").remove();
+
+            y_axis.append("text")
+                    .attr("fill", "#777")
+                    .style("font-size", "20px")
+                    .attr("transform", `translate(${-margin.left}, ${height/2}) rotate(-90)`)
+                    .attr("y", 6)
+                    .attr("dy", "0.71em")
+                    .attr("text-anchor", "middle")
+                    .text(y_label);
+
+            y_axis.selectAll(".tick line").attr("opacity", 0);
+
+            g.selectAll("yGrid")
+                .data(y.ticks(5))
+                .join("line")
+                .attr("x1", 0)
+                .attr("x2", width)
+                .attr("y1", d => y(d))
+                .attr("y2", d => y(d))
+                .attr("stroke", "#e0e0e0")
+                .attr("stroke-width", .5)
+            
+
+            svg.selectAll(".tick text")
+                .attr("fill", "#777");
+
+            g.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", "#ff7f0e")  // change the color of the line
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 2.5)  // make the line thicker
+            .attr("d", line);
+
+            g.append("text")
+            .attr("class", "chart-title")
+            .attr("x", -margin.left)
+            .attr("y", -40)
+            .style("font-size", "24px")
+            .style("font-weight", "bold")
+            .style("font-family", "sans-serif")
+            .text(title)
+            .attr("text-anchor", "left");
+        }
+
 
 
 
