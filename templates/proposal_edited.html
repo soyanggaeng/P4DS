@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YAMP: Youtube Ad Matching Platform - Proposal</title>
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    <script type="text/javascript" src="static/js/common.js"></script>
+    <script type="text/javascript" src="static/js/login.js"></script>
+    <script type="text/javascript" src="static/js/user.js"></script>
+    
+
+    <style>
+        /* .search-container {
+            padding-left : 0px;
+        }
+
+        #proposal-form input[name="youtuber-name"]{
+            margin-bottom : 0px;
+            width : 200px;
+        } */
+    </style>
+</head>
+<body>
+    <header>
+        <script>
+            h1 = "Channel Proposal"
+            h3 = "Recommendation and Submission"
+        </script>
+    </header>
+
+    <nav>
+        <div class="login-button-container">
+            <a href="#" id="logout-button">Log Out</a>
+        </div>
+    </nav>
+    
+    <section id="proposal-recommendation">
+        <h2>Channel Recommendation</h2>
+        <p>Based on your budget and the product to be advertised, we have identified the YouTube channels that would be most effective for your advertising campaign:</p>
+        <!-- Include the channel recommendations here -->
+        <form id="recommend-form", method="post">            
+            <label for="product">Product:</label>
+            <select id="product" name="product" required>
+                <option value="" disabled selected>Select Product Type</option>
+                <option value="technology">Technology</option>
+                <option value="gaming">Gaming</option>
+                <option value="beauty-fashion">Beauty and Fashion</option>
+                <option value="food-beverage">Food and Beverage</option>
+                <option value="health-fitness">Health and Fitness</option>
+                <option value="travel-tourism">Travel and Tourism</option>
+                <option value="automotive">Automotive</option>
+                <option value="entertainment-media">Entertainment and Media</option>
+                <option value="home-lifestyle">Home and Lifestyle</option>
+                <option value="financial-services">Financial Services</option>
+                <button id="select-channel" type="button">Select Channel</button>
+            </select>
+            
+            <label for="budget">Budget:</label>
+            <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>
+            
+            <label for="keywords">Keywords:</label>
+            <div id="keywords-container">
+              <textarea id="keywords" name="keywords" placeholder="Enter Your Keyword" required></textarea>
+            </div>
+            <button id="add-keyword">+</button>
+          
+            <input type="submit" value="Get Recommendations">
+        </form>
+        <div id="recommendations"></div>        
+    </section>
+    
+    <section id="proposal-submission">
+        <h2>Proposal Submission</h2>
+        <p>Send a proposal to the recommended YouTubers through our YAMP service:</p>
+        <form id="proposal-form" action="/updateProposal", method="post">
+            <label for="youtuber-name">YouTuber Name:</label>
+            <input type="text" id="youtuber-name" name="youtuber-name" placeholder="Recommended YouTuber's Name" required readonly>
+            
+            <label for="contact-email">Contact Email:</label>
+            <input type="email" id="contact-email" name="contact-email" placeholder="Recommended YouTuber's Email Address" required readonly>
+
+            <label for="timeline">Timeline:</label>
+            <input type="text" id="timeline" name="timeline" placeholder="Proposed Timeline" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" placeholder="Enter Your Proposal Message" required></textarea>
+
+            <input type="hidden" id="hidden-product" name="product">
+            <input type="hidden" id="hidden-budget" name="budget">
+            
+            <input type="submit" value="Send Proposal">
+        </form>        
+    </section>
+    
+    <footer>
+    </footer>
+
+    <script>
+      document.getElementById('add-keyword').addEventListener('click', function() {
+          var newTextArea = document.createElement('textarea');
+          newTextArea.setAttribute('name', 'keywords');
+          newTextArea.setAttribute('placeholder', 'Enter Your Keyword');
+          newTextArea.required = true;
+          document.getElementById('keywords-container').appendChild(newTextArea);
+      });
+
+        var database;
+
+        window.addEventListener('load', function () {
+            communicate('/getYoutuberInfo', {})
+                .then(data => {
+                    database = data;
+                });
+            }
+        )
+
+        var currentDatetime = new Date();
+        var currentDatetimeString = currentDatetime.toLocaleString('en-US');
+        $("#timeline").value = currentDatetimeString;
+            
+        $('#proposal-form').addEventListener('submit', function() {
+            // copy product value
+            $('#hidden-product').value = $('#product').value;
+
+            // copy budget value
+            $('#hidden-budget').value = $('#budget').value;;
+        });
+
+
+        $('#recommend-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            var formData = new FormData(this); // Get form data
+
+            // Perform AJAX request using Fetch API
+            fetch('/getRecommendedChannels', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var Youtubers = database.filter(item => data.includes(item.title));
+
+                if (Youtubers.length > 0) {
+                    $('#recommendations').innerHTML = ''; // Clear previous search results
+
+                    for (var i = 0; i < Youtubers.length; i++) {
+                        var channelItem = document.createElement('div');
+                        channelItem.classList.add('channel-item');
+
+                        channelItem.dataset.title = Youtubers[i].title;
+                        channelItem.dataset.mails = Youtubers[i].mails;
+
+                        var thumbnail = document.createElement('img');
+                        thumbnail.src = Youtubers[i].thumbnails;
+                        thumbnail.alt = Youtubers[i].youtuber;
+                        channelItem.appendChild(thumbnail);
+
+                        var channelInfo = document.createElement('div');
+                        channelInfo.classList.add('channel-info');
+
+                        var youtuberName = document.createElement('h3');
+                        youtuberName.textContent = Youtubers[i].title;
+                        channelInfo.appendChild(youtuberName);
+
+                        var subscriberCount = document.createElement('p');
+                        subscriberCount.textContent = 'Subscriber Count: ' + Youtubers[i].subscriberCount;
+                        channelInfo.appendChild(subscriberCount);
+
+                        var subscriberChange = document.createElement('p');
+                        subscriberChange.textContent = 'Subscriber Change: ' + Youtubers[i].subscriberChange;
+                        channelInfo.appendChild(subscriberChange);
+
+                        var dailyViewCount = document.createElement('p');
+                        dailyViewCount.textContent = 'Daily View Count: ' + Youtubers[i].dailyViewCount;
+                        channelInfo.appendChild(dailyViewCount);
+
+                        var description = document.createElement('p');
+                        description.textContent = Youtubers[i].description;
+                        channelInfo.appendChild(description);
+
+                        channelItem.appendChild(channelInfo);
+                        $('#recommendations').appendChild(channelItem);
+
+                        channelItem.addEventListener('click', function() {
+                            document.getElementById("youtuber-name").value = this.dataset.title;
+                            document.getElementById("contact-email").value = this.dataset.mails;
+                        });
+                    }
+                } else {
+                    $('#recommendations').innerHTML = '<p>No results found.</p>';
+                }
+
+            })
+        });
+
+
+
+        function searchYouTuber(youtuberName) {
+            var contactEmail = document.getElementById("contact-email");
+            var foundYoutuber = database.find(function(youtuber) {
+                return youtuber.title.toLowerCase() === youtuberName.toLowerCase();
+            });
+
+            if (foundYoutuber) {
+                contactEmail.value = foundYoutuber.mails;
+            } else {
+                contactEmail.value = "";
+                alert("YouTuber not found in the database.");
+            }
+        }
+    </script>   
+</body>
+</html>
