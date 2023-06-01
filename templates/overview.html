@@ -146,12 +146,11 @@
                 const input = document.getElementById('search-input');
                 const query = input.value.toLowerCase();
                 
-                console.log(query);
-
                 // Filter the search targets based on the query
                 const sug_list = data.filter(function(item) {
                     return item.title.toLowerCase().includes(query)
                 });
+                
                 if (input.value != ""){
                     suggestions = sug_list.map(item => item.title);
                 }

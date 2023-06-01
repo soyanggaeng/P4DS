@@ -22,15 +22,15 @@
     <section id="feedback">
         <h2>Feedback</h2>
         <form id="feedback-form", action = '/updateFeedback', method="POST">
-            <input type="text" id="hash_val" name="hash_val">
+            <input type="text" id="hash_val" name="hash_val" required>
             <label for="voucher-usage">광고를 통한 바우처 이벤트 기간 동안 바우처 이용 건수는 얼마나 되나요?</label>
-            <input type="text" id="voucher-usage" name="voucher-usage">
+            <input type="text" id="voucher-usage" name="voucher-usage" required>
 
             <label for="satisfaction-rating">서비스 전반에 대한 만족도 (Rating score of 1~5)</label>
-            <input type="number" id="satisfaction-rating" name="satisfaction-rating" min="1" max="5">
+            <input type="number" id="satisfaction-rating" name="satisfaction-rating" min="1" max="5" required>
             
             <label for="service-improvements">서비스에 대한 개선 의견 (주관식)</label>
-            <textarea id="service-improvements" name="service-improvements"></textarea>
+            <textarea id="service-improvements" name="service-improvements" required></textarea>
             
             <!-- Loop through each channel for satisfaction rating and feedback -->
             <h3>유튜버 만족도 및 의견</h3>

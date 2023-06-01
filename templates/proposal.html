@@ -6,17 +6,36 @@
     <script type="text/javascript" src="static/js/common.js"></script>
     <script type="text/javascript" src="static/js/login.js"></script>
     <script type="text/javascript" src="static/js/user.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
     
 
     <style>
-        /* .search-container {
-            padding-left : 0px;
+
+        .channel-item {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.1); /* Add shadow for depth */
+            border-radius: 5px; /* Round the corners */
+            cursor: pointer; /* Change the cursor to indicate clickable */
+            background-color: #ffffff; /* Add a background color */
+            transition: 0.3s; /* Add transition for hover effect */
+            margin-bottom : 40px;
+            text-align : center;
         }
 
-        #proposal-form input[name="youtuber-name"]{
-            margin-bottom : 0px;
-            width : 200px;
-        } */
+        .channel-item:hover {
+            box-shadow: 0px 2px 10px rgba(0,0,0,0.2); /* Add deeper shadow on hover */
+        }
+
+        p#examples{
+            margin-top : 0px;
+            margin-bottom : 20px;
+            font-size : 0.8em;
+            color : #63636394;
+        }
+
     </style>
 </head>
 <body>
@@ -51,18 +70,23 @@
                 <option value="entertainment-media">Entertainment and Media</option>
                 <option value="home-lifestyle">Home and Lifestyle</option>
                 <option value="financial-services">Financial Services</option>
-                <button id="select-channel" type="button">Select Channel</button>
             </select>
             
             <label for="budget">Budget:</label>
             <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>
             
             <label for="keywords">Keywords:</label>
-            <textarea id="keywords" name="keywords" placeholder="Enter Your Keywords" required></textarea>
+            <div id="keyword-container">
+                <input type="text" id="keyword-0" name="keyword-0" placeholder="Enter Your Keyword" required>
+                <div id="suggestions"></div> <!-- Suggestions container -->
+            </div>
+            <p id="examples"></p>
+            <button type="button" id="add-keyword">+</button>
             
             <input type="submit" value="Get Recommendations">
         </form>
-        <div id="recommendations"></div>        
+        <div id="recommendations"></div>   
+        <div id="chart"></div>     
     </section>
     
     <section id="proposal-submission">
@@ -83,7 +107,9 @@
 
             <input type="hidden" id="hidden-product" name="product">
             <input type="hidden" id="hidden-budget" name="budget">
-            
+            <div id="hidden-keyword-container">
+                <input type="hidden" name="keyword-0">
+            </div>
             <input type="submit" value="Send Proposal">
         </form>        
     </section>
@@ -91,27 +117,135 @@
     <footer>
     </footer>
 
-    <script>
-        var database;
+    <script> 
+    
+    var database;
 
-        window.addEventListener('load', function () {
-            communicate('/getYoutuberInfo', {})
-                .then(data => {
-                    database = data;
-                });
+    window.addEventListener('load', function () {
+        communicate('/getYoutuberInfo', {})
+            .then(data => {
+                database = data;
+            });
+        }
+    )
+
+    document.addEventListener("DOMContentLoaded", function() {
+            var keywordContainer = document.getElementById("keyword-container");
+            var keywordInputs = keywordContainer.getElementsByTagName("input");
+            // var suggestionsContainer = document.getElementById("suggestions");
+    
+            // Add event listeners for keyword inputs
+            // for (var i = 0; i < keywordInputs.length; i++) {
+            //     keywordInputs[i].addEventListener("input", function() {
+            //         var keyword = this.value;
+            //         showSuggestions(keyword);
+            //     });
+            // }
+    
+            // function showSuggestions(keyword) {
+            //     // Clear previous suggestions
+            //     suggestionsContainer.innerHTML = "";
+    
+            //     // Generate suggestions based on keyword
+            //     if (keyword.trim() !== "") {
+            //         var productType = document.getElementById("product").value;
+            //         var exampleKeywords = getExampleKeywords(productType);
+            //         var filteredKeywords = exampleKeywords.filter(function(exampleKeyword) {
+            //             return exampleKeyword.toLowerCase().startsWith(keyword.toLowerCase());
+            //         });
+    
+            //         // Display suggestions
+            //         filteredKeywords.forEach(function(filteredKeyword) {
+            //             var suggestion = document.createElement("div");
+            //             suggestion.textContent = filteredKeyword;
+            //             suggestion.addEventListener("click", function() {
+            //                 var keywordInput = document.activeElement;
+            //                 keywordInput.value = this.textContent;
+            //                 suggestionsContainer.innerHTML = "";
+            //             });
+            //             suggestionsContainer.appendChild(suggestion);
+            //         });
+            //     }
+            // }
+
+            $("#product").addEventListener('change', function() {
+                $("#examples").textContent = `ex) ${getExampleKeywords(this.value)}`;
+            });
+    
+            function getExampleKeywords(productType) {
+                var exampleKeywords = [];
+                    switch (productType) {
+                        case "technology":
+                            exampleKeywords = "스마트폰, 컴퓨터, 인터넷, IT, 디지털";
+                            break;
+                        case "gaming":
+                            exampleKeywords = "게임, 오버워치, 리그오브레전드, 마인크래프트, 롤";
+                            break;
+                        case "beauty-fashion":
+                            exampleKeywords = "화장품, 패션, 뷰티, 메이크업, 스타일";
+                            break;
+                        case "food-beverage":
+                            exampleKeywords = "음식, 요리, 음료, 레시피, 식품";
+                            break;
+                        case "health-fitness":
+                            exampleKeywords = "건강, 운동, 다이어트, 피트니스, 웰빙";
+                            break;
+                        case "travel-tourism":
+                            exampleKeywords = "여행, 관광, 해외여행, 국내여행, 여행팁";
+                            break;
+                        case "automotive":
+                            exampleKeywords = "자동차, 차량, 자동차리뷰, 자동차정비, 자동차운전";
+                            break;
+                        case "entertainment-media":
+                            exampleKeywords = "엔터테인먼트, 영화, 드라마, 연예인, 미디어";
+                            break;
+                        case "home-lifestyle":
+                            exampleKeywords = "가정, 인테리어, 라이프스타일, 가구, 홈케어";
+                            break;
+                        case "financial-services":
+                            exampleKeywords = "금융, 재테크, 보험, 은행, 금융상품";
+                            break;
+                        default:
+                            break;
+                    }
+                    return exampleKeywords;
             }
-        )
+    
+            document.getElementById("add-keyword").addEventListener("click", function() {
+                if (keywordInputs.length < 3) {
+                    var newKeywordInput = document.createElement("input");
+                    newKeywordInput.type = "text";
+                    newKeywordInput.name = `keyword-${keywordInputs.length}`;
+                    newKeywordInput.placeholder = "Enter Your Keyword";
+                    newKeywordInput.required = true;
+                    keywordContainer.appendChild(newKeywordInput);
+
+                    var newHiddenKeyword = document.createElement("input");
+                    var proposal_container = $("#hidden-keyword-container");
+                    newHiddenKeyword.type = "hidden";
+                    newHiddenKeyword.name = `keyword-${keywordInputs.length}`;
+                    proposal_container.appendChild(newHiddenKeyword);
+                }
+            });
+        });
 
         var currentDatetime = new Date();
         var currentDatetimeString = currentDatetime.toLocaleString('en-US');
         $("#timeline").value = currentDatetimeString;
-            
+        
+
         $('#proposal-form').addEventListener('submit', function() {
             // copy product value
             $('#hidden-product').value = $('#product').value;
-
             // copy budget value
-            $('#hidden-budget').value = $('#budget').value;;
+            $('#hidden-budget').value = $('#budget').value;
+
+            var kws = $("#keyword-container").querySelectorAll("input");
+            var hid_kws = $("#hidden-keyword-container").querySelectorAll("input");
+            for (let i=0; i<kws.legnth; i++){
+                hid_kws[i].value = kws.value;
+            }
+
         });
 
 
@@ -184,19 +318,19 @@
 
 
 
-        function searchYouTuber(youtuberName) {
-            var contactEmail = document.getElementById("contact-email");
-            var foundYoutuber = database.find(function(youtuber) {
-                return youtuber.title.toLowerCase() === youtuberName.toLowerCase();
-            });
+        // function searchYouTuber(youtuberName) {
+        //     var contactEmail = document.getElementById("contact-email");
+        //     var foundYoutuber = database.find(function(youtuber) {
+        //         return youtuber.title.toLowerCase() === youtuberName.toLowerCase();
+        //     });
 
-            if (foundYoutuber) {
-                contactEmail.value = foundYoutuber.mails;
-            } else {
-                contactEmail.value = "";
-                alert("YouTuber not found in the database.");
-            }
-        }
+        //     if (foundYoutuber) {
+        //         contactEmail.value = foundYoutuber.mails;
+        //     } else {
+        //         contactEmail.value = "";
+        //         alert("YouTuber not found in the database.");
+        //     }
+        // }
 
         // var activeSuggestion = -1;
 
