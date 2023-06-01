@@ -240,27 +240,25 @@
             }
         }
         // D3.js visualization
+        // SVG 크기 설정
         const width = 800;
         const height = 600;
-        d3.json('/getRecommendedChannelsData').then(data => {
-            // Your D3.js visualization code here // json 형식이라 가정
-            // SVG 크기 설정
-          // 평균 점수로 정렬하여 상위 5명 추출
-          const top5 = data.sort((a, b) => b.average_of_two - a.average_of_two).slice(0, 5);
 
+        // 데이터 로드 및 처리
+        d3.json('data.json').then(data => {
           // x축 스케일 설정
           const xScale = d3.scaleLinear()
-            .domain([0, 1]) // word_corr_score의 범위
+            .domain([0, 1]) // score1의 범위
             .range([100, width - 100]);
 
           // y축 스케일 설정
           const yScale = d3.scaleLinear()
-            .domain([0, 1]) // comment_analysis_score의 범위
+            .domain([0, 1]) // score2의 범위
             .range([height - 100, 100]);
 
           // 색상 스케일 설정
           const colorScale = d3.scaleOrdinal()
-            .domain(top5.map(d => d.유튜버))
+            .domain(data.map(d => d.channelName))
             .range(['red', 'orange', 'yellow', 'green', 'blue']);
 
           // SVG 요소 생성
@@ -273,16 +271,10 @@
             .data(data)
             .enter()
             .append('circle')
-            .attr('cx', d => xScale(d.word_corr_score))
-            .attr('cy', d => yScale(d.comment_analysis_score))
+            .attr('cx', d => xScale(d.score1))
+            .attr('cy', d => yScale(d.score2))
             .attr('r', 5)
-            .attr('fill', d => colorScale(d.유튜버));
-
-          // 상위 5명의 데이터 포인트 강조
-          svg.selectAll('circle.top5')
-            .data(top5)
-            .attr('class', 'top5')
-            .attr('r', 8);
+            .attr('fill', d => colorScale(d.channelName));
 
           // x축 그리기
           svg.append('g')
@@ -299,14 +291,14 @@
             .attr('x', width / 2)
             .attr('y', height - 20)
             .style('text-anchor', 'middle')
-            .text('word_corr_score');
+            .text('score1');
 
           svg.append('text')
             .attr('x', 20)
             .attr('y', height / 2)
             .style('text-anchor', 'middle')
             .attr('transform', 'rotate(-90, 20, 300)')
-            .text('comment_analysis_score');
+            .text('score2');
         });
     </script>
 </body>
