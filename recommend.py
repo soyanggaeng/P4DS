@@ -23,3 +23,16 @@ def getRecommendedChannels():
         youtubers = m.predict()
 
         return jsonify(youtubers)
+    
+@bp2.route("/channelAnalysis", methods=['POST'])
+@login_required
+def channelAnalysis():
+    if request.method == 'POST':
+        # product = request.form.get('product')
+        # budget = request.form.get('budget')
+        # keywords = request.form.get('keywords')
+        # m = model(product, budget, keywords)
+        # youtubers = m.predict()
+        path = "static/img/word_ex.png"
+
+        return jsonify({'path' : path})

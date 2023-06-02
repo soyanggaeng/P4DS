@@ -5,6 +5,14 @@
     <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
     <script type="text/javascript" src="/static/js/common.js"></script>
     <script type="text/javascript" src="static/js/login.js"></script>
+    <script type="text/javascript" src="static/js/user.js"></script>
+    
+    <style>
+        .autocomplete{
+            margin-right : 0px;
+        }
+    </style>
+
 </head>
 <body>
     <header>
@@ -19,25 +27,30 @@
         <section id="keyword-search">
             <h2>Keyword Analysis</h2>
             <p>Enter a YouTube channel or a keyword to generate analysis.</p>
-            <form id="channel-form">
-                <div class="form-group">
-                    <label for="channel-name">YouTube Channel</label>
+
+            <div class="form-group">
+                <label for="channel-name">YouTube Channel</label>
+                <div class="autocomplete">
                     <input type="text" id="channel-name" placeholder="Enter YouTube channel name">
-                    <button type="button" id="channel-submit" onclick="channelAnalysis()">Generate Channel Analysis</button>
+                    <div id="suggestions"></div>
                 </div>
-            </form>
-            <form id="keyword-form">
-                <div class="form-group">
-                    <label for="keyword-name">Keyword</label>
-                    <input type="text" id="keyword-name" placeholder="Enter keyword">
-                    <button type="button" id="keyword-submit" onclick="keywordAnalysis()">Generate Keyword Analysis</button>
-                </div>
-            </form>
+                <button type="button" id="channel-submit" onclick="channelAnalysis()">Generate Channel Analysis</button>
+            </div>
+
+
+            <div class="form-group">
+                <label for="keyword-name">Keyword</label>
+                <input type="text" id="keyword-name" placeholder="Enter keyword">
+                <button type="submit" id="keyword-submit" onclick="keywordAnalysis()">Generate Keyword Analysis</button>
+            </div>
+
         </section>
         
         <section id="channel-result">
             <h2>Channel Analysis Results</h2>
-            <div id="channel-wordcloud" class="wordcloud"></div>
+            <div id="channel-wordcloud" class="wordcloud">
+                <img id="channel-image" src="" alt="channel analysis" style="display: none;">
+            </div>
         </section>
 
         <section id="keyword-result">
@@ -48,6 +61,141 @@
 
     <footer>
     </footer>
+
+    <script>
+        var activeSuggestion = -1;
+
+        document.querySelector('#channel-name').addEventListener('keyup', function(e){
+            const suggestionsDiv = document.getElementById('suggestions');
+            const children = Array.from(suggestionsDiv.children);
+
+            if(e.key == 'Enter'){
+                e.preventDefault();
+                if(activeSuggestion > -1){
+                    children[activeSuggestion].click();
+                }
+                else{
+                    document.querySelector('#channel-name').blur();
+                    document.querySelector('#channel-submit').click();
+                    suggestionsDiv.innerHTML = "";
+                    suggestionsDiv.style.display = "none";
+                    activeSuggestion = -1
+                }
+            }
+            }
+        )
+
+        document.querySelector('#channel-name').addEventListener('keydown', function(e){
+            const suggestionsDiv = document.getElementById('suggestions');
+            const children = Array.from(suggestionsDiv.children);
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const nextIndex = activeSuggestion >= 0 ? (activeSuggestion + 1) % children.length : activeSuggestion+1;
+                // const nextIndex = activeSuggestion+1;
+                setActiveSuggestion(nextIndex);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const prevIndex = activeSuggestion > -1 ? activeSuggestion - 1 : -1;
+                setActiveSuggestion(prevIndex);
+            } else if (e.key != "Enter") {
+                autocomplete(e);
+            }
+        })
+
+
+        function autocomplete(e) {
+                const suggestionsDiv = document.getElementById('suggestions');
+                let suggestions=[];
+
+                communicate('/getYoutuberInfo', {})
+                .then(data => {
+                const input = document.getElementById('channel-name');
+                const query = input.value.toLowerCase();
+                
+                // Filter the search targets based on the query
+                const sug_list = data.filter(function(item) {
+                    return item.title.toLowerCase().includes(query)
+                });
+
+                if (input.value != ""){
+                    suggestions = sug_list.map(item => item.title);
+                }
+
+                suggestionsDiv.innerHTML = ''
+
+                // Display the suggestions
+
+                suggestions.forEach((suggestion, index) => {
+                    const div = document.createElement('div');
+                    div.textContent = suggestion;
+                    div.id = 'suggestion-' + index;
+                    div.onclick = selectSuggestion;
+                    div.onmouseover = function() {
+                        setActiveSuggestion(index);
+                    };
+                    div.onmouseleave = function() {
+                        if(isKorean(e.key)){
+                            setActiveSuggestion(-2);
+                        } else{
+                            setActiveSuggestion(-1);
+                        }
+                    };
+                    suggestionsDiv.appendChild(div);
+                });
+
+                suggestionsDiv.style.display = suggestions.length ? 'block' : 'none';
+
+                activeSuggestion = isKorean(e.key) ? -2 : -1;
+            })
+            }
+
+            function setActiveSuggestion(index) {
+                const suggestionsDiv = document.getElementById('suggestions');
+                const children = Array.from(suggestionsDiv.children);
+                children.forEach((child, i) => {
+                    child.style.background = i === index ? '#ddd' : '#fff';
+                });
+                activeSuggestion = index;
+
+                if (activeSuggestion >= 0) {
+                    children[activeSuggestion].scrollIntoView({ block: 'nearest' });
+                }
+            }
+
+            function selectSuggestion() {
+                const input = document.getElementById('channel-name');
+                const suggestionsDiv = document.getElementById('suggestions');
+                input.value = this.textContent;
+                input.focus();
+                suggestionsDiv.style.display = 'none';
+                activeSuggestion = -1;
+            }
+
+            function isKorean(char) {
+            const unicode = char.charCodeAt(0);
+            return ((unicode >= 0xAC00 && unicode <= 0xD7A3) ||  // Hangul Syllables
+                    (unicode >= 0x1100 && unicode <= 0x11FF) ||  // Hangul Jamo
+                    (unicode >= 0x3130 && unicode <= 0x318F) ||  // Hangul Compatibility Jamo
+                    (unicode >= 0xA960 && unicode <= 0xA97F) ||  // Hangul Jamo Extended-A
+                    (unicode >= 0xD7B0 && unicode <= 0xD7FF));   // Hangul Jamo Extended-B
+        }
+
+        function channelAnalysis(){
+            communicate("/channelAnalysis", {'channel' : $("#channel-name").value})
+            .then(data => {
+                $("#channel-image").src = data.path;
+                $("#channel-image").style.display = "block";
+            })
+        }
+
+        function keywordAnalysis(){
+            communicate("/keywordAnalysis", {'keyword' : $("#keyword-name").value})
+            .then(data =>{
+
+            })
+        }
+    </script>
 
 </body>
 </html>
