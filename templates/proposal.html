@@ -501,8 +501,11 @@
             var x = d3.scaleLinear().range([0, width]);
             var y = d3.scaleLinear().range([height, 0]);
 
-            x.domain(d3.extent(data, function(d) { return d["cosine-simularity"] }));
-            y.domain(d3.extent(data, function(d) { return d[value] }));
+            // x.domain(d3.extent(data, function(d) { return d["cosine-simularity"] }));
+            // y.domain(d3.extent(data, function(d) { return d[value] }));
+
+            x.domain([-1, 1]);
+            y.domain([0,5]);
 
             var x_axis = g.append("g")
                 .attr("transform", `translate(0,${height})`)
@@ -517,7 +520,7 @@
             // The same for y_axis, append it to the group 'g'.
             var y_axis = g.append("g")
                 .call(d3.axisLeft(y)
-                    .ticks(5)
+                    .tickValues([0,1,2,3,4,5])
                 )
                 .style("font-size", "14px")
 
