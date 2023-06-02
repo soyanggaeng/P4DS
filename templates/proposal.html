@@ -6,7 +6,7 @@
     <script type="text/javascript" src="static/js/common.js"></script>
     <script type="text/javascript" src="static/js/login.js"></script>
     <script type="text/javascript" src="static/js/user.js"></script>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 
     
 
@@ -34,6 +34,23 @@
             margin-bottom : 20px;
             font-size : 0.8em;
             color : #63636394;
+        }
+
+        div.tooltip {
+            position: relative;
+            text-align: center;
+            width: 170px;
+            height: 35px;
+            padding: 2px;
+            font: 10px sans-serif;
+            color : rgb(125, 122, 122);
+            background: rgb(186, 189, 193);
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            display : flex;
+            align-items: center;
+            justify-content: center;
         }
 
     </style>
@@ -82,7 +99,6 @@
             </div>
             <p id="examples"></p>
             <button type="button" id="add-keyword">+</button>
-            
             <input type="submit" value="Get Recommendations">
         </form>
         <div id="recommendations"></div>   
@@ -308,10 +324,16 @@
                             document.getElementById("youtuber-name").value = this.dataset.title;
                             document.getElementById("contact-email").value = this.dataset.mails;
                         });
+
                     }
                 } else {
                     $('#recommendations').innerHTML = '<p>No results found.</p>';
                 }
+
+                communicate("/test", {})
+                .then(data => {
+                    drawGraph("#chart", data, "comment-score", "comment-score", "test");
+                })
 
             })
         });
@@ -453,6 +475,137 @@
         //             (unicode >= 0xA960 && unicode <= 0xA97F) ||  // Hangul Jamo Extended-A
         //             (unicode >= 0xD7B0 && unicode <= 0xD7FF));   // Hangul Jamo Extended-B
         // }
+
+        function drawGraph(id, data, value, y_label, title){
+            $(id).innerHTML = "";
+            var svgWidth = 1200, svgHeight = 460;
+            var margin = { top: 60, right: 20, bottom: 30, left: 100};
+            var width = svgWidth - margin.left - margin.right;
+            var height = svgHeight - margin.top - margin.bottom;
+            
+            data.forEach(function(d) {
+                d["cosine-simularity"] = +d["cosine-simularity"];
+                d[value] = +d[value]
+            });
+
+            console.log(data);
+
+            var svg = d3.select(id)
+                .append("svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight);
+
+            var g = svg.append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            var x = d3.scaleLinear().range([0, width]);
+            var y = d3.scaleLinear().range([height, 0]);
+
+            x.domain(d3.extent(data, function(d) { return d["cosine-simularity"] }));
+            y.domain(d3.extent(data, function(d) { return d[value] }));
+
+            var x_axis = g.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .style("font-size", "14px")
+                .call(d3.axisBottom(x)
+                    .tickValues(x.ticks(5))
+                );
+
+            x_axis.selectAll(".tick line").attr("opacity", 0);
+            x_axis.select(".domain").remove();
+
+            // The same for y_axis, append it to the group 'g'.
+            var y_axis = g.append("g")
+                .call(d3.axisLeft(y)
+                    .ticks(5)
+                )
+                .style("font-size", "14px")
+
+            y_axis.select(".domain").remove();
+
+            y_axis.append("text")
+                    .attr("fill", "#777")
+                    .style("font-size", "20px")
+                    .attr("transform", `translate(${-margin.left}, ${height/2}) rotate(-90)`)
+                    .attr("y", 6)
+                    .attr("dy", "0.71em")
+                    .attr("text-anchor", "middle")
+                    .text(y_label);
+
+            y_axis.selectAll(".tick line").attr("opacity", 0);
+
+            g.selectAll("yGrid")
+                .data(y.ticks(5))
+                .join("line")
+                .attr("x1", 0)
+                .attr("x2", width)
+                .attr("y1", d => y(d))
+                .attr("y2", d => y(d))
+                .attr("stroke", "#e0e0e0")
+                .attr("stroke-width", .5)
+            
+
+            svg.selectAll(".tick text")
+                .attr("fill", "#777");
+
+            g.append("text")
+            .attr("class", "chart-title")
+            .attr("x", -margin.left)
+            .attr("y", -40)
+            .style("font-size", "24px")
+            .style("font-weight", "bold")
+            .style("font-family", "sans-serif")
+            .text(title)
+            .attr("text-anchor", "left");
+
+        var dots = g.selectAll("dot")	
+            .data(data)	
+            .enter().append("circle")
+            .attr("class", "dot")
+            .style("opacity",1)
+            .attr("r", 3) // initially invisible
+            .attr("cx", function(d) { return x(d["cosine-simularity"]); })	
+            .attr("cy", function(d) { return y(d[value]); })
+            .attr("fill", function(d, i){
+                if(i<5){
+                    return "rgb(219, 37, 37)";
+                }
+            })
+
+
+        // var dots = g.selectAll("dot")	
+        //     .data(data)	
+        //     .enter().append("circle")
+        //     .attr("class", "dot")
+        //     .style("opacity",0)
+        //     .attr("r", 3) // initially invisible
+        //     .attr("cx", function(d) { return x(d["cosine-simularity"]); })	
+        //     .attr("cy", function(d) { return y(d[value]); });
+        
+        var tooltip = d3.select(id).append("div")	
+            .attr("class", "tooltip")
+            .style("opacity", 0); // initially hidden
+
+            dots.on("mouseover", function(d) {
+                // d3.select(this).transition().duration(50).style("opacity", 1); // make dot visible and larger
+                tooltip.transition().duration(50).style("opacity", 1); // make tooltip visible
+                tooltip.html("Youtuber : " + d.youtuber + "<br/>Cosine-simularity : " + (d["cosine-simularity"].toFixed(2)) + "<br/>Comment-score: " + d[value].toFixed(2))
+                .style("left", (d3.mouse(this)[0]+10 + margin.left) + "px") 
+                .style("top", (d3.mouse(this)[1] - margin.top - height) + "px");
+            })
+            .on("mouseout", function(d) {
+                // d3.select(this).transition().duration(100).style("opacity", 0) // make dot invisible again
+                tooltip.transition().duration(50).style("opacity", 0); // hide tooltip
+            })
+            .on("mousemove", function(d) {
+                // d3.select(this).transition().duration(50).style("opacity", 1); // make dot visible and larger
+                tooltip.transition().duration(50).style("opacity", 1); // make tooltip visible
+                tooltip.html("Youtuber : " + d.youtuber + "<br/>Cosine-simularity : " + (d["cosine-simularity"].toFixed(2)) + "<br/>Comment-score: " + d[value].toFixed(2))
+                .style("left", (d3.mouse(this)[0]+10 + margin.left) + "px") 
+                .style("top", (d3.mouse(this)[1] - margin.top - height) + "px");
+            });
+        }
+
     </script>   
 </body>
 </html>

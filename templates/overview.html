@@ -8,6 +8,30 @@
     <script type="text/javascript" src="static/js/login.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
 
+    
+    <style>
+        div#sub-chart{
+            margin-bottom : 20px;
+        }
+
+        div.tooltip {
+            position: relative;
+            text-align: center;
+            width: 120px;
+            height: 28px;
+            padding: 2px;
+            font: 10px sans-serif;
+            color : rgb(125, 122, 122);
+            background: rgb(186, 189, 193);
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            display : flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
 
 </head>
 <body>
@@ -16,12 +40,6 @@
             h1 = "Channel Overview"
             h3 = ""
         </script>
-
-        <style>
-            div#sub-chart{
-                margin-bottom : 20px;
-            }
-        </style>
     </header>
 
     <nav>
@@ -331,9 +349,39 @@
             .style("font-family", "sans-serif")
             .text(title)
             .attr("text-anchor", "left");
+
+
+        var dots = g.selectAll("dot")	
+            .data(data)	
+            .enter().append("circle")
+            .attr("class", "dot")
+            .style("opacity",0)
+            .attr("r", 3) // initially invisible
+            .attr("cx", function(d) { return x(d.searchDate); })	
+            .attr("cy", function(d) { return y(d[value]); });
+        
+        var tooltip = d3.select(id).append("div")	
+            .attr("class", "tooltip")
+            .style("opacity", 0); // initially hidden
+
+            dots.on("mouseover", function(d) {
+                d3.select(this).transition().duration(50).style("opacity", 1); // make dot visible and larger
+                tooltip.transition().duration(50).style("opacity", 1); // make tooltip visible
+                tooltip.html("Date: " + d3.timeFormat("%b %d, %Y")(d.searchDate) + "<br/>Value: " + (d[value]/1000).toFixed(2) + 'k')
+                .style("left", (d3.mouse(this)[0]+10 + margin.left) + "px") 
+                .style("top", (d3.mouse(this)[1] - margin.top - height) + "px");
+            })
+            .on("mouseout", function(d) {
+                d3.select(this).transition().duration(100).style("opacity", 0) // make dot invisible again
+                tooltip.transition().duration(50).style("opacity", 0); // hide tooltip
+            })
+            .on("mousemove", function(d) {
+                tooltip.transition().duration(50).style("opacity", 1); // make tooltip visible
+                tooltip.html("Date: " + d3.timeFormat("%b %d, %Y")(d.searchDate) + "<br/>Value: " + (d[value]/1000).toFixed(2) + 'k')
+                .style("left", (d3.mouse(this)[0]+10 + margin.left) + "px") 
+                .style("top", (d3.mouse(this)[1] - margin.top - height) + "px");
+            });
         }
-
-
 
 
 

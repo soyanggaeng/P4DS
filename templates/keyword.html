@@ -63,7 +63,26 @@
     </footer>
 
     <script>
+        var database;
+
+        window.addEventListener('load', function () {
+            communicate('/getYoutuberInfo', {})
+                .then(data => {
+                    database = data;
+                });
+            }
+        )
+        
         var activeSuggestion = -1;
+
+        document.querySelector('#keyword-name').addEventListener('keyup', function(e){
+
+            if(e.key == 'Enter'){
+                e.preventDefault();
+                document.querySelector('#keyword-name').blur();
+                document.querySelector('#keyword-submit').click();
+            }
+            })
 
         document.querySelector('#channel-name').addEventListener('keyup', function(e){
             const suggestionsDiv = document.getElementById('suggestions');
@@ -191,7 +210,53 @@
 
         function keywordAnalysis(){
             communicate("/keywordAnalysis", {'keyword' : $("#keyword-name").value})
-            .then(data =>{
+            .then(data => {
+                var Youtubers = database.filter(item => data.includes(item.title));
+
+                if (Youtubers.length > 0) {
+                    $('#keyword-wordcloud').innerHTML = ''; // Clear previous search results
+
+                    for (var i = 0; i < Youtubers.length; i++) {
+                        var channelItem = document.createElement('div');
+                        channelItem.classList.add('channel-item');
+
+                        channelItem.dataset.title = Youtubers[i].title;
+                        channelItem.dataset.mails = Youtubers[i].mails;
+
+                        var thumbnail = document.createElement('img');
+                        thumbnail.src = Youtubers[i].thumbnails;
+                        thumbnail.alt = Youtubers[i].youtuber;
+                        channelItem.appendChild(thumbnail);
+
+                        var channelInfo = document.createElement('div');
+                        channelInfo.classList.add('channel-info');
+
+                        var youtuberName = document.createElement('h3');
+                        youtuberName.textContent = Youtubers[i].title;
+                        channelInfo.appendChild(youtuberName);
+
+                        var subscriberCount = document.createElement('p');
+                        subscriberCount.textContent = 'Subscriber Count: ' + Youtubers[i].subscriberCount;
+                        channelInfo.appendChild(subscriberCount);
+
+                        var subscriberChange = document.createElement('p');
+                        subscriberChange.textContent = 'Subscriber Change: ' + Youtubers[i].subscriberChange;
+                        channelInfo.appendChild(subscriberChange);
+
+                        var dailyViewCount = document.createElement('p');
+                        dailyViewCount.textContent = 'Daily View Count: ' + Youtubers[i].dailyViewCount;
+                        channelInfo.appendChild(dailyViewCount);
+
+                        var description = document.createElement('p');
+                        description.textContent = Youtubers[i].description;
+                        channelInfo.appendChild(description);
+
+                        channelItem.appendChild(channelInfo);
+                        $('#keyword-wordcloud').appendChild(channelItem);
+                    }
+                } else {
+                    $('#keyword-wordcloud').innerHTML = '<p>No results found.</p>';
+                }
 
             })
         }
