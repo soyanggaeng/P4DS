@@ -150,8 +150,57 @@
                     description.textContent = filteredData.description;
                     channelInfo.appendChild(description);
 
+                    var linkDiv = document.createElement('div');
+                    linkDiv.classList.add('sns-link')
+
+                    function imgStr(file, href){
+                        return `
+                        <a href="${href}">
+                        <img src="image/${file}">
+                        </a>
+                        `
+                    }
+
+                    var imgHTML = `
+                    <a href="https://www.youtube.com/channel/${filteredData.channelId}">
+                        <img src="image/youtube.webp">
+                    </a>
+                    `
+                    {'afreeca', 'blog.naver', 'facebook', 'instagram', 'twitch', 'twitter'}
+                    links = filteredData.links;
+                    if (links){
+                        links.forEach(link => {
+                            switch(link.name){
+                                case 'afreeca':
+                                    imgHTML += imgStr('afreeca.webp', link.href);
+                                    break;
+                                case 'blog.naver':
+                                    imgHTML += imgStr('blog.webp', link.href);
+                                    break;
+                                case 'facebook':
+                                    imgHTML += imgStr('facebook.webp', link.href);
+                                    break;
+                                case 'instagram':
+                                    imgHTML += imgStr('instagram.webp', link.href);
+                                    break;                           
+                                case 'twitch':
+                                    imgHTML += imgStr('twitch.webp', link.href);
+                                    break;
+                                case 'twitter':
+                                    imgHTML += imgStr('twitter.webp', link.href);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        })
+                    }
+                    linkDiv.innerHTML = imgHTML
+                    channelInfo.appendChild(linkDiv);
+
                     channelItem.appendChild(channelInfo);
                     overviewContent.appendChild(channelItem);
+
+
 
                     var subChart = document.createElement('div');
                     subChart.setAttribute('id', 'sub-chart');
@@ -173,6 +222,7 @@
                 
                 })
             }
+
 
             function autocomplete(e) {
                 const suggestionsDiv = document.getElementById('suggestions');
@@ -242,6 +292,7 @@
                 activeSuggestion = -1;
             }
 
+
             function isKorean(char) {
             const unicode = char.charCodeAt(0);
             return ((unicode >= 0xAC00 && unicode <= 0xD7A3) ||  // Hangul Syllables
@@ -251,6 +302,9 @@
                     (unicode >= 0xD7B0 && unicode <= 0xD7FF));   // Hangul Jamo Extended-B
         }
 
+
+
+        //draw graph
         function drawGraph(id, data, value, y_label, title){
             var svgWidth = 1200, svgHeight = 460;
             var margin = { top: 60, right: 20, bottom: 30, left: 100};
@@ -296,7 +350,7 @@
                     .ticks(5)
                     .tickFormat(d=>{
                         if(d>1000){
-                            return `${(d/1000).toFixed(0)}k`;
+                            return `${(d/1000).toFixed(1)}k`;
                         } else{
                             return d;
                         }

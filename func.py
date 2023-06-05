@@ -1,4 +1,4 @@
-from flask import Blueprint, session, redirect, url_for, jsonify, request, g
+from flask import Blueprint, session, redirect, url_for, jsonify, request, g, send_from_directory
 # from pymongo import MongoClient
 from config import *
 from functools import wraps
@@ -168,5 +168,11 @@ def get_channel_info():
         query = {'title' : title}
         user = collection.find_one(query)
         return jsonify(user['stat'])
+    
+@bp.route('/image/<filename>')
+@login_required
+def image(filename):
+    image_folder = './static/img'
+    return send_from_directory(image_folder, filename)
     
 

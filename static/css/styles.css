@@ -137,6 +137,7 @@ footer {
     align-items: center;
 }
 
+
 footer a {
     color: white;
     text-decoration: none;
@@ -1012,3 +1013,18 @@ input[type="submit"]:active {
     text-align : center;
 }
 
+.sns-link a{
+    text-decoration: none;
+}
+
+.sns-link img{
+    width:32px;
+    height:32px;
+}
+
+.sns-link{
+    margin-top : 20px;
+    display : flex;
+    justify-content: flex-start;
+    gap : 7px;
+}
