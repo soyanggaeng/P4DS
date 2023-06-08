@@ -42,9 +42,9 @@ window.addEventListener('load', function () {
     var nav = `<ul>
     <li><a href="#">Channel Analysis</a>
         <ul>
-            <li><a href="/overview">Channel Overview</a></li>
+            <li><a href="templates/overview">Channel Overview</a></li>
             <li><a href="#">Video & Comment Analysis</a></li>
-            <li><a href="/keyword">Keyword Analysis</a></li>
+            <li><a href="templates/keyword">Keyword Analysis</a></li>
             <li class="advertiser-only"><a href="#">Channel Controversy Check</a></li>
         </ul>
     </li>
@@ -59,22 +59,22 @@ window.addEventListener('load', function () {
     </li>
     <li><a href="#">Advertisement Proposal</a>
         <ul>
-            <li><a href="/proposal">To YouTuber</a></li>
+            <li><a href="templates/proposal">To YouTuber</a></li>
             <li><a href="#">To Advertiser</a></li>
         </ul>
     </li>
-    <li><a href="/mypage">My Page</a>
+    <li><a href="templates/mypage">My Page</a>
         <ul>
-            <li><a href="/mypage#member-information">Member Information</a></li>
-            <li><a href="/mypage#analysis-history">Recent Analysis History</a></li>
-            <li><a href="/mypage#purchased-service">My Purchased Service</a></li>
-            <li><a href="/feedback">Feedback</a></li>
+            <li><a href="templates/mypage#member-information">Member Information</a></li>
+            <li><a href="templates/mypage#analysis-history">Recent Analysis History</a></li>
+            <li><a href="templates/mypage#purchased-service">My Purchased Service</a></li>
+            <li><a href="templates/feedback">Feedback</a></li>
         </ul>
     </li>
 </ul>`;
 
     var footer = `<div class="footer-content">
-        <a href="sotube">About SoTube</a>
+        <a href="templates/sotube">About SoTube</a>
         <p>&copy; 2023 YAMP. All rights reserved.</p>
     </div>`
 
