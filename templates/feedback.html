@@ -66,14 +66,17 @@
                         satisfactionInput.setAttribute('name', channel + '-satisfaction-rating');
                         satisfactionInput.setAttribute('min', '1');
                         satisfactionInput.setAttribute('max', '5');
+                        satisfactionInput.required = true;
 
                         var feedbackLabel = document.createElement('label');
                         feedbackLabel.setAttribute('for', channel + '-feedback');
                         feedbackLabel.textContent = '유튜버에게 남기고 싶은 의견 (주관식)';
+                        
 
                         var feedbackTextarea = document.createElement('textarea');
                         feedbackTextarea.setAttribute('id', channel + '-feedback');
                         feedbackTextarea.setAttribute('name', channel + '-feedback');
+                        feedbackTextarea.required = true;
 
                         feedbackContainer.appendChild(channelHeading);
                         feedbackContainer.appendChild(satisfactionLabel);
@@ -90,7 +93,6 @@
             $('#feedback-form').submit();
         });
 
-        console.log(location.hash);
         document.getElementById('hash_val').value = decodeURIComponent(location.hash.substr(1));
         document.getElementById('hash_val').style.display = 'none';
 

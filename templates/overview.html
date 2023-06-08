@@ -67,6 +67,249 @@
     <script>
         var activeSuggestion = -1;
 
+        var database;
+
+        window.addEventListener('load', function () {
+            communicate('/getYoutuberInfo', {})
+                .then(data => {
+                    database = data;
+                });
+            }
+        )
+
+        function searchYoutuber() {
+            var overviewContent = document.getElementById('overview-content');
+            var searchInput = document.getElementById('search-input');
+            var title = searchInput.value;
+
+            var filteredData = database.find(function (item) {
+                return item.title == title;
+            });
+
+            if (filteredData) {
+                overviewContent.innerHTML = ''; // Clear previous search results
+            
+                var channelItem = document.createElement('div');
+                channelItem.classList.add('channel-item');
+
+                var thumbnail = document.createElement('img');
+                thumbnail.src = filteredData.thumbnails;
+                thumbnail.alt = filteredData.youtuber;
+                channelItem.appendChild(thumbnail);
+
+                var channelInfo = document.createElement('div');
+                channelInfo.classList.add('channel-info');
+
+                var youtuberName = document.createElement('h3');
+                youtuberName.textContent = filteredData.title;
+                channelInfo.appendChild(youtuberName);
+
+                var subscriberCount = document.createElement('p');
+                subscriberCount.textContent = 'Subscriber Count: ' + filteredData.subscriberCount;
+                channelInfo.appendChild(subscriberCount);
+
+                var subscriberChange = document.createElement('p');
+                subscriberChange.textContent = 'Subscriber Change: ' + filteredData.subscriberChange;
+                channelInfo.appendChild(subscriberChange);
+
+                var dailyViewCount = document.createElement('p');
+                dailyViewCount.textContent = 'Daily View Count: ' + filteredData.dailyViewCount;
+                channelInfo.appendChild(dailyViewCount);
+
+                var description = document.createElement('p');
+                description.textContent = filteredData.description;
+                channelInfo.appendChild(description);
+
+                var linkDiv = document.createElement('div');
+                linkDiv.classList.add('sns-link')
+
+                function imgStr(file, href){
+                    return `
+                    <a href="${href}">
+                    <img src="image/${file}">
+                    </a>
+                    `
+                }
+
+                var imgHTML = `
+                <a href="https://www.youtube.com/channel/${filteredData.channelId}">
+                    <img src="image/youtube.webp">
+                </a>
+                `
+                {'afreeca', 'blog.naver', 'facebook', 'instagram', 'twitch', 'twitter'}
+                links = filteredData.links;
+                if (links){
+                    links.forEach(link => {
+                        switch(link.name){
+                            case 'afreeca':
+                                imgHTML += imgStr('afreeca.webp', link.href);
+                                break;
+                            case 'blog.naver':
+                                imgHTML += imgStr('blog.webp', link.href);
+                                break;
+                            case 'facebook':
+                                imgHTML += imgStr('facebook.webp', link.href);
+                                break;
+                            case 'instagram':
+                                imgHTML += imgStr('instagram.webp', link.href);
+                                break;                           
+                            case 'twitch':
+                                imgHTML += imgStr('twitch.webp', link.href);
+                                break;
+                            case 'twitter':
+                                imgHTML += imgStr('twitter.webp', link.href);
+                                break;
+                            default:
+                                break;
+                        }
+                    })
+                }
+                linkDiv.innerHTML = imgHTML
+                channelInfo.appendChild(linkDiv);
+
+                channelItem.appendChild(channelInfo);
+                overviewContent.appendChild(channelItem);
+
+
+
+                var subChart = document.createElement('div');
+                subChart.setAttribute('id', 'sub-chart');
+                overviewContent.appendChild(subChart)
+
+                var viewChart = document.createElement('div');
+                viewChart.setAttribute('id', 'view-chart');
+                overviewContent.appendChild(viewChart)
+
+                communicate("/getChannelInfo", {'title' : filteredData.title})
+                .then(data => {
+                    drawGraph("#sub-chart", data, "subscriberCount", "Subscriber Count", "Subscriber Number Trend");
+                    drawGraph("#view-chart", data, "dailyViewCount","Daily View Count", "Daily View Count Trend");
+                })
+
+            } else {
+                overviewContent.innerHTML = '<p>No results found.</p>';
+            }
+            
+            }
+
+        // function searchYoutuber() {
+        //     communicate('/getYoutuberInfo', {})
+        //     .then(data => {
+        //         var overviewContent = document.getElementById('overview-content');
+        //         var searchInput = document.getElementById('search-input');
+        //         var title = searchInput.value;
+
+        //         var filteredData = data.find(function (item) {
+        //             return item.title == title;
+        //         });
+
+        //         if (filteredData) {
+        //             overviewContent.innerHTML = ''; // Clear previous search results
+                
+        //             var channelItem = document.createElement('div');
+        //             channelItem.classList.add('channel-item');
+
+        //             var thumbnail = document.createElement('img');
+        //             thumbnail.src = filteredData.thumbnails;
+        //             thumbnail.alt = filteredData.youtuber;
+        //             channelItem.appendChild(thumbnail);
+
+        //             var channelInfo = document.createElement('div');
+        //             channelInfo.classList.add('channel-info');
+
+        //             var youtuberName = document.createElement('h3');
+        //             youtuberName.textContent = filteredData.title;
+        //             channelInfo.appendChild(youtuberName);
+
+        //             var subscriberCount = document.createElement('p');
+        //             subscriberCount.textContent = 'Subscriber Count: ' + filteredData.subscriberCount;
+        //             channelInfo.appendChild(subscriberCount);
+
+        //             var subscriberChange = document.createElement('p');
+        //             subscriberChange.textContent = 'Subscriber Change: ' + filteredData.subscriberChange;
+        //             channelInfo.appendChild(subscriberChange);
+
+        //             var dailyViewCount = document.createElement('p');
+        //             dailyViewCount.textContent = 'Daily View Count: ' + filteredData.dailyViewCount;
+        //             channelInfo.appendChild(dailyViewCount);
+
+        //             var description = document.createElement('p');
+        //             description.textContent = filteredData.description;
+        //             channelInfo.appendChild(description);
+
+        //             var linkDiv = document.createElement('div');
+        //             linkDiv.classList.add('sns-link')
+
+        //             function imgStr(file, href){
+        //                 return `
+        //                 <a href="${href}">
+        //                 <img src="image/${file}">
+        //                 </a>
+        //                 `
+        //             }
+
+        //             var imgHTML = `
+        //             <a href="https://www.youtube.com/channel/${filteredData.channelId}">
+        //                 <img src="image/youtube.webp">
+        //             </a>
+        //             `
+        //             {'afreeca', 'blog.naver', 'facebook', 'instagram', 'twitch', 'twitter'}
+        //             links = filteredData.links;
+        //             if (links){
+        //                 links.forEach(link => {
+        //                     switch(link.name){
+        //                         case 'afreeca':
+        //                             imgHTML += imgStr('afreeca.webp', link.href);
+        //                             break;
+        //                         case 'blog.naver':
+        //                             imgHTML += imgStr('blog.webp', link.href);
+        //                             break;
+        //                         case 'facebook':
+        //                             imgHTML += imgStr('facebook.webp', link.href);
+        //                             break;
+        //                         case 'instagram':
+        //                             imgHTML += imgStr('instagram.webp', link.href);
+        //                             break;                           
+        //                         case 'twitch':
+        //                             imgHTML += imgStr('twitch.webp', link.href);
+        //                             break;
+        //                         case 'twitter':
+        //                             imgHTML += imgStr('twitter.webp', link.href);
+        //                             break;
+        //                         default:
+        //                             break;
+        //                     }
+        //                 })
+        //             }
+        //             linkDiv.innerHTML = imgHTML
+        //             channelInfo.appendChild(linkDiv);
+
+        //             channelItem.appendChild(channelInfo);
+        //             overviewContent.appendChild(channelItem);
+
+
+
+        //             var subChart = document.createElement('div');
+        //             subChart.setAttribute('id', 'sub-chart');
+        //             overviewContent.appendChild(subChart)
+
+        //             var viewChart = document.createElement('div');
+        //             viewChart.setAttribute('id', 'view-chart');
+        //             overviewContent.appendChild(viewChart)
+
+        //             communicate("/getChannelInfo", {'title' : filteredData.title})
+        //             .then(data => {
+        //                 drawGraph("#sub-chart", data, "subscriberCount", "Subscriber Count", "Subscriber Number Trend");
+        //                 drawGraph("#view-chart", data, "dailyViewCount","Daily View Count", "Daily View Count Trend");
+        //             })
+
+        //         } else {
+        //             overviewContent.innerHTML = '<p>No results found.</p>';
+        //         }
+                
+        //         })
+        //     }
+
         document.querySelector('#search-input').addEventListener('keyup', function(e){
             const suggestionsDiv = document.getElementById('suggestions');
             const children = Array.from(suggestionsDiv.children);
@@ -104,124 +347,6 @@
                 autocomplete(e);
             }
         })
-
-        function searchYoutuber() {
-            communicate('/getYoutuberInfo', {})
-            .then(data => {
-                var overviewContent = document.getElementById('overview-content');
-                var searchInput = document.getElementById('search-input');
-                var title = searchInput.value;
-
-                var filteredData = data.find(function (item) {
-                    return item.title == title;
-                });
-
-                if (filteredData) {
-                    overviewContent.innerHTML = ''; // Clear previous search results
-                
-                    var channelItem = document.createElement('div');
-                    channelItem.classList.add('channel-item');
-
-                    var thumbnail = document.createElement('img');
-                    thumbnail.src = filteredData.thumbnails;
-                    thumbnail.alt = filteredData.youtuber;
-                    channelItem.appendChild(thumbnail);
-
-                    var channelInfo = document.createElement('div');
-                    channelInfo.classList.add('channel-info');
-
-                    var youtuberName = document.createElement('h3');
-                    youtuberName.textContent = filteredData.title;
-                    channelInfo.appendChild(youtuberName);
-
-                    var subscriberCount = document.createElement('p');
-                    subscriberCount.textContent = 'Subscriber Count: ' + filteredData.subscriberCount;
-                    channelInfo.appendChild(subscriberCount);
-
-                    var subscriberChange = document.createElement('p');
-                    subscriberChange.textContent = 'Subscriber Change: ' + filteredData.subscriberChange;
-                    channelInfo.appendChild(subscriberChange);
-
-                    var dailyViewCount = document.createElement('p');
-                    dailyViewCount.textContent = 'Daily View Count: ' + filteredData.dailyViewCount;
-                    channelInfo.appendChild(dailyViewCount);
-
-                    var description = document.createElement('p');
-                    description.textContent = filteredData.description;
-                    channelInfo.appendChild(description);
-
-                    var linkDiv = document.createElement('div');
-                    linkDiv.classList.add('sns-link')
-
-                    function imgStr(file, href){
-                        return `
-                        <a href="${href}">
-                        <img src="image/${file}">
-                        </a>
-                        `
-                    }
-
-                    var imgHTML = `
-                    <a href="https://www.youtube.com/channel/${filteredData.channelId}">
-                        <img src="image/youtube.webp">
-                    </a>
-                    `
-                    {'afreeca', 'blog.naver', 'facebook', 'instagram', 'twitch', 'twitter'}
-                    links = filteredData.links;
-                    if (links){
-                        links.forEach(link => {
-                            switch(link.name){
-                                case 'afreeca':
-                                    imgHTML += imgStr('afreeca.webp', link.href);
-                                    break;
-                                case 'blog.naver':
-                                    imgHTML += imgStr('blog.webp', link.href);
-                                    break;
-                                case 'facebook':
-                                    imgHTML += imgStr('facebook.webp', link.href);
-                                    break;
-                                case 'instagram':
-                                    imgHTML += imgStr('instagram.webp', link.href);
-                                    break;                           
-                                case 'twitch':
-                                    imgHTML += imgStr('twitch.webp', link.href);
-                                    break;
-                                case 'twitter':
-                                    imgHTML += imgStr('twitter.webp', link.href);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        })
-                    }
-                    linkDiv.innerHTML = imgHTML
-                    channelInfo.appendChild(linkDiv);
-
-                    channelItem.appendChild(channelInfo);
-                    overviewContent.appendChild(channelItem);
-
-
-
-                    var subChart = document.createElement('div');
-                    subChart.setAttribute('id', 'sub-chart');
-                    overviewContent.appendChild(subChart)
-
-                    var viewChart = document.createElement('div');
-                    viewChart.setAttribute('id', 'view-chart');
-                    overviewContent.appendChild(viewChart)
-
-                    communicate("/getChannelInfo", {'title' : filteredData.title})
-                    .then(data => {
-                        drawGraph("#sub-chart", data, "subscriberCount", "Subscriber Count", "Subscriber Number Trend");
-                        drawGraph("#view-chart", data, "dailyViewCount","Daily View Count", "Daily View Count Trend");
-                    })
-
-                } else {
-                    overviewContent.innerHTML = '<p>No results found.</p>';
-                }
-                
-                })
-            }
 
 
             function autocomplete(e) {

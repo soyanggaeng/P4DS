@@ -1,6 +1,32 @@
-class model:
-    def __init__(self, *input):
-        self.input = input
+import view
+import cos
+from sklearn.preprocessing import MinMaxScaler
+import pandas as pd
+
+class model():
+    def __init__(self, df, inputs, budget):
+        self.df = df.copy()
+        self.m1 = view.view("randomforest.pkl", df)
+        self.m2 = cos.cos('model1_df.pkl', inputs[:])
+        self.m3 = pd.read_pickle("comment.pkl")
+        self.budget = budget
 
     def predict(self):
-        return ['유소나', '유지니 u genie', '유튜브 지식 쇼츠', '예술의 이유', '유백합 kkubi99']
+        view = self.m1.predict()
+        cos = self.m2.predict()
+        comment = self.m3
+        df = pd.merge(view,cos, on="유튜버", how = 'left')
+        df = pd.merge(df, comment, on = "유튜버", how = "left")
+        mm = MinMaxScaler()
+        df['view_count_mm'] = mm.fit_transform(df[['view_count']])
+        df['word_corr_mm'] = mm.fit_transform(df[['word_corr']])
+        df['comment_analysis_score_mm'] = mm.fit_transform(df[['comment_analysis_score']])
+        df['model_score'] = df['view_count_mm'] + df['word_corr_mm'] + df['comment_analysis_score_mm']
+        df = df.loc[df['budget'] < self.budget]
+        df = df.sort_values(by='model_score', ascending=False)
+        df_r = df[['유튜버', 'word_corr', 'comment_analysis_score']]
+        self.view=view
+        self.cos=cos
+        self.comment=comment
+        return df_r
+

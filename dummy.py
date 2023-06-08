@@ -60,7 +60,7 @@ def create_dummy_data(channels, service_info):
             'service': type,
             'details': service_info[type],
             'purchaseDate': date,
-            'feedbackSubmitted' : random.choice([True, False])
+            'feedbackSubmitted' : False
         })
 
         i = rand_day + 10
