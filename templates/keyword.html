@@ -11,6 +11,37 @@
         .autocomplete{
             margin-right : 0px;
         }
+
+        #channel-image{
+            width : 100%;
+        }
+
+        #channel-result{
+            display:none;
+            width : 35%;
+        }
+
+        #keyword-result{
+            display:none;
+            width : 95%;
+        }
+        #keyword-result .wordcloud{
+            display : grid;
+            gap : 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        #keyword-result .channel-item{
+            width : auto;
+        }
+
+        .wordcloud{
+            height:auto;
+        }
+
+        .block{
+            height:120px;
+        }
     </style>
 
 </head>
@@ -46,6 +77,8 @@
 
         </section>
         
+        
+        
         <section id="channel-result">
             <h2>Channel Analysis Results</h2>
             <div id="channel-wordcloud" class="wordcloud">
@@ -57,6 +90,8 @@
             <h2>Keyword Analysis Results</h2>
             <div id="keyword-wordcloud" class="wordcloud"></div>
         </section>
+
+        <div class="block"></div>
     </div>
 
     <footer>
@@ -203,8 +238,10 @@
         function channelAnalysis(){
             communicate("/channelAnalysis", {'channel' : $("#channel-name").value})
             .then(data => {
-                $("#channel-image").src = data.path;
+                $("#channel-image").src = `static/img/wordcloud.png?${data.channel}`;
                 $("#channel-image").style.display = "block";
+                $("#channel-result").style.display = "block";
+                
             })
         }
 
@@ -254,6 +291,8 @@
                         channelItem.appendChild(channelInfo);
                         $('#keyword-wordcloud').appendChild(channelItem);
                     }
+                    $("#keyword-result").style.display = "block";
+
                 } else {
                     $('#keyword-wordcloud').innerHTML = '<p>No results found.</p>';
                 }

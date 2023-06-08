@@ -19,7 +19,7 @@ class view():
     
     def preprosessing(self):
         self.df['paid_advertised'] = 1
-        self.df['date_difference'] = 30
+        self.df['date_difference'] = 20
         self.df['budget'] = self.df['subscriber_count'].apply(self.get_budget)
         
         category_labels = {
@@ -50,6 +50,7 @@ class view():
             'Food and Beverage',
             'Gaming',
             'Financial Services',
+            'Health and Fitness',
             'ntertainment and Media']
         category_to_number = {category: number for number, category in enumerate(product_categories)}
 
@@ -58,7 +59,17 @@ class view():
 
         
     def get_budget(self, value):
-        if value <= 200000:
+        if value <= 50000:
+            return 500
+        elif value <= 100000:
+            return 1000
+        elif value <= 120000:
+            return 1200
+        elif value <= 150000:
+            return 1300
+        elif value <= 170000:
+            return 1500
+        elif value <= 200000:
             return 2000
         elif value <= 400000:
             return 3000

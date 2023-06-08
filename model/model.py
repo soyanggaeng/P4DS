@@ -1,14 +1,14 @@
-import view
-import cos
+from model.view import *
+from model.cos import *
 from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 
 class model():
     def __init__(self, df, inputs, budget):
         self.df = df.copy()
-        self.m1 = view.view("randomforest.pkl", df)
-        self.m2 = cos.cos('model1_df.pkl', inputs[:])
-        self.m3 = pd.read_pickle("comment.pkl")
+        self.m1 = view("/Users/jinwoo/Desktop/project/web/YAMP/model/randomforest.pkl", df)
+        self.m2 = cos('/Users/jinwoo/Desktop/project/web/YAMP/model/model1_df.pkl', inputs[:])
+        self.m3 = pd.read_pickle("/Users/jinwoo/Desktop/project/web/YAMP/model/comment4.pkl")
         self.budget = budget
 
     def predict(self):
@@ -22,11 +22,15 @@ class model():
         df['word_corr_mm'] = mm.fit_transform(df[['word_corr']])
         df['comment_analysis_score_mm'] = mm.fit_transform(df[['comment_analysis_score']])
         df['model_score'] = df['view_count_mm'] + df['word_corr_mm'] + df['comment_analysis_score_mm']
-        df = df.loc[df['budget'] < self.budget]
+        # df['model_score'] = df['view_count_mm'] + 0.4*df['word_corr_mm'] + 0.4*df['comment_analysis_score_mm']
+
+
+        df = df.loc[df['budget'] <= self.budget]
         df = df.sort_values(by='model_score', ascending=False)
         df_r = df[['유튜버', 'word_corr', 'comment_analysis_score']]
         self.view=view
         self.cos=cos
         self.comment=comment
+        self.df2 = df
         return df_r
 

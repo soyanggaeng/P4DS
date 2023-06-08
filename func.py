@@ -131,9 +131,20 @@ def update_feedback():
         query = {'email' : session.get("email"), 'serviceData.service' : hash}
         g.db['user_info'].update_one(query, {"$set" : {'serviceData.$.feedbackSubmitted' : True}})
 
+        query = {"email": session.get("email"), "history.type": 'To Youtuber Proposal'}
+        youtubers = g.db['user_info'].find_one(query)
+
         collection = g.db['feedback']
         form_data = request.form.to_dict()
         collection.insert_one(form_data)
+
+        youtuber_rating = dict()
+        for k, v in form_data.items():
+            if("satisfaction-rating" in k):
+                if(len(k.split("-")) == 3):
+                    youtuber = k.split("-")[0]
+                    youtuber_rating[youtuber] = v
+
         return redirect(url_for('mypage'))
     
 @bp.route('/updateProposal', methods=['POST'])
@@ -169,10 +180,5 @@ def get_channel_info():
         user = collection.find_one(query)
         return jsonify(user['stat'])
     
-@bp.route('/image/<filename>')
-@login_required
-def image(filename):
-    image_folder = './static/img'
-    return send_from_directory(image_folder, filename)
-    
+
 

@@ -77,20 +77,20 @@
             <label for="product">Product:</label>
             <select id="product" name="product" required>
                 <option value="" disabled selected>Select Product Type</option>
-                <option value="technology">Technology</option>
-                <option value="gaming">Gaming</option>
-                <option value="beauty-fashion">Beauty and Fashion</option>
-                <option value="food-beverage">Food and Beverage</option>
-                <option value="health-fitness">Health and Fitness</option>
-                <option value="travel-tourism">Travel and Tourism</option>
-                <option value="automotive">Automotive</option>
-                <option value="entertainment-media">Entertainment and Media</option>
-                <option value="home-lifestyle">Home and Lifestyle</option>
-                <option value="financial-services">Financial Services</option>
+                <option value="Technology">Technology</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Beauty and Fashion">Beauty and Fashion</option>
+                <option value="Food and Beverage">Food and Beverage</option>
+                <option value="Health and Fitnesss">Health and Fitness</option>
+                <option value="Travel and Tourism">Travel and Tourism</option>
+                <option value="Automotive">Automotive</option>
+                <option value="Entertainment and Media">Entertainment and Media</option>
+                <option value="Home and Lifestyle">Home and Lifestyle</option>
+                <option value="Financial Services">Financial Services</option>
             </select>
             
             <label for="budget">Budget:</label>
-            <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount" required>
+            <input type="number" id="budget" name="budget" placeholder="Enter Budget Amount (만원)" required>
             
             <label for="keywords">Keywords:</label>
             <div id="keyword-container">
@@ -191,38 +191,39 @@
             function getExampleKeywords(productType) {
                 var exampleKeywords = [];
                     switch (productType) {
-                        case "technology":
+                        case "Technology":
                             exampleKeywords = "스마트폰, 컴퓨터, 아이폰, 갤럭시, 워치";
                             break;
-                        case "gaming":
+                        case "Gaming":
                             exampleKeywords = "시뮬레이션, RPG, 콘솔게임, 모바일게임, 컴퓨터게임";
                             break;
-                        case "beauty-fashion":
+                        case "Beauty and Fashion":
                             exampleKeywords = "립스틱, 선스틱, 향수, 옷, 신발";
                             break;
-                        case "food-beverage":
+                        case "Food and Beverage":
                             exampleKeywords = "치킨, 맥주, 식당, 탄산음료, 피자";
                             break;
-                        case "health-fitness":
+                        case "Health and Fitnesss":
                             exampleKeywords = "건강음료, 약, 다이어트, 운동기록, 피트니스앱";
                             break;
-                        case "travel-tourism":
+                        case "Travel and Tourism":
                             exampleKeywords = "관광, 여행지, 투어, 숙소, 항공권";
                             break;
-                        case "automotive":
+                        case "Automotive":
                             exampleKeywords = "자동차, 자동차정비, 중고차, 네비게이션, 블랙박스";
                             break;
-                        case "entertainment-media":
+                        case "Entertainment and Media":
                             exampleKeywords = "영화, 드라마, VPN, OTT, 음원서비스";
                             break;
-                        case "home-lifestyle":
+                        case "Home and Lifestyle":
                             exampleKeywords = "인테리어, 가구, 홈케어, 청소기, 에어컨";
                             break;
-                        case "financial-services":
+                        case "Financial Services":
                             exampleKeywords = "재테크, 보험, 은행, 주식앱, 모바일금융";
                             break;
                         default:
                             break;
+
                     }
                     return exampleKeywords;
             }
@@ -239,7 +240,7 @@
                     var newHiddenKeyword = document.createElement("input");
                     var proposal_container = $("#hidden-keyword-container");
                     newHiddenKeyword.type = "hidden";
-                    newHiddenKeyword.name = `keyword-${keywordInputs.length}`;
+                    newHiddenKeyword.name = `keyword-${keywordInputs.length-1}`;
                     proposal_container.appendChild(newHiddenKeyword);
                 }
             });
@@ -277,7 +278,10 @@
             })
             .then(response => response.json())
             .then(data => {
-                var Youtubers = database.filter(item => data.includes(item.title));
+
+                var nameList = data.map(item => item.유튜버);
+                
+                var Youtubers = database.filter(item => nameList.slice(0,5).includes(item.title));
 
                 if (Youtubers.length > 0) {
                     $('#recommendations').innerHTML = ''; // Clear previous search results
@@ -330,10 +334,10 @@
                     $('#recommendations').innerHTML = '<p>No results found.</p>';
                 }
 
-                communicate("/test", {})
-                .then(data => {
-                    drawGraph("#chart", data, "comment-score", "comment-score", "test");
-                })
+                // communicate("/test", {})
+                // .then(data => {
+                drawGraph("#chart", data, "comment_analysis_score", "Youtuber`s Reputation", "test");
+                // })
 
             })
         });
@@ -484,7 +488,7 @@
             var height = svgHeight - margin.top - margin.bottom;
             
             data.forEach(function(d) {
-                d["cosine-simularity"] = +d["cosine-simularity"];
+                d["word_corr"] = +d["word_corr"];
                 d[value] = +d[value]
             });
 
@@ -499,11 +503,11 @@
             var x = d3.scaleLinear().range([0, width]);
             var y = d3.scaleLinear().range([height, 0]);
 
-            // x.domain(d3.extent(data, function(d) { return d["cosine-simularity"] }));
+            // x.domain(d3.extent(data, function(d) { return d["word_corr"] }));
             // y.domain(d3.extent(data, function(d) { return d[value] }));
 
-            x.domain([-1, 1]);
-            y.domain([0,5]);
+            x.domain([0, 1]);
+            y.domain([0, 5]);
 
             var x_axis = g.append("g")
                 .attr("transform", `translate(0,${height})`)
@@ -564,8 +568,8 @@
             .enter().append("circle")
             .attr("class", "dot")
             .style("opacity",1)
-            .attr("r", 3) // initially invisible
-            .attr("cx", function(d) { return x(d["cosine-simularity"]); })	
+            .attr("r", 7) // initially invisible
+            .attr("cx", function(d) { return x(d["word_corr"]); })	
             .attr("cy", function(d) { return y(d[value]); })
             .attr("fill", function(d, i){
                 if(i<5){
@@ -580,7 +584,7 @@
         //     .attr("class", "dot")
         //     .style("opacity",0)
         //     .attr("r", 3) // initially invisible
-        //     .attr("cx", function(d) { return x(d["cosine-simularity"]); })	
+        //     .attr("cx", function(d) { return x(d["word_corr"]); })	
         //     .attr("cy", function(d) { return y(d[value]); });
         
         var tooltip = d3.select(id).append("div")	
@@ -590,7 +594,7 @@
             dots.on("mouseover", function(d) {
                 // d3.select(this).transition().duration(50).style("opacity", 1); // make dot visible and larger
                 tooltip.transition().duration(50).style("opacity", 1); // make tooltip visible
-                tooltip.html("Youtuber : " + d.youtuber + "<br/>Cosine-simularity : " + (d["cosine-simularity"].toFixed(2)) + "<br/>Comment-score: " + d[value].toFixed(2))
+                tooltip.html("Youtuber : " + d.유튜버 + "<br/>word_corr : " + (d["word_corr"].toFixed(2)) + "<br/>Comment-score: " + d[value].toFixed(2))
                 .style("left", (d3.mouse(this)[0]+10 + margin.left) + "px") 
                 .style("top", (d3.mouse(this)[1] - margin.top - height) + "px");
             })
@@ -601,7 +605,7 @@
             .on("mousemove", function(d) {
                 // d3.select(this).transition().duration(50).style("opacity", 1); // make dot visible and larger
                 tooltip.transition().duration(50).style("opacity", 1); // make tooltip visible
-                tooltip.html("Youtuber : " + d.youtuber + "<br/>Cosine-simularity : " + (d["cosine-simularity"].toFixed(2)) + "<br/>Comment-score: " + d[value].toFixed(2))
+                tooltip.html("Youtuber : " + d.유튜버 + "<br/>word_corr : " + (d["word_corr"].toFixed(2)) + "<br/>Comment-score: " + d[value].toFixed(2))
                 .style("left", (d3.mouse(this)[0]+10 + margin.left) + "px") 
                 .style("top", (d3.mouse(this)[1] - margin.top - height) + "px");
             });

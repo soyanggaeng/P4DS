@@ -30,9 +30,9 @@ class cos():
         return answers
     
     def token(self, comment):
-        inputs = tokenizer(comment, return_tensors="pt", padding=True, truncation=True, max_length=50).to("cpu")
+        inputs = tokenizer(comment, return_tensors="pt", padding=True, truncation=True, max_length=20).to("cpu")
         vector_inputs = inputs['input_ids'].numpy().flatten()
-        vector_inputs = np.pad(vector_inputs, (0, 50 - len(vector_inputs)))
+        vector_inputs = np.pad(vector_inputs, (0, 20 - len(vector_inputs)))
         return vector_inputs
 
     def preprocessing(self, word):
