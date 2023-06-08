@@ -2,14 +2,21 @@ from model.view import *
 from model.cos import *
 from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
+from pymongo import MongoClient
 
 class model():
     def __init__(self, df, inputs, budget):
         self.df = df.copy()
         self.m1 = view("/Users/jinwoo/Desktop/project/web/YAMP/model/randomforest.pkl", df)
         self.m2 = cos('/Users/jinwoo/Desktop/project/web/YAMP/model/model1_df.pkl', inputs[:])
-        self.m3 = pd.read_pickle("/Users/jinwoo/Desktop/project/web/YAMP/model/comment4.pkl")
+        # self.m3 = pd.read_pickle("/Users/jinwoo/Desktop/project/web/YAMP/model/comment.pkl")
         self.budget = budget
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['sotube']
+        cursor = db.comment_score.find({}, {"_id" : 0})
+        comments = [doc for doc in cursor]
+        comments = pd.DataFrame(comments)
+        self.m3 = comments.copy()
 
     def predict(self):
         view = self.m1.predict()

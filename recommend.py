@@ -1,5 +1,4 @@
 from flask import Blueprint, session, redirect, url_for, jsonify, request, g, send_from_directory
-# from pymongo import MongoClient
 from config import *
 import datetime
 from func import login_required
@@ -8,9 +7,6 @@ from model.word_cloud import wc_plot
 import json
 import pandas as pd
 from model.cos import cos
-# client = MongoClient(MONGODB_HOST)
-
-# db = client[MONGODB_DATABASE]
 
 bp2 = Blueprint("recommend_blueprint", __name__);
 
@@ -64,12 +60,7 @@ def keywordAnalysis():
         df = m.predict()
         df = df.sort_values(by='word_corr', ascending=False)
         youtuber_list = list(df['유튜버'])[:5]
-        # product = request.form.get('product')
-        # budget = request.form.get('budget')
-        # keywords = request.form.get('keywords')
-        # m = model(product, budget, keywords)
-        # youtubers = m.predict()
-
+   
         return jsonify(youtuber_list)
     
 # @bp2.route('/image/<filename>')

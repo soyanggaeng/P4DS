@@ -138,13 +138,15 @@ def update_feedback():
         form_data = request.form.to_dict()
         collection.insert_one(form_data)
 
-        youtuber_rating = dict()
         for k, v in form_data.items():
             if("satisfaction-rating" in k):
                 if(len(k.split("-")) == 3):
                     youtuber = k.split("-")[0]
-                    youtuber_rating[youtuber] = v
-
+                    new_score = int(v)
+                    doc = g.db.comment_score.find_one({'유튜버': youtuber})
+                    if doc is not None:
+                        avg_score = (doc['comment_analysis_score'] + new_score) / 2
+                        g.db.comment_score.update_one({'유튜버' : youtuber}, {"$set" : {'comment_analysis_score': avg_score}})       
         return redirect(url_for('mypage'))
     
 @bp.route('/updateProposal', methods=['POST'])

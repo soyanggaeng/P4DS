@@ -81,7 +81,7 @@
                 <option value="Gaming">Gaming</option>
                 <option value="Beauty and Fashion">Beauty and Fashion</option>
                 <option value="Food and Beverage">Food and Beverage</option>
-                <option value="Health and Fitnesss">Health and Fitness</option>
+                <option value="Health and Fitness">Health and Fitness</option>
                 <option value="Travel and Tourism">Travel and Tourism</option>
                 <option value="Automotive">Automotive</option>
                 <option value="Entertainment and Media">Entertainment and Media</option>
@@ -148,41 +148,6 @@
     document.addEventListener("DOMContentLoaded", function() {
             var keywordContainer = document.getElementById("keyword-container");
             var keywordInputs = keywordContainer.getElementsByTagName("input");
-            // var suggestionsContainer = document.getElementById("suggestions");
-    
-            // Add event listeners for keyword inputs
-            // for (var i = 0; i < keywordInputs.length; i++) {
-            //     keywordInputs[i].addEventListener("input", function() {
-            //         var keyword = this.value;
-            //         showSuggestions(keyword);
-            //     });
-            // }
-    
-            // function showSuggestions(keyword) {
-            //     // Clear previous suggestions
-            //     suggestionsContainer.innerHTML = "";
-    
-            //     // Generate suggestions based on keyword
-            //     if (keyword.trim() !== "") {
-            //         var productType = document.getElementById("product").value;
-            //         var exampleKeywords = getExampleKeywords(productType);
-            //         var filteredKeywords = exampleKeywords.filter(function(exampleKeyword) {
-            //             return exampleKeyword.toLowerCase().startsWith(keyword.toLowerCase());
-            //         });
-    
-            //         // Display suggestions
-            //         filteredKeywords.forEach(function(filteredKeyword) {
-            //             var suggestion = document.createElement("div");
-            //             suggestion.textContent = filteredKeyword;
-            //             suggestion.addEventListener("click", function() {
-            //                 var keywordInput = document.activeElement;
-            //                 keywordInput.value = this.textContent;
-            //                 suggestionsContainer.innerHTML = "";
-            //             });
-            //             suggestionsContainer.appendChild(suggestion);
-            //         });
-            //     }
-            // }
 
             $("#product").addEventListener('change', function() {
                 $("#examples").textContent = `ex) ${getExampleKeywords(this.value)}`;
@@ -203,7 +168,7 @@
                         case "Food and Beverage":
                             exampleKeywords = "치킨, 맥주, 식당, 탄산음료, 피자";
                             break;
-                        case "Health and Fitnesss":
+                        case "Health and Fitness":
                             exampleKeywords = "건강음료, 약, 다이어트, 운동기록, 피트니스앱";
                             break;
                         case "Travel and Tourism":
@@ -506,7 +471,9 @@
             // x.domain(d3.extent(data, function(d) { return d["word_corr"] }));
             // y.domain(d3.extent(data, function(d) { return d[value] }));
 
-            x.domain([0, 1]);
+            let xMinVal = d3.min(data, d => d.word_corr);
+
+            x.domain([xMinVal, 1]);
             y.domain([0, 5]);
 
             var x_axis = g.append("g")

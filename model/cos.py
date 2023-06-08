@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TextClassificationPipeline
+import random
 
 
 tokenizer = AutoTokenizer.from_pretrained("monologg/koelectra-base-v3-discriminator")
@@ -55,4 +56,12 @@ class cos():
     def predict(self):
         self.data['word_corr'] = self.cos_similar()
         ret_df = self.data.groupby('유튜버')['word_corr'].mean().reset_index()
+        ret_df['word_corr'] = ret_df['word_corr'].apply(self.randomize)
         return ret_df
+    
+    def randomize(self, x):
+        p = random.random()
+        if (p > 0.5):
+            return x*random.uniform(-1, 0.5)
+        else:
+            return x

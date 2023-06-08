@@ -50,8 +50,7 @@ class view():
             'Food and Beverage',
             'Gaming',
             'Financial Services',
-            'Health and Fitness',
-            'ntertainment and Media']
+            'Health and Fitness']
         category_to_number = {category: number for number, category in enumerate(product_categories)}
 
         self.df['category'] = self.df['category'].map(category_labels)
