@@ -47,7 +47,7 @@ window.onload = function () {
                     modal.style.display = "none";
                 }
                 }
-            }else if (link.hash !== '' && location.pathname == 'templates/mypage') {
+            }else if (link.hash !== '' && location.pathname == '/mypage') {
                 e.preventDefault();
                 scrollToSection(link.hash);
             }
