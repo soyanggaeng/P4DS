@@ -182,5 +182,9 @@ def get_channel_info():
         user = collection.find_one(query)
         return jsonify(user['stat'])
     
-
+@bp.route('/image/<filename>')
+@login_required
+def image(filename):
+    image_folder = './static/img'
+    return send_from_directory(image_folder, filename)
 

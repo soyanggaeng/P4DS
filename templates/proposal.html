@@ -11,6 +11,10 @@
     
 
     <style>
+        #chart{
+            display : flex;
+            justify-content: center;
+        }
 
         .channel-item {
             width: 100%;
@@ -301,7 +305,7 @@
 
                 // communicate("/test", {})
                 // .then(data => {
-                drawGraph("#chart", data, "comment_analysis_score", "Youtuber`s Reputation", "test");
+                drawGraph("#chart", data, "comment_analysis_score", "Youtuber`s Reputation", "Score Visualization");
                 // })
 
             })
@@ -447,8 +451,8 @@
 
         function drawGraph(id, data, value, y_label, title){
             $(id).innerHTML = "";
-            var svgWidth = 1200, svgHeight = 460;
-            var margin = { top: 60, right: 20, bottom: 30, left: 100};
+            var svgWidth = 1200, svgHeight = 500;
+            var margin = { top: 60, right: 20, bottom: 70, left: 100};
             var width = svgWidth - margin.left - margin.right;
             var height = svgHeight - margin.top - margin.bottom;
             
@@ -486,6 +490,14 @@
             x_axis.selectAll(".tick line").attr("opacity", 0);
             x_axis.select(".domain").remove();
 
+            x_axis.append("text")
+                    .attr("fill", "#777")
+                    .style("font-size", "20px")
+                    .attr("y", 15)
+                    .attr("transform", `translate(${width/2}, ${margin.top/2})`)
+                    .attr("dy", "0.71em")
+                    .attr("text-anchor", "middle")
+                    .text("Keyword Correlation");
             // The same for y_axis, append it to the group 'g'.
             var y_axis = g.append("g")
                 .call(d3.axisLeft(y)
