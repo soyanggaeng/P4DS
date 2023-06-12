@@ -29,7 +29,6 @@ class model():
         df['word_corr_mm'] = mm.fit_transform(df[['word_corr']])
         df['comment_analysis_score_mm'] = mm.fit_transform(df[['comment_analysis_score']])
         df['model_score'] = df['view_count_mm'] + df['word_corr_mm'] + df['comment_analysis_score_mm']
-        # df['model_score'] = df['view_count_mm'] + 0.4*df['word_corr_mm'] + 0.4*df['comment_analysis_score_mm']
 
 
         df = df.loc[df['budget'] <= self.budget]
